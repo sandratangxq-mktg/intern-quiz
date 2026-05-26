@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Week 1 · Day 1 — Foundations Quiz</title>
+<style>
+:root {
+  --ink: #0f1922; --ink-2: #2a3744;
+  --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155;
+  --brand: #2563eb; --brand-2: #1d4ed8; --accent: #f59e0b;
+  --good: #16a34a; --warn: #d97706; --bad: #dc2626;
+  --teal: #0d9488; --purple: #7c3aed;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink); background: var(--gray-50);
+  line-height: 1.62; font-size: 15.5px; -webkit-font-smoothing: antialiased;
+}
+.wrapper { max-width: 820px; margin: 0 auto; padding: 24px 24px 120px; }
+.hero {
+  background: linear-gradient(135deg, #0f1922 0%, #1e3a5f 100%);
+  color: white; padding: 36px 28px 32px; margin: -24px -24px 24px;
+  border-radius: 0 0 12px 12px;
+}
+.hero .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; opacity: 0.75; margin-bottom: 8px; }
+.hero h1 { font-size: 26px; margin: 0 0 10px; font-weight: 700; letter-spacing: -0.3px; }
+.hero .lede { font-size: 15px; line-height: 1.5; margin: 0; opacity: 0.92; max-width: 640px; }
+.hero .meta { margin-top: 18px; font-size: 12.5px; opacity: 0.7; display: flex; gap: 16px; flex-wrap: wrap; }
+.scorebar {
+  position: sticky; top: 0; z-index: 50; background: white;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+  margin: 0 -24px 20px; font-size: 13.5px;
+}
+.scorebar .score { font-weight: 650; color: var(--ink); }
+.scorebar .score .good-num { color: var(--good); }
+.scorebar .score .bad-num { color: var(--bad); }
+.scorebar .progress { flex: 1; margin: 0 18px; height: 6px; background: var(--gray-200); border-radius: 999px; overflow: hidden; max-width: 320px; }
+.scorebar .progress .bar { height: 100%; background: linear-gradient(90deg, var(--brand) 0%, var(--teal) 100%); width: 0%; transition: width 0.3s; }
+.scorebar .pct { font-weight: 650; color: var(--gray-700); }
+.section-header {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 40px 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--gray-200);
+}
+.section-header h2 { font-size: 21px; font-weight: 700; margin: 0; }
+.section-header .meta { font-size: 12px; color: var(--gray-500); }
+.section-intro { font-size: 14px; color: var(--gray-700); margin: 0 0 24px; }
+.q {
+  background: white; border: 1px solid var(--gray-200);
+  border-radius: 8px; padding: 20px 22px; margin: 16px 0;
+  transition: border-color 0.2s;
+}
+.q.answered.correct { border-left: 3px solid var(--good); }
+.q.answered.incorrect { border-left: 3px solid var(--bad); }
+.q.answered.partial { border-left: 3px solid var(--warn); }
+.q .num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); margin-bottom: 6px; }
+.q .num .type { background: var(--gray-100); color: var(--ink-2); padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 600; letter-spacing: 0.6px; }
+.q .num .type.short { background: #fef3c7; color: #92400e; }
+.q .num .type.applied { background: #ede9fe; color: #6d28d9; }
+.q .prompt { font-size: 15.5px; margin: 0 0 14px; color: var(--ink); }
+.q .prompt strong { font-weight: 650; }
+.q .data { background: var(--gray-50); border-left: 3px solid var(--gray-300); padding: 10px 14px; margin: 10px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+.q .data ul { margin: 4px 0; padding-left: 20px; }
+.choices { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; }
+.choice {
+  border: 1px solid var(--gray-200); background: white;
+  padding: 10px 14px; border-radius: 6px; cursor: pointer;
+  text-align: left; font-size: 14.5px; font-family: inherit;
+  color: var(--ink); transition: all 0.15s;
+}
+.choice:hover:not(:disabled) { border-color: var(--brand); background: #f0f7ff; }
+.choice:disabled { cursor: default; }
+.choice.selected { border-color: var(--brand); background: #dbeafe; font-weight: 600; }
+.choice.correct-answer { border-color: var(--good); background: #f0fdf4; color: var(--good); font-weight: 600; }
+.choice.wrong-pick { border-color: var(--bad); background: #fef2f2; color: var(--bad); }
+.choice .letter { display: inline-block; width: 22px; font-weight: 700; }
+.open-input { width: 100%; min-height: 80px; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: 6px; font-family: inherit; font-size: 14.5px; resize: vertical; }
+.open-input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.applied-input { min-height: 140px; }
+.reveal-btn {
+  margin-top: 10px; padding: 8px 14px; background: var(--ink); color: white;
+  border: 0; border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.reveal-btn:hover { background: var(--ink-2); }
+.reveal-btn:disabled { background: var(--gray-300); cursor: default; }
+.model {
+  margin-top: 14px; padding: 14px 16px; background: #f0fdf4;
+  border-left: 3px solid var(--good); border-radius: 0 6px 6px 0;
+  font-size: 14.5px; display: none;
+}
+.model.show { display: block; }
+.model .label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--good); margin-bottom: 6px; }
+.model p { margin: 6px 0; }
+.model ul { margin: 6px 0; padding-left: 22px; }
+.model strong { color: var(--ink); font-weight: 650; }
+.self-rate { margin-top: 12px; display: none; gap: 8px; }
+.self-rate.show { display: flex; }
+.self-rate .rate-btn {
+  flex: 1; padding: 8px 10px; border: 1px solid var(--gray-300);
+  background: white; border-radius: 6px; font-family: inherit; font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.self-rate .rate-btn:hover { border-color: var(--ink-2); }
+.self-rate .rate-btn.got-it { color: var(--good); }
+.self-rate .rate-btn.got-it.active { background: var(--good); color: white; border-color: var(--good); }
+.self-rate .rate-btn.partial { color: var(--warn); }
+.self-rate .rate-btn.partial.active { background: var(--warn); color: white; border-color: var(--warn); }
+.self-rate .rate-btn.missed { color: var(--bad); }
+.self-rate .rate-btn.missed.active { background: var(--bad); color: white; border-color: var(--bad); }
+.explanation { margin-top: 12px; padding: 10px 14px; background: #fffbeb; border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 14px; display: none; }
+.explanation.show { display: block; }
+.final-card {
+  display: block; background: white; border: 1px solid var(--gray-200);
+  border-radius: 12px; padding: 32px; margin-top: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+.final-card h2 { margin: 0 0 6px; font-size: 24px; }
+.final-card .final-score { font-size: 48px; font-weight: 700; color: var(--brand); margin: 16px 0 4px; }
+.final-card .final-sub { color: var(--gray-500); font-size: 14px; margin-bottom: 24px; }
+.final-card .breakdown { margin: 20px 0; }
+.final-card .breakdown-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--gray-200); font-size: 14.5px; }
+.final-card .breakdown-row:last-child { border-bottom: 0; }
+.final-card .revisit { background: #fef2f2; border-left: 3px solid var(--bad); padding: 14px 18px; border-radius: 0 6px 6px 0; margin-top: 20px; font-size: 14px; }
+.final-card .revisit h4 { margin: 0 0 8px; color: var(--bad); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+.final-card .revisit ul { margin: 6px 0 0; padding-left: 22px; }
+.reset-btn { margin-top: 24px; padding: 10px 16px; background: var(--gray-200); color: var(--ink-2); border: 0; border-radius: 6px; font-family: inherit; font-size: 13.5px; cursor: pointer; }
+.reset-btn:hover { background: var(--gray-300); }
+.calc-line { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--ink-2); }
+.feedback {
+  margin-top: 16px; padding: 12px 14px; background: #f8fafc;
+  border: 1px dashed var(--gray-300); border-radius: 6px; display: none;
+}
+.feedback.show { display: block; }
+.feedback .fb-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); margin-bottom: 8px; }
+.feedback .diff-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.feedback .diff-btn {
+  flex: 1; min-width: 80px; padding: 7px 8px; font-size: 12.5px;
+  border: 1px solid var(--gray-300); background: white;
+  border-radius: 6px; cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.feedback .diff-btn:hover { border-color: var(--brand); }
+.feedback .diff-btn.active { color: white; border-color: transparent; font-weight: 600; }
+.feedback .diff-btn[data-d="too-easy"].active { background: #94a3b8; }
+.feedback .diff-btn[data-d="just-right"].active { background: var(--good); }
+.feedback .diff-btn[data-d="hard"].active { background: var(--warn); }
+.feedback .diff-btn[data-d="too-hard"].active { background: var(--bad); }
+.feedback .why-box {
+  width: 100%; min-height: 50px; padding: 8px 10px; border: 1px solid var(--gray-200);
+  border-radius: 6px; font-family: inherit; font-size: 13px; resize: vertical; background: white;
+}
+.feedback .why-box:focus { outline: none; border-color: var(--brand); }
+.feedback .why-label { display: block; font-size: 12px; color: var(--gray-500); margin-bottom: 4px; }
+.export-section { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--gray-200); }
+.export-section h3 { margin: 0 0 6px; font-size: 15px; }
+.export-section p { font-size: 13.5px; color: var(--gray-500); margin: 0 0 14px; }
+.export-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+.export-btn {
+  padding: 10px 16px; background: var(--brand); color: white; border: 0;
+  border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.export-btn:hover { background: var(--brand-2); }
+.export-btn.secondary { background: var(--ink-2); }
+.export-btn.secondary:hover { background: var(--ink); }
+.export-status { margin-top: 10px; font-size: 12.5px; color: var(--good); display: none; }
+.export-status.show { display: block; }
+.pw-overlay { position: fixed; inset: 0; background: #0f1922; display: flex; align-items: center; justify-content: center; z-index: 99999; font-family: -apple-system, sans-serif; }
+.pw-card { background: white; padding: 32px; border-radius: 8px; max-width: 380px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.pw-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+.pw-card p { margin: 0 0 18px; color: #6b7280; font-size: 13px; line-height: 1.5; }
+.pw-card input { width: 100%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; }
+.pw-card input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.pw-card button { width: 100%; margin-top: 12px; padding: 10px; background: #2563eb; color: white; border: 0; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 500; }
+.pw-card button:hover { background: #1d4ed8; }
+.pw-error { color: #dc2626; font-size: 12px; margin-top: 10px; min-height: 14px; }
+</style>
+</head>
+<body>
+<div id="pw-overlay" class="pw-overlay" style="display:none;">
+  <div class="pw-card">
+    <h2>Restricted Access</h2>
+    <p>This quiz contains internal YouTrip context. Enter the password Sandra gave you to continue.</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off" />
+    <button id="pw-submit">Open Quiz</button>
+    <div id="pw-error" class="pw-error"></div>
+  </div>
+</div>
+<script>
+(function() {
+  const STORED_HASH = 'c54d008cfc10bc30b18da22f45e229ce4e1424b130dfb435a0cf16d6853ef1b8';
+  const SESSION_KEY = 'intern-quiz-w1d1-auth';
+  if (sessionStorage.getItem(SESSION_KEY) === STORED_HASH) return;
+  document.documentElement.style.visibility = 'hidden';
+  function ready() {
+    document.documentElement.style.visibility = 'visible';
+    const main = document.querySelector('.wrapper');
+    if (main) main.style.visibility = 'hidden';
+    const overlay = document.getElementById('pw-overlay');
+    overlay.style.display = 'flex';
+    const input = document.getElementById('pw-input');
+    const button = document.getElementById('pw-submit');
+    const error = document.getElementById('pw-error');
+    setTimeout(() => input.focus(), 50);
+    async function check() {
+      const enc = new TextEncoder().encode(input.value);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hex === STORED_HASH) {
+        sessionStorage.setItem(SESSION_KEY, STORED_HASH);
+        overlay.remove();
+        if (main) main.style.visibility = '';
+      } else {
+        error.textContent = 'Incorrect password. Try again.';
+        input.value = ''; input.focus();
+      }
+    }
+    button.addEventListener('click', check);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ready);
+  } else { ready(); }
+})();
+</script>
+
+<div class="wrapper">
+
+<div class="hero">
+  <div class="eyebrow">Week 1 · Day 1 · Foundations</div>
+  <h1>Performance Marketing, YouTrip &amp; CRM — Day 1 Quiz</h1>
+  <p class="lede">100 questions across 3 sections. Heavy on performance marketing (your focus), with YouTrip business model and CRM intro woven in. Take your time — the goal is internalisation, not speed. Aim for ~3 hours.</p>
+  <div class="meta">
+    <span>📊 100 questions</span>
+    <span>⏱ ~3 hours</span>
+    <span>💾 Auto-saves your progress</span>
+    <span>🧠 Self-graded</span>
+  </div>
+</div>
+
+<div class="scorebar">
+  <div class="score">Score: <span class="good-num" id="score-correct">0</span> · <span id="answered-count">0</span> / 100</div>
+  <div class="progress"><div class="bar" id="progress-bar"></div></div>
+  <div class="pct" id="score-pct">—</div>
+</div>
+
+<div id="quiz-root"></div>
+
+<div class="final-card" id="final-card">
+  <h2 id="final-heading">Your progress so far</h2>
+  <p class="final-sub" id="final-tagline">Keep going — your score and section breakdown will update live. Hit "Copy feedback" anytime to send Sandra your ratings + comments.</p>
+  <div class="final-score" id="final-pct">—</div>
+  <div class="final-sub" id="final-detail">— correct out of 100</div>
+  <div class="breakdown" id="final-breakdown"></div>
+  <div class="revisit" id="revisit-block" style="display:none;">
+    <h4>Topics to revisit</h4>
+    <ul id="revisit-list"></ul>
+  </div>
+  <div class="export-section">
+    <h3>Send your feedback to Sandra</h3>
+    <p>Sandra uses your difficulty ratings + comments to make the quiz better for Day 2-5. Click below to copy a summary you can paste into Slack/email, or download as a file.</p>
+    <div class="export-buttons">
+      <button class="export-btn" id="copy-feedback-btn">📋 Copy feedback summary</button>
+      <button class="export-btn secondary" id="download-feedback-btn">⬇️ Download JSON</button>
+    </div>
+    <div class="export-status" id="export-status">Copied to clipboard.</div>
+  </div>
+  <button class="reset-btn" onclick="if(confirm('Reset all progress?')){localStorage.removeItem('quiz-w1d1');location.reload();}">Reset quiz</button>
+</div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+// =================== PERFORMANCE MARKETING (60 questions) ===================
+{id:1,section:"Performance Marketing",type:"mcq",prompt:"Over 3 weeks a Meta campaign shows: CTR 1.8% → 1.2% → 0.7%, Frequency 1.4 → 2.9 → 4.6, CPI $8 → $11 → $15. Most likely root cause:",choices:["Algorithm shifted toward cheaper, lower-intent placements","Creative fatigue","Audience saturation requiring expansion","Bid set too low"],correct:1,explanation:"Rising frequency + falling CTR = classic fatigue. If it were algo shift toward cheap traffic, CTR would <em>rise</em> (cheap impressions click more readily but convert worse). The remedy for fatigue is new creative — expanding audience treats the symptom."},
+{id:2,section:"Performance Marketing",type:"mcq",prompt:"A user installs YouTrip, passes KYC, but never tops up. YouTrip's revenue from her in Year 1:",choices:["$0","Small fee from idle balance","Whatever the issuing bank pays at signup","~$15 (industry average per approved user)"],correct:0,explanation:"No top-up = no card spend = no interchange = no FX margin = no revenue. This is why CPApproved isn't the full picture — approved-but-dormant users are pure cost. Always pair acquisition metrics with downstream activation."},
+{id:3,section:"Performance Marketing",type:"mcq",prompt:"You have $50k/mo: Meta $30k, Google UAC $15k, ASA $5k. Average CPApproved: Meta $35, Google $28, ASA $18. CMO says \"shift $10k Meta → ASA, it's cheapest.\" Best response:",choices:["Agree — ASA is 2× cheaper, redirect immediately","Disagree — ASA likely saturates, keyword inventory finite","Agree but cap at $2-3k incremental","Test +50% on ASA over 2 weeks and check <em>marginal</em> CPApproved, not average"],correct:3,explanation:"Average ≠ marginal. ASA's $18 is on a $5k base — likely branded keywords (cheap because users already searching \"YouTrip\"). Doubling ASA forces it onto generic keywords where CPC is 3-5× higher. Always test the curve before reallocating."},
+{id:4,section:"Performance Marketing",type:"mcq",prompt:"CPM = $10, CTR = 2%. CPC =",choices:["$0.20","$0.50","$5.00","$20.00"],correct:1,explanation:"CPM $10 / 1000 impressions = $0.01 per impression. 2% CTR means 1 click per 50 impressions = $0.01 × 50 = $0.50. Memorise: CPC = CPM / (CTR × 10)."},
+{id:5,section:"Performance Marketing",type:"mcq",prompt:"An app campaign optimized for \"Install\" event will attract users who:",choices:["Are most likely to install AND retain","Are most likely to install — regardless of what they do after","Spend the most in the app","Have the highest LTV"],correct:1,explanation:"Meta/Google/TikTok optimize for exactly what you tell them. \"Install\" optimization finds people likely to install — full stop. If retention or revenue matters (it does for YouTrip), optimize for a deeper event (e.g., \"Approved\" or \"First Top-up\")."},
+{id:6,section:"Performance Marketing",type:"mcq",prompt:"Meta needs ~50 conversions per ad set per week to:",choices:["Charge you for ads","Allow more budget","Exit the \"Learning\" phase","Maintain a quality score"],correct:2,explanation:"50 conversions/week is Meta's heuristic for statistical signal — below it, the algorithm can't reliably identify your converters and performance is volatile. If you're optimising for \"Approved\" but only getting 20/week, you're stuck in learning forever — use a higher-frequency event like \"Install\" or consolidate ad sets."},
+{id:7,section:"Performance Marketing",type:"mcq",prompt:"View-through attribution counts a conversion when:",choices:["User clicked AND installed within window","User saw the ad AND installed within window","User installed within 1 day of any ad","User saw an ad in the same session as installing"],correct:1,explanation:"View-through (VT) = exposed but didn't click → still converted. Common window: 1 day. Controversial because it over-credits cheap-impression channels. AppsFlyer 2026-05-19 \"Restricted\" change removed campaign-level VT data for TikTok — that's why TikTok looked like it crashed overnight."},
+{id:8,section:"Performance Marketing",type:"mcq",prompt:"Scaling a Meta campaign from $1k/day to $5k/day typically causes CPA to:",choices:["Stay flat (linear scaling)","Decrease (economies of scale)","Increase (audience saturation, algo pushes into less-warm pockets)","Drop then rise"],correct:2,explanation:"Meta is an auction. At higher spend you must outbid more competitors AND your audience pool shrinks — you start showing ads to lower-intent users. Most marketers' #1 budget mistake: assuming current CPA holds at 5×. Test marginal CPA at each step."},
+{id:9,section:"Performance Marketing",type:"mcq",prompt:"SKAN (SKAdNetwork) is:",choices:["Apple's privacy-preserving iOS attribution framework","Meta's iOS bidding algorithm","Google's app attribution model","An open-source MMP"],correct:0,explanation:"Apple's response to GDPR-style privacy. Since iOS 14.5+, most users don't share IDFA. SKAN postbacks come from Apple, aggregated, delayed 24-48h, with a random timer 0-24h. This is why iOS reporting always lags — and why iOS Meta data is unreliable enough that AppsFlyer is YouTrip's SSOT for iOS."},
+{id:10,section:"Performance Marketing",type:"mcq",prompt:"A campaign with CPM $8, CTR 3%, install-rate (click-to-install) 6% has CPI of:",choices:["$2.22","$4.44","$8.00","$13.33"],correct:1,explanation:"$8 CPM / 1000 = $0.008 per impression. CTR 3% × IR 6% = 0.18% of impressions become installs = 1.8 installs per 1000 impressions. CPI = $8 / 1.8 = $4.44. Both ratios matter — a 5% CTR with 0.5% IR ($40 CPI) is worse than 1% CTR with 5% IR ($16 CPI)."},
+{id:11,section:"Performance Marketing",type:"mcq",prompt:"ROAS of 4.0 means:",choices:["4× spend was profit","4× spend was revenue","4× users converted","4× clicks generated revenue"],correct:1,explanation:"Return On Ad Spend = revenue / spend. Says nothing about profit (margin not included), nothing about retention, nothing about LTV. ROAS is useful for e-commerce; for YouTrip (LTV business) it's misleading — M1 ROAS of 4% can still be a profitable cohort over 12 months."},
+{id:12,section:"Performance Marketing",type:"mcq",prompt:"Why is iOS attribution harder than Android post-2021?",choices:["Apple doesn't track installs","Most users opt out of IDFA tracking via ATT","Android conversions are double-counted","iOS has no MMP integrations"],correct:1,explanation:"iOS 14.5+ App Tracking Transparency prompt. ~75-80% of users opt OUT of cross-app tracking. Without IDFA, Meta/Google can't match an ad-click to an install at the user level — they have to rely on aggregate SKAN postbacks. Android still has GAID for most users, so deterministic attribution works."},
+{id:13,section:"Performance Marketing",type:"mcq",prompt:"A creative with 5% CTR + 0.5% install-rate, vs 1% CTR + 5% install-rate, at same CPM — which has lower CPI?",choices:["The 5% CTR creative","The 1% CTR creative","Both equal","Need to know CPM"],correct:1,explanation:"What matters is CTR × IR (the full funnel to install). 5% × 0.5% = 0.025%; 1% × 5% = 0.05% — the second is 2× more efficient. Lesson: a high CTR creative that attracts the wrong people (curiosity clicks, not intent) can be a worse buy than a lower-CTR creative with high intent."},
+{id:14,section:"Performance Marketing",type:"mcq",prompt:"A 1% lookalike vs a 5% lookalike — which is more targeted (smaller, closer to seed)?",choices:["1% (top 1% match)","5% (top 5% match)","Same — % is just population size","Depends on country"],correct:0,explanation:"% = top X% of the population most similar to your seed. 1% is tighter than 5%. 1% has higher quality, lower volume; 5% is more scalable but dilutes match. Common test: 1% for high-intent campaigns, 5%+ for prospecting / scale."},
+{id:15,section:"Performance Marketing",type:"mcq",prompt:"Incrementality test result: ad-exposed group converted at 8%, control (no ad) converted at 7.5%. Incremental lift:",choices:["8% absolute","0.5 percentage points (6.7% relative)","Negative — control beat test","Can't tell without sample size"],correct:1,explanation:"Incremental = test - control = 0.5pp absolute, or 0.5/7.5 = 6.7% relative lift. But D is the trap-worthy answer: without sample size + variance, you can't say if 0.5pp is significant. Always pair lift with p-value or confidence interval."},
+{id:16,section:"Performance Marketing",type:"mcq",prompt:"An incrementality test shows 0% lift. The most accurate interpretation:",choices:["The ad creative is bad","The ad didn't reach anyone","Users would have installed/converted anyway — the ad added no incremental value","The test was broken"],correct:2,explanation:"0% lift = the ad-exposed group didn't outperform the control. The most uncomfortable possibility: the channel is just <em>harvesting</em> demand that would have converted via organic search anyway. Common finding: branded search & retargeting often have 0-20% true incrementality despite looking like top performers in attribution dashboards."},
+{id:17,section:"Performance Marketing",type:"mcq",prompt:"Match-rate on a Custom Audience refers to:",choices:["% of uploaded emails/IDs that match Meta users","% of clicks that match installs","% of impressions delivered","% of audience that engaged with ad"],correct:0,explanation:"You upload a list (emails, phone numbers, IDFAs), Meta hashes it and matches against its users. SG match rate for YouTrip ~90% (boss confirmed); SEA benchmark usually quoted ~60% is too low for our case. Higher match = better-targeted lookalikes/exclusions."},
+{id:18,section:"Performance Marketing",type:"mcq",prompt:"CBO (Campaign Budget Optimization) vs ABO (Ad-set Budget Optimization). CBO gives Meta more freedom to:",choices:["Choose creative","Allocate budget across ad sets","Set bid","Test new audiences"],correct:1,explanation:"In ABO, you set $X per ad set — Meta must spend that. In CBO, you set $X per campaign and Meta moves budget toward whichever ad set is performing. CBO usually wins at scale, but ABO is better for diagnostic / testing (clean spend isolation per ad set)."},
+{id:19,section:"Performance Marketing",type:"mcq",prompt:"A campaign's CPM rose 30% week-over-week with stable creative + audience. Most likely cause:",choices:["Algo change","Competitor entered the auction","Audience overlap with another of your campaigns","All three possible"],correct:3,explanation:"CPM is an auction price — it moves with demand vs supply. Common drivers: competitor surge (e.g., Singles' Day), platform-wide algo updates, your own campaigns competing with each other (audience overlap inflates internal bids), seasonality. Diagnose by checking competitor ad library, your own overlap, and platform reports."},
+{id:20,section:"Performance Marketing",type:"mcq",prompt:"For YouTrip (LTV business), the BEST single north-star metric for daily campaign optimisation is:",choices:["CPI","CPApproved","Cost per First Transaction (CPFT)","LTV / CAC ratio"],correct:1,explanation:"CPFT is the most aligned with revenue (great north-star for monthly budget decisions), but its feedback loop is too slow for daily optimisation (first transaction can be 2-6 weeks post-install). CPApproved is the sweet spot: fast enough signal for ad platforms to learn, quality-aware enough to filter junk installs. Real-world: CPApproved daily, CPFT monthly."},
+{id:21,section:"Performance Marketing",type:"mcq",prompt:"Why is daily campaign optimisation on CPFT (Cost per First Transaction) impractical, despite being the most revenue-aligned metric?",choices:["CPFT is more expensive to calculate","First transaction can lag install by weeks — Meta's algo can't learn from delayed signal","Apple blocks CPFT measurement","CPFT isn't a real metric"],correct:1,explanation:"Meta's algo needs ~50 conversion events / ad set / week to optimise. If your event is \"First Transaction\" and users transact 30 days post-install, you'll get ~5 events/week per ad set — algo never exits learning. You need a faster proxy event for daily bidding (CPApproved or even CPI), then validate weekly that those installs convert downstream."},
+{id:22,section:"Performance Marketing",type:"mcq",prompt:"Smart+ (Meta's auto-everything campaign type) is BEST suited for:",choices:["Highly targeted high-LTV niche audiences","Broad prospecting with rich signal — let the algo decide","Brand awareness only","Re-engagement of churned users"],correct:1,explanation:"Smart+ delegates creative selection, audience targeting, bid, placement — all to Meta's ML. Works best when you have clean conversion signal + lots of creative variety. Worst when you have a narrow audience definition that Meta might ignore. YouTrip uses Smart+ heavily because the algo can find users across SG faster than manual targeting."},
+{id:23,section:"Performance Marketing",type:"mcq",prompt:"Click attribution window is 7 days. User clicks ad on Monday, installs Thursday. Result:",choices:["Meta gets credit (within window)","Organic gets credit (no click on install day)","Both Meta and organic split credit","Depends on MMP setting"],correct:0,explanation:"If your MMP click window is 7 days, Meta gets credit for any install within 7 days of the click. Shorter window (1-day) = more conservative, more attribution goes to organic. Longer window (7-day, 30-day) = more attribution to paid. Industry standard: 7-day click + 1-day view for app installs."},
+{id:24,section:"Performance Marketing",type:"mcq",prompt:"AppsFlyer (an MMP) is needed because:",choices:["Meta/Google don't share data with each other","Without it you can't tell if an install came from Meta vs Google vs organic","Apple requires it","It's a legal requirement"],correct:1,explanation:"Each ad platform <em>thinks</em> it caused every install. Without a neutral arbiter, Meta + Google + TikTok + ASA combined claim 2-3× your real installs (over-attribution). MMPs (AppsFlyer, Adjust, Branch) deduplicate by giving the install to the LAST click before install, across all platforms."},
+{id:25,section:"Performance Marketing",type:"mcq",prompt:"A campaign showing falling CTR + falling Frequency over 4 weeks most likely means:",choices:["Creative fatigue","Audience is being expanded or refreshed","Algo shift toward cheap impressions","Bid is too low"],correct:2,explanation:"Tricky one. Fatigue = CTR ↓ + Freq ↑. Algo cheap-traffic shift = CTR ↓ + Freq ↓ (algo found new cheap impressions, so the same person sees it less but lots of fresh people see it once at low CTR). Remedy is opposite: fatigue needs new creative; algo shift needs tighter targeting or higher bid."},
+{id:26,section:"Performance Marketing",type:"mcq",prompt:"You're given two metrics: Channel A: CPI $8, CPApproved $25 (32% approval rate). Channel B: CPI $14, CPApproved $20 (70% approval rate). Which channel has higher user QUALITY?",choices:["A (lower CPI)","B (higher approval rate, more efficient at delivering usable users)","Same","Need spend levels"],correct:1,explanation:"CPI hides the funnel. Channel A's 32% approval rate means 2/3 of installs are junk (wrong country, fake accounts, low intent). Channel B costs more per install but converts 70% — better quality. Always look downstream from CPI to find the truth."},
+{id:27,section:"Performance Marketing",type:"mcq",prompt:"Google UAC (Universal App Campaigns) is largely automated. You CAN'T directly control:",choices:["Daily budget","Target CPA","Which placements (YouTube, Search, Display, Play) get shown","Creative assets (headlines, images, videos)"],correct:2,explanation:"UAC's whole pitch: you provide assets + a tCPA + budget, Google decides placement, bid, and audience. You CAN see placement breakdowns (asset reports) but you can't pin spend to one placement. This is a feature for Google, a bug for diagnosis — when UAC underperforms, you have less to tweak than on Meta."},
+{id:28,section:"Performance Marketing",type:"mcq",prompt:"A 30% improvement in CTR (creative refresh) and a 30% improvement in install-rate (App Store page) — which usually has bigger CPI impact?",choices:["CTR — top of funnel matters more","Install-rate — closer to conversion","Mathematically equal (both multiply through to CPI)","Depends on baseline CTR vs IR"],correct:2,explanation:"CPI = CPM / (CTR × IR × 10). A 30% improvement in either CTR or IR has the same multiplicative effect on CPI. So both matter equally — but in practice CTR is easier to test (new creative every week), and App Store optimisation is slower (review cycles). Pragmatic: optimise creative continuously, App Store page quarterly."},
+{id:29,section:"Performance Marketing",type:"mcq",prompt:"For a brand-new product (no historical data), the BEST way to set a starting target CPA on Meta is:",choices:["Industry benchmark","LTV × target margin","Don't set one — use \"Highest Volume\" until you have data","Match your competitor's CPA"],correct:2,explanation:"With no data, any tCPA you set is a guess that constrains the algo. Better: \"Highest Volume\" or \"Lowest Cost\" to let Meta learn what's possible, observe actual CPA after 50-100 conversions, THEN set a target. Premature tCPA tightens spend and starves learning."},
+{id:30,section:"Performance Marketing",type:"mcq",prompt:"\"Conversion lift\" tests (incrementality) compare:",choices:["Different creatives in same audience","Test group (sees ad) vs control group (held out from ad)","Different platforms","Bid types"],correct:1,explanation:"True incrementality requires withholding ads from a randomly-assigned control group. Meta runs these as \"Conversion Lift\" studies, Google as \"Conversion Lift\" too. Costly because you're deliberately not advertising to ~20% of your reachable audience — but it's the only way to know real causal impact."},
+{id:31,section:"Performance Marketing",type:"short",prompt:"In your own words (2-3 sentences), explain WHY a platform like Meta might attract \"junk\" installs when you optimise for the Install event — and how a deeper conversion event (e.g., \"Approved\") solves it.",model:"<p>Meta's algorithm finds users most likely to do whatever event you're optimising for. If you tell it to optimise for installs, it finds people who install easily — but those people might be incentivised installers, bot networks, or low-intent curiosity clickers who never use the app. Optimising for a deeper event like \"Approved\" forces the algo to find users who pass KYC, which screens out most junk because the bar is higher. The trade-off: you get less daily event volume, so you might struggle to hit Meta's 50-conversions-per-week learning threshold.</p>"},
+{id:32,section:"Performance Marketing",type:"short",prompt:"Explain the difference between AVERAGE CPA and MARGINAL CPA. Which one should you use for deciding whether to scale a campaign?",model:"<p><strong>Average CPA</strong> = total spend / total conversions to date. It's a historical summary.</p><p><strong>Marginal CPA</strong> = cost of the NEXT conversion you'd buy if you added more spend. As you scale, marginal CPA typically rises (audience saturation, algo pushes into less-warm pockets) — so it's almost always higher than average.</p><p>For scaling decisions, use marginal. If your average CPA is $20 but marginal is $35, doubling budget doesn't double conversions at $20 — it adds expensive incremental ones. Test budget +20-50% and measure, don't extrapolate from average.</p>"},
+{id:33,section:"Performance Marketing",type:"short",prompt:"What's the difference between \"attributed\" conversions (from Meta/Google) and \"incremental\" conversions? Why does it matter for YouTrip?",model:"<p><strong>Attributed</strong> = the platform claims credit (the user clicked our ad before converting). <strong>Incremental</strong> = the user converted BECAUSE of the ad — they wouldn't have without it.</p><p>The gap matters because attributed includes users who would have signed up anyway (organic demand). For YouTrip, branded search ads and retargeting often show high attributed conversions but low incrementality — those users were already searching for us. If we cut them, we'd lose attribution numbers but might not lose actual signups. This is why ROAS based purely on attribution can mislead you into over-investing in harvesting channels.</p>"},
+{id:34,section:"Performance Marketing",type:"short",prompt:"You launch 3 new creatives in a Meta ad set. After 3 days, Creative A has spent $1,800 and Creatives B & C have each spent $200. Why does Meta do this, and is it good or bad?",model:"<p>Meta's algorithm allocates impressions to whichever creative shows early signs of working. Creative A probably had a higher predicted CTR/conversion rate in the first hours, so Meta scaled it. This is called \"creative concentration\" or \"winner-take-all.\"</p><p>It's <strong>good</strong> if your goal is short-term performance — Meta routes spend efficiently. It's <strong>bad</strong> for testing because B and C never got a fair shot. If you want to genuinely test creatives, use a Brand Lift / A-B test format, or run them in separate ad sets so each gets statistical exposure before declaring a winner.</p>"},
+{id:35,section:"Performance Marketing",type:"short",prompt:"Why is \"creative fatigue\" diagnosed via CTR direction (falling) + frequency direction (rising) — what's the underlying mechanism?",model:"<p>Fatigue means the same audience has seen your ad too many times. Mechanism:</p><ul><li>Frequency rises because Meta exhausts new users in the audience and starts re-serving to people it already showed.</li><li>CTR falls because people who've seen the ad multiple times are less likely to click — they've already decided (or scrolled past).</li></ul><p>The opposite diagnosis — CTR rising + frequency falling — usually means an algorithm shift where Meta found NEW cheap impressions (different audience pocket), so each person sees it once but at lower intent. Same symptoms (rising CPI) but opposite remedies: fatigue needs new creative; algo shift needs tighter targeting or audience refresh.</p>"},
+{id:36,section:"Performance Marketing",type:"short",prompt:"A campaign has CPI of $4 but only 30% approval rate. The marketing team is celebrating the low CPI. Why is your boss not impressed, and what metric would actually impress her?",model:"<p>CPI alone is a vanity metric for YouTrip. A 30% approval rate means 70% of those cheap installs are wasted spend — users who can't pass KYC, who installed accidentally, who are in the wrong country, or who are fake. The effective CPApproved = $4 / 30% = $13.30, which is the real cost per usable user. Combined with downstream activation (do they top up? do they spend?), the boss cares about Cost per Approved or Cost per First Transaction — not CPI.</p><p>If you want to impress her: present CPApproved alongside CPI in the same table, and flag any channel where the gap between them is widening (because that means quality is degrading even if CPI looks fine).</p>"},
+{id:37,section:"Performance Marketing",type:"short",prompt:"List 3 distinct things that could cause CPM to spike 30% week-over-week, in order of most-to-least common.",model:"<ol><li><strong>Competitor entered the auction</strong> — a big advertiser launching a campaign in your audience pulls inventory away. Most common, hardest to control.</li><li><strong>Seasonality / event</strong> — public holiday, World Cup, Singles' Day, Black Friday. Predictable but easy to forget.</li><li><strong>Self-overlap</strong> — you launched multiple campaigns targeting overlapping audiences, your own ad sets are bidding against each other (Meta inflates internal bids). Check audience overlap report.</li></ol><p>Less common: platform-wide algo update, currency FX moves (if you bill in USD but report in local), policy changes (e.g., iOS ATT shock in 2021).</p>"},
+{id:38,section:"Performance Marketing",type:"short",prompt:"What's the difference between Reach, Impressions, and Frequency? Give a 1-sentence definition for each, and explain how they relate mathematically.",model:"<p><strong>Reach</strong> — number of unique people who saw the ad at least once.<br><strong>Impressions</strong> — total times the ad was served (one person seeing it 3 times = 3 impressions).<br><strong>Frequency</strong> — average times each person saw it.</p><p><strong>Formula:</strong> Impressions = Reach × Frequency.</p><p>If Reach = 100k and Frequency = 2.5, Impressions = 250k. Useful diagnostic: rising frequency with flat reach = saturating audience, needs expansion or new creative.</p>"},
+{id:39,section:"Performance Marketing",type:"short",prompt:"Why is comparing Meta's reported iOS conversions to AppsFlyer's reported iOS conversions usually a bad idea? (2 reasons)",model:"<p><strong>1. SKAN data is aggregate + delayed.</strong> Meta receives SKAN postbacks from Apple in aggregated, anonymised, time-randomised batches (0-24h delay). Meta then \"models\" individual conversion attribution back from those batches — meaning Meta's iOS conversions are partly invented for reporting.</p><p><strong>2. Window mismatch.</strong> Meta's default conversion window often differs from AppsFlyer's. Meta might count a 7-day-click + 1-day-view conversion that AppsFlyer doesn't (or vice versa).</p><p>YouTrip's rule: AppsFlyer is iOS SSOT for installs. Never compare Meta-iOS to AppsFlyer-iOS line-by-line — Meta will undercount by 21-47% (depends on opt-in rate). Look at trends, not absolute numbers.</p>"},
+{id:40,section:"Performance Marketing",type:"short",prompt:"Why might \"holding budget constant\" be the wrong response to a sudden CPA spike? Give the alternative framework.",model:"<p>Holding budget constant assumes CPA spike = noise. It might be — or it might be the leading edge of fatigue, audience saturation, or a platform change. Holding hides the diagnosis.</p><p><strong>Better framework:</strong></p><ol><li><strong>Diagnose first.</strong> Check CTR direction (fatigue if falling), frequency (saturation if rising), CPM (auction pressure if rising), competitor activity, internal audience overlap.</li><li><strong>Match response to cause.</strong> Fatigue → ship 3-5 new creatives, not less budget. Saturation → expand audience or test new geos. Algo shift → tighten bidding or change event. Competitor spike → wait it out OR push if margin allows.</li><li><strong>Set a kill threshold.</strong> If CPA stays 50% above target for 7 days post-intervention, cut budget. Otherwise let the diagnostic play out.</li></ol>"},
+{id:41,section:"Performance Marketing",type:"mcq",prompt:"You have 4 weeks of data. A campaign's CPI was stable at $10 for 3 weeks, then jumped to $14 last week. Most useful first diagnostic step:",choices:["Cut budget by 30%","Pause and relaunch","Pull CTR + Frequency + CPM trend by week to identify which lever moved","Add new creative immediately"],correct:2,explanation:"Decomposition first, action second. CPI = CPM / (CTR × IR × 10). If CTR fell, fatigue or audience drift. If CPM rose, auction pressure. If IR fell, App Store page or post-click issue. Without decomposition, you're guessing — and might fix the wrong lever."},
+{id:42,section:"Performance Marketing",type:"mcq",prompt:"A new market launch: which channel mix is typically MOST efficient for the first 60 days?",choices:["Heavy on ASA (cheap brand keywords)","Heavy on Meta + TikTok (build demand + awareness)","100% Google UAC (auto-scaling)","Avoid all paid — wait for organic"],correct:1,explanation:"In a new market, no one is searching for you — ASA volume is near zero. You need to CREATE demand first via Meta/TikTok (top-of-funnel, visual storytelling). Search & ASA harvest demand that already exists; they only work after awareness is built. After ~60-90 days, branded search starts appearing and you layer ASA on top."},
+{id:43,section:"Performance Marketing",type:"mcq",prompt:"Two campaigns target the same audience. Campaign A's CPM is $12, Campaign B's is $14. What's likely happening?",choices:["Random auction variance","Audience overlap — your own campaigns are bidding against each other","One has worse creative quality (Meta penalises with higher CPM)","Could be either B or C"],correct:3,explanation:"Both audience overlap (you're competing with yourself) and creative quality scoring (Meta's \"Quality Ranking\" inflates CPM for low-relevance ads) can cause sustained CPM gaps between similar campaigns. Always check overlap report AND Quality Ranking before assuming variance."},
+{id:44,section:"Performance Marketing",type:"mcq",prompt:"\"Cost per Approved\" (CPApproved) is calculated as:",choices:["Spend / installs","Spend / users who passed KYC","Spend / users who topped up","Spend / users who spent on card"],correct:1,explanation:"CPApproved = spend / KYC-passed users. For YouTrip, this is the daily-operations north-star metric — fast enough signal for ad platforms to learn from, quality-aware enough to filter junk installs. The deeper events (top-up, first transaction) are too lagged for daily optimisation."},
+{id:45,section:"Performance Marketing",type:"mcq",prompt:"Which paid channel typically has the SHORTEST signal-to-action loop (you see results fastest)?",choices:["Meta","Google UAC","Apple Search Ads (ASA)","TikTok"],correct:2,explanation:"ASA shows results within hours because user intent is already declared (they searched for you). Click → App Store → install can happen in 60 seconds. Meta and TikTok need creative + algo learning time (days). UAC needs even more learning data. ASA is a harvester, not a demand-creator — fast but capped by search volume."},
+{id:46,section:"Performance Marketing",type:"mcq",prompt:"A creative is in the top 10% by CTR but bottom 25% by install-rate. Most likely:",choices:["Great creative, bad App Store page","Click-bait — hook is misaligned with the actual product, attracts curiosity clicks","Wrong audience","Algo issue"],correct:1,explanation:"High CTR + low IR = misalignment between ad promise and what users find when they tap through. Often happens with sensational hooks (\"Get $1000 free!\") that drive clicks but disappoint. Fix: tighten the ad-to-App-Store narrative; A/B test more honest hooks. Don't reward this creative just because CTR is high — it's costing you in IR."},
+{id:47,section:"Performance Marketing",type:"mcq",prompt:"\"Branded search\" ads (e.g., bidding on \"YouTrip\") on Google or ASA are often:",choices:["Highly incremental — they bring net-new users","Mostly non-incremental — those users were already searching for you and would have found you organically","Cheaper than non-branded but harder to scale","Both B and C"],correct:3,explanation:"Branded keywords are cheap because intent is already there, but incrementality testing usually shows 20-50% of those clicks would have converted organically. They look great in attribution dashboards (low CPA), but the incremental value is much lower. Many companies still buy them defensively to block competitors from poaching, even knowing they're mostly non-incremental."},
+{id:48,section:"Performance Marketing",type:"mcq",prompt:"A campaign with rising CPI + rising CPM + flat CTR + flat frequency. Most likely root cause:",choices:["Creative fatigue","Audience saturation","Auction pressure (competitor activity, market-wide)","Algo cheap-traffic shift"],correct:2,explanation:"Fatigue would push CTR down. Saturation would push frequency up. Algo shift would change CTR direction. What's left? The auction itself got more expensive — competitors entered, seasonality hit, or scheme fees changed. You're paying more for the same eyeballs. Remedy: usually wait it out, OR push aggressively if you have margin, OR change audiences to a less-contested pool."},
+{id:49,section:"Performance Marketing",type:"mcq",prompt:"An MMP (Mobile Measurement Partner) like AppsFlyer does NOT do which of these?",choices:["Deduplicate installs across multiple ad platforms","Track post-install events (top-up, transaction)","Set bids on Meta automatically","Provide raw event data for BI/BQ analysis"],correct:2,explanation:"MMPs measure; they don't bid. AppsFlyer tells you which channel got the install and tracks subsequent events; Meta/Google bid based on their own data + your conversion signal (which can be the MMP postback). MMPs are agnostic — they sit between ad platforms and your app's reporting."},
+{id:50,section:"Performance Marketing",type:"mcq",prompt:"For a low-volume conversion event (5-10 per day per ad set), what's the BEST optimisation strategy?",choices:["Optimise for that exact event anyway — patience","Optimise for an upstream higher-volume proxy (e.g., Install) and validate downstream weekly","Increase bid 3× to force more events","Consolidate into fewer ad sets to pool signal"],correct:1,explanation:"Low conversion volume = the algo never escapes learning. You either pool ad sets (B's underlying option) or use a proxy event with enough volume for the algo to learn, then check that downstream conversion (the real metric) is healthy. Option D is partly right too — sometimes you can do both. The wrong answer is A: patience without signal doesn't work."},
+{id:51,section:"Performance Marketing",type:"applied",prompt:"You're given this TikTok campaign data for last week:",data:["Spend: $4,200 (USD)","Impressions: 850,000","Clicks: 12,750","Installs (per AppsFlyer): 380","Of those installs: 209 passed KYC (Approved)"],model:"<p><strong>Calculations:</strong></p><ul><li>CTR = 12,750 / 850,000 = <strong>1.5%</strong></li><li>CPI = $4,200 / 380 = <strong>$11.05</strong></li><li>CPApproved = $4,200 / 209 = <strong>$20.10</strong></li></ul><p><strong>Which metric matters most:</strong> CPApproved. CPI counts users who installed but might never use the card — those installs earn YouTrip nothing. CPApproved only counts users who passed KYC and can actually transact, aligning marketing spend with usable users.</p><p><strong>Implicit funnel insight:</strong> 209 / 380 = 55% approval rate. If this drops over time without CPI falling, that's a quality leak — you're attracting installers who can't convert.</p>",applied_prompt:"Calculate CTR, CPI, and CPApproved. Which metric matters most for YouTrip and why?"},
+{id:52,section:"Performance Marketing",type:"applied",prompt:"A teammate sends this Slack message:",data:["\"Our Apple Search Ads CPI is $4 and Meta CPI is $11. ASA is 2.75x more efficient. We should move 50% of Meta budget to ASA next month.\""],applied_prompt:"Write the 3 questions you'd ask before agreeing or disagreeing.",model:"<ol><li><strong>What's CPApproved (not CPI) on each?</strong> ASA installs might come from non-card-eligible users (students, tourists, etc.) — cheap installs that don't KYC. CPI hides this.</li><li><strong>What's ASA's current spend and search volume cap?</strong> If you're already buying most branded-keyword traffic, doubling spend won't double installs — it pushes you onto generic keywords where CPI rises 3-5×. Average ≠ marginal.</li><li><strong>If you cut Meta 50%, what happens to brand awareness 2-3 months out?</strong> ASA is a bottom-funnel harvester — it captures demand someone else (Meta, PR, word-of-mouth) created. Cutting Meta might shrink the very ASA funnel you're trying to scale.</li></ol>"},
+{id:53,section:"Performance Marketing",type:"applied",prompt:"YouTrip launches \"Premium\" — $5/month, 3× rewards. CMO wants paid ads to push it.",applied_prompt:"List 2 arguments FOR using paid acquisition, 2 AGAINST, and pick a side.",model:"<p><strong>FOR:</strong></p><ul><li>Premium users have higher LTV → higher allowable CAC, more channels become viable</li><li>Subscription revenue is more predictable than interchange (decouples from travel/FX volatility)</li></ul><p><strong>AGAINST:</strong></p><ul><li>A free user who spends $300/mo overseas already earns YouTrip ~$4.50/mo in FX+interchange — economically similar to a $5 sub but with massively higher conversion (free is always easier to sell than paid)</li><li>Paid acquisition for a paid product = double conversion hurdle (install AND subscribe). CPA could be 3-5× normal, killing economics</li></ul><p><strong>My pick:</strong> CRM to existing high-spend free users first — they're already validated, the cost is near-zero, and they're the most likely to convert. Use paid acquisition only after CRM proves the offer converts. Paid is for cold top-of-funnel, not for selling subscriptions to people you haven't activated.</p>"},
+{id:54,section:"Performance Marketing",type:"applied",prompt:"Why might \"Cost per Approved\" be a better north-star metric than \"Cost per Install\" — but a WORSE north-star than \"Cost per First Card Transaction\" — for YouTrip? Cover the trade-offs.",model:"<p>CPI ignores quality — you can buy cheap installs that never KYC and contribute $0. CPApproved fixes the install-side leak by only counting users who pass KYC and can actually use the card. But approved-and-dormant users still earn $0 — they're a refined cost, not revenue. Cost per First Transaction (CPFT) ties spend to the first revenue-generating event (interchange + FX), aligning marketing directly with business value.</p><p><strong>The trade-off no one talks about:</strong> CPFT has a long feedback loop. Approval happens within days; first transaction might happen 2-6 weeks after install (people sign up <em>before</em> a trip). Optimising daily campaigns on CPFT is impossible — the signal is too delayed for the platform algorithms (Meta/Google) to learn from. Real-world setup: use CPApproved for daily campaign optimisation (fast signal), and CPFT/CPA-spender as the monthly budget allocation north star (slow but accurate). The two metrics serve different decision speeds.</p>"},
+{id:55,section:"Performance Marketing",type:"applied",prompt:"Diagnose this Meta campaign. Recommend 1 immediate action and 1 longer-term action.",data:["Week 1: CTR 1.6%, Freq 1.3, CPM $8, CPI $9","Week 2: CTR 1.5%, Freq 1.8, CPM $8, CPI $10","Week 3: CTR 1.1%, Freq 3.1, CPM $8, CPI $14","Week 4: CTR 0.8%, Freq 4.4, CPM $8, CPI $19"],applied_prompt:"What's happening, immediate fix, longer-term fix?",model:"<p><strong>Diagnosis: Creative fatigue.</strong> CTR is steadily falling (1.6% → 0.8%) while frequency rises (1.3 → 4.4) — classic fatigue signature. CPM is stable, so it's not auction pressure. CPI rises because clicks-per-impression drop.</p><p><strong>Immediate action:</strong> Ship 3-5 new creatives within 48 hours. Even if quality is mixed, fresh assets will halt frequency growth and reset CTR. Keep the best-performing old creative running at lower budget to compare.</p><p><strong>Longer-term action:</strong> Build a creative refresh cadence — new hooks every 2-3 weeks based on what's working. Avoid the \"hero creative\" trap where one ad does 80% of spend; diversify so no single creative is more than ~40% of spend.</p>"},
+{id:56,section:"Performance Marketing",type:"short",prompt:"What is \"audience overlap\" and why does it raise costs when running multiple campaigns?",model:"<p>Audience overlap = the same users are reachable in two or more of your active campaigns. When this happens, your campaigns bid against each other in Meta's auction — you're essentially competing with yourself, inflating CPM internally.</p><p>Example: Campaign A targets \"interest: travel\" and Campaign B targets \"lookalike of customers.\" Many people fit both. When that user is up for auction, BOTH your campaigns submit bids, raising the price. You'd pay less if only one campaign reached her.</p><p>Fix: use Meta's audience overlap report, dedupe with exclusions (\"exclude Campaign A audience from Campaign B\"), or consolidate into one CBO campaign so Meta allocates across audiences without internal bidding.</p>"},
+{id:57,section:"Performance Marketing",type:"short",prompt:"Explain in 2-3 sentences why running a brand-awareness campaign and a conversion campaign in the same week, targeting overlapping audiences, can MUTUALLY benefit each other (positive interaction effect).",model:"<p>Brand awareness creates familiarity — users who've seen the brand 3-4 times are more likely to click conversion ads when they finally see one (warmer audience). Conversion ads, in turn, give your brand campaigns a credible call-to-action by tying impressions to outcomes.</p><p>The math: a user exposed to 4 brand impressions + 1 conversion ad may convert at 2× the rate of someone seeing only the conversion ad cold. This is why YouTrip runs both — branding pre-warms users for performance to harvest. Cutting brand to fund performance often shrinks the very pool performance harvests from (visible 2-3 months later).</p>"},
+{id:58,section:"Performance Marketing",type:"short",prompt:"For a YouTrip Google UAC campaign, the ad assets you provide (headlines, images, videos) are mixed-and-matched by Google. Why is asset DIVERSITY (different angles, hooks, formats) more valuable than asset polish (one beautifully-produced ad)?",model:"<p>UAC's algorithm tests asset combinations across audiences and placements. With 1 polished asset, the algo can serve it to 1 type of user. With 10 varied assets — different hooks (price, convenience, travel scenarios), formats (video, static, carousel), audiences in mind — the algo can match each viewer with whichever asset resonates most. The result is higher overall CTR across the audience, not just for one segment.</p><p>Pragmatic rule: 8-12 varied assets > 2 polished hero assets. Quantity unlocks the algo. Don't wait for the hero asset before going live (\"fast fill + slow build\" — ship rough versions Week 1, refine Week 2-4).</p>"},
+{id:59,section:"Performance Marketing",type:"short",prompt:"What's the difference between a \"hook\" and an \"angle\" in creative? Give one example of each for YouTrip.",model:"<p><strong>Hook</strong> = the first 1-3 seconds of an ad that stops the scroll. It's a visual/audio attention grabber. Example: a video opens with someone tapping a YouTrip card at a Tokyo convenience store — visual surprise (\"why is this in Japan?\").</p><p><strong>Angle</strong> = the underlying claim or value proposition the ad is selling. It's the message, not the delivery. Example: \"YouTrip saves you 4-5% on FX vs your bank.\"</p><p>You can keep the same angle (\"save on FX\") and test 10 different hooks (Tokyo scene, Bali pool, airport queue, etc.). Hooks fatigue fast — refresh weekly. Angles last longer — refresh quarterly.</p>"},
+{id:60,section:"Performance Marketing",type:"short",prompt:"What's an attribution \"window\" and how does choosing a longer vs shorter window affect which channel looks like the winner?",model:"<p>The attribution window is how long after an ad click (or view) the platform/MMP gives credit for a subsequent install or conversion. Common settings: 1-day click, 7-day click, 30-day click, 1-day view.</p><p><strong>Shorter window (e.g., 1-day click):</strong> Conservative. Only credits ads that drove immediate action. Bottom-funnel channels (Search, Retargeting) look best because users click and convert quickly.</p><p><strong>Longer window (e.g., 7-day click + 1-day view):</strong> Generous. Credits ads even if user took a week to convert. Top-funnel channels (Meta video, TikTok) look better because they plant the seed but conversion happens later.</p><p>Pick the window that matches user behaviour — YouTrip's standard is 7-day click + 1-day view because travel-card decisions often span days (people sign up before a trip, not during scrolling).</p>"},
+
+// =================== YOUTRIP + FINTECH (25 questions) ===================
+{id:61,section:"YouTrip + Fintech",type:"mcq",prompt:"YouTrip primarily makes money from:",choices:["Monthly subscription fees from users","FX margin + interchange fees on card spend","Selling user data to advertisers","Charging merchants a flat fee"],correct:1,explanation:"YouTrip is free to sign up. Revenue = (1) the FX spread when you spend in foreign currency, and (2) interchange — a small % of every card transaction paid by the merchant's bank. No card spend = no revenue."},
+{id:62,section:"YouTrip + Fintech",type:"mcq",prompt:"Interchange is paid by:",choices:["The cardholder (you)","The merchant — to the cardholder's bank (which is YouTrip)","The card scheme (Visa/Mastercard) to the merchant","YouTrip to the merchant"],correct:1,explanation:"Interchange is a per-transaction fee the merchant's bank (acquirer) pays to the cardholder's bank (issuer, which is YouTrip's BIN sponsor — they share the cut with YouTrip). Cardholder sees nothing on their statement. Typical range: 0.5-2% depending on card type and region. Premium/credit cards = higher interchange; debit/prepaid like YouTrip = lower."},
+{id:63,section:"YouTrip + Fintech",type:"mcq",prompt:"\"FX margin\" in YouTrip's context refers to:",choices:["The fee YouTrip charges to top up","The difference between the mid-market FX rate and the rate YouTrip applies to your conversion","The currency-conversion fee paid to Mastercard","Interest on idle balance"],correct:1,explanation:"When you spend SGD in Japan, YouTrip converts at a rate slightly worse than mid-market (e.g., mid-market is 110 JPY/SGD, YouTrip gives you 109.2). That ~0.7% gap is YouTrip's FX margin — passed back to YouTrip after the scheme/processor take their slice. Banks typically charge 3-5% FX margin; YouTrip's edge is being closer to mid-market."},
+{id:64,section:"YouTrip + Fintech",type:"mcq",prompt:"KYC stands for \"Know Your Customer.\" YouTrip requires it because:",choices:["It's a marketing best-practice","It's a regulatory requirement (anti-money-laundering / counter-terrorism financing)","It improves card delivery speed","Apple Pay requires it"],correct:1,explanation:"KYC is mandated by MAS (Monetary Authority of Singapore) and equivalent regulators globally. YouTrip must verify identity (ID document, selfie, address) before issuing a card. This is why \"approved\" matters more than \"installed\" — only approved users can actually use a card. Pre-KYC users can't receive push notifications either (per privacy rules)."},
+{id:65,section:"YouTrip + Fintech",type:"mcq",prompt:"A user tops up YouTrip with $500 SGD but never spends it. YouTrip's revenue from her in Year 1:",choices:["$0","~$5 from FX margin on the top-up itself","~$2-3 from float (interest on idle balance, if any)","Hidden top-up fee"],correct:0,explanation:"Top-ups happen at mid-market or near-mid-market — YouTrip doesn't charge an FX margin on the top-up (the SGD goes into the SGD wallet, no FX). Float (interest on idle balance) exists in theory but YouTrip's terms and prepaid e-money rules in Singapore limit how that's monetised. Revenue only happens when the user SPENDS in foreign currency. Pure idle balance ≈ $0 revenue."},
+{id:66,section:"YouTrip + Fintech",type:"mcq",prompt:"The four-party model in card payments involves: Cardholder, Merchant, and which other two?",choices:["Bank + Government","Issuer (cardholder's bank) + Acquirer (merchant's bank)","Visa + Mastercard","Apple Pay + Google Pay"],correct:1,explanation:"Four parties: (1) Cardholder, (2) Merchant, (3) Issuer (YouTrip's BIN sponsor — the cardholder's bank), (4) Acquirer (merchant's bank, like Stripe or Adyen). Card scheme (Visa/Mastercard) sits in the middle as the network. Every tap involves all 4 plus the scheme moving money + data."},
+{id:67,section:"YouTrip + Fintech",type:"mcq",prompt:"YouTrip's effective \"take rate\" (total revenue as % of card spend) is approximately:",choices:["~0.5%","~1.5%","~3.4%","~7-8%"],correct:2,explanation:"Take rate = (interchange share + FX margin share) per dollar of overseas spend. Industry-quoted YouTrip take rate is ~3.4% — combining interchange residuals and FX margin minus scheme/processor fees. By comparison, traditional banks make 3-5% FX margin alone (worse for the user) but YouTrip's bundled value-prop wins on transparency."},
+{id:68,section:"YouTrip + Fintech",type:"mcq",prompt:"\"Authorization\" vs \"settlement\" in card payments:",choices:["Same thing — bank just calls it two names","Authorization = real-time approval check; Settlement = actual money movement 1-3 days later","Authorization is for online; Settlement is for in-store","Settlement is YouTrip-specific terminology"],correct:1,explanation:"Authorization happens at the tap (~2 seconds): merchant asks issuer \"approve this $50?\", issuer checks balance + risk, says yes. Settlement happens 1-3 days later when actual money moves between acquirer and issuer. This is why pending transactions take time to clear — and why refunds can take a week (reversing both auth and settlement)."},
+{id:69,section:"YouTrip + Fintech",type:"mcq",prompt:"Why does YouTrip care more about \"users who spend\" than \"users who sign up\"?",choices:["Sign-ups are just vanity metrics","Sign-up gets nothing; spend generates interchange + FX (the actual revenue)","Users who sign up are usually fraudulent","Sign-ups don't convert at all"],correct:1,explanation:"This is the core economic logic. Sign-up cost is the marketing investment. Revenue only kicks in when the user transacts in foreign currency. A sign-up that never spends = 100% cost, 0% revenue. The CRM team's job is to convert sign-ups into active spenders (Top-Up journeys, KYC journeys, travel reminders) — which is why CRM iTV is a major metric internally."},
+{id:70,section:"YouTrip + Fintech",type:"mcq",prompt:"DCC (Dynamic Currency Conversion) is when a merchant abroad offers to charge you in your home currency (SGD) instead of local. For YouTrip users, DCC is:",choices:["A good deal — saves on FX","A bad deal — the merchant takes a much wider FX margin, worse than YouTrip's","Free — no difference","Required by law"],correct:1,explanation:"DCC sounds convenient (\"I know the SGD price upfront!\") but the merchant applies a 5-8% FX margin, much worse than YouTrip's ~0.7%. ALWAYS choose local currency on the terminal — let YouTrip do the FX, not the merchant. This is one of the most-shared travel hacks in YouTrip's marketing because it directly demonstrates value."},
+{id:71,section:"YouTrip + Fintech",type:"short",prompt:"Explain in your own words: how does YouTrip make money on a $200 SGD-equivalent purchase made in Japan?",model:"<p>YouTrip earns on two layers:</p><ol><li><strong>FX margin (~0.7%)</strong> — The user spent ¥22,000 in Japan. Mid-market rate might convert that to S$197.20, but YouTrip converts at S$198.60 (the 0.7% spread). YouTrip pockets that S$1.40.</li><li><strong>Interchange (~0.5-1%)</strong> — Mastercard processes the transaction. The merchant's bank pays a per-transaction fee (interchange) to YouTrip's issuing bank, which shares a slice back to YouTrip. On S$200, that's ~S$1-2.</li></ol><p>Combined revenue: ~S$2-3.50 on a S$200 overseas spend, roughly 1-1.7% take rate per transaction. Repeated across millions of transactions = the business.</p>"},
+{id:72,section:"YouTrip + Fintech",type:"short",prompt:"Why are \"pre-KYC users\" (people who signed up but haven't completed identity verification) unable to receive push notifications? Hint: think about privacy/regulation.",model:"<p>Push notifications carry an identifier (device token + sometimes user attributes) and are considered direct marketing communication. Sending push to a user before YouTrip has confirmed who they are (KYC) raises two issues:</p><ul><li><strong>Regulatory:</strong> MAS and similar regulators treat unverified accounts as not fully \"the user\" — direct comms might require consent that isn't legally established yet.</li><li><strong>Privacy/abuse risk:</strong> Pre-KYC accounts could be fake or scraped; sending push could be misused (impersonation, phishing-bait, etc.).</li></ul><p>Workaround: pre-KYC users can be reached via email, SMS, or in-app messages (which require active app use). This is why the CRM team has different journey designs for pre-KYC vs post-KYC users.</p>"},
+{id:73,section:"YouTrip + Fintech",type:"short",prompt:"YouTrip's main competitor in Singapore is YouBiz (their B2B sister product). What's the difference between them in 1-2 sentences?",model:"<p>YouTrip is a B2C consumer product — multi-currency travel card for individuals, monetised via FX margin + interchange on personal spend abroad. YouBiz is YouTrip's B2B sibling — corporate cards + expense management for SMEs and startups, monetised similarly but on business spend (often higher per-transaction value, including domestic SGD spend on FX-denominated invoices). Same parent company, different ICPs and acquisition channels.</p>"},
+{id:74,section:"YouTrip + Fintech",type:"short",prompt:"Why can't YouTrip simply charge a $5/month subscription instead of relying on FX margin + interchange? List 2 reasons.",model:"<ol><li><strong>Sign-up conversion would crater.</strong> Free is always easier to sell than paid. Going from $0 to $5/month conversion friction would drop installs by 3-5×. The acquisition channels (Meta/Google/TikTok) work because the offer is \"free travel card\" — that's the hook. Subscription kills the hook.</li><li><strong>Mismatch with user behaviour.</strong> Most YouTrip users are <em>occasional</em> spenders (vacation trips, not weekly use). A subscription extracts money from light users who'd happily pay $0.50 in FX on a $100 transaction (occasional value) but not $5/month for 11 months they don't travel. The current model self-aligns price with usage — heavy spenders pay more in absolute terms, light spenders pay less.</li></ol><p>Premium tiers (subscription on top of free) are a way to capture both economic surplus from power users — but cannibalising the free model would be commercial suicide.</p>"},
+{id:75,section:"YouTrip + Fintech",type:"short",prompt:"What's the difference between \"FX rate\" and \"FX margin\"? Give an example.",model:"<p><strong>FX rate</strong> = the exchange rate itself, e.g., 1 SGD = 110 JPY. Constantly moving with markets.</p><p><strong>FX margin</strong> = the spread between the mid-market rate and the rate applied to the user. E.g., mid-market is 110 JPY/SGD, but YouTrip gives the user 109.2 JPY/SGD. That 0.7% gap is YouTrip's FX margin — the rate is the headline number, the margin is the hidden fee built into it.</p><p>Banks often advertise \"competitive FX rates\" but apply 3-5% margin in the spread. YouTrip's transparency play: ~0.7% margin, much closer to mid-market.</p>"},
+{id:76,section:"YouTrip + Fintech",type:"mcq",prompt:"YouTrip is technically not a bank. It operates via a \"BIN sponsor\" — meaning:",choices:["A bank lends YouTrip its issuing licence so YouTrip can issue cards under that bank's BIN range","Visa directly grants YouTrip a banking licence","YouTrip is exempt from financial regulation","BIN sponsorship is a marketing term"],correct:0,explanation:"BIN (Bank Identification Number) is the first 6 digits of a card number — identifies the issuing bank. YouTrip doesn't have its own banking licence, so it partners with a licensed bank (Mastercard's network + a partner bank in Singapore) to issue cards under their BIN. This is how most fintechs operate — focus on product/UX, outsource the regulated bits. Stripe, Wise, Revolut all use similar arrangements."},
+{id:77,section:"YouTrip + Fintech",type:"mcq",prompt:"Most YouTrip users' card spend is concentrated in:",choices:["Singapore (domestic SGD)","SEA travel destinations (Malaysia, Thailand, Japan, Korea, Indonesia)","Europe","Online subscription services (Netflix, Spotify)"],correct:1,explanation:"YouTrip's value prop is foreign-currency spend, so usage skews to travel destinations. Malaysia is consistently the #1 destination (drivers cross JB causeway routinely), followed by Japan, Thailand, Korea, Indonesia. This is why creative often features specific destinations (Tokyo, Bali, KL) — they match where users actually use the product, making the ad more relatable."},
+{id:78,section:"YouTrip + Fintech",type:"mcq",prompt:"Compared to traditional banks' multi-currency accounts, YouTrip's edge is:",choices:["Higher interest on idle balance","Lower FX margin (~0.7% vs 3-5%) + zero monthly fees","Access to physical branches","Cash withdrawal limits"],correct:1,explanation:"Traditional banks earn 3-5% on FX (sometimes more) and often charge monthly fees + minimum balance. YouTrip undercuts on FX margin (~0.7%) and has no monthly fees — that's the consumer wedge. The trade-off: YouTrip doesn't pay interest, doesn't have physical branches, and isn't a deposit-insured bank in the traditional sense."},
+{id:79,section:"YouTrip + Fintech",type:"mcq",prompt:"YouTrip's primary acquisition channels for the SG market are (in approximate order of spend):",choices:["TV ads → Print → Outdoor","Meta + Google UAC + ASA + TikTok + Influencers/KOL","SEO → Affiliates → Direct mail","B2B partnerships only"],correct:1,explanation:"YouTrip SG is paid-acquisition-heavy across digital. Approximate order: Meta (biggest) → Google UAC → TikTok → ASA → KOL/Influencer partnerships → smaller tactical channels. The mix reflects: Meta drives top-funnel demand and conversion, Google + ASA harvest demand, TikTok plays creative/awareness, KOLs build trust."},
+{id:80,section:"YouTrip + Fintech",type:"mcq",prompt:"\"M1 ROAS\" of 4% for a user-acquisition cohort means:",choices:["Catastrophic — we lost 96% of spend","Expected for an LTV business — revenue comes over months/years, not M1","ROAS of 4× spend in Month 1","Calculation error"],correct:1,explanation:"For LTV businesses (subscription, banking, fintech), Month 1 revenue is a tiny fraction of total user value. A user might generate 5-15× their CAC over 12-24 months. M1 ROAS of 4% just means \"this cohort hasn't paid back yet.\" The right metric is LTV/CAC ratio over the full payback horizon (often M12 or M24). E-commerce would treat M1 ROAS 4% as a disaster; fintech treats it as normal."},
+{id:81,section:"YouTrip + Fintech",type:"short",prompt:"YouTrip's revenue formula (simplified) is roughly: <em>Revenue = Active Users × Avg Spend per Active User × Take Rate</em>. If marketing doubles \"installs\" but \"% of installs that become active spenders\" halves, what happens to revenue?",model:"<p>Revenue stays roughly flat (or even drops, depending on quality).</p><p>Let's say baseline: 100 installs × 40% become active spenders × $200/user × 3.4% take = $27.20 revenue.</p><p>Doubled installs, halved activation: 200 installs × 20% become active × $200/user × 3.4% take = $27.20 revenue. Same revenue, 2× cost.</p><p>This is the key insight: installs without quality are pure cost. Marketing's job isn't \"maximise installs\" — it's \"maximise active spenders per dollar spent.\" That's why CPApproved and Cost per First Transaction matter more than CPI, and why CRM's job (converting installs → spenders) is the silent multiplier on marketing ROI.</p>"},
+{id:82,section:"YouTrip + Fintech",type:"short",prompt:"Why might YouTrip's marketing team care DEEPLY about the rate at which approved users complete their first card transaction within 30 days?",model:"<p>First-transaction-within-30-days is the strongest early signal that a user is going to monetise. Users who don't transact in 30 days are 5-10× less likely to ever transact (sleep then forget). This metric is essentially the \"activation rate\" of YouTrip.</p><p>For marketing specifically:</p><ul><li>It separates good channels from bad — a channel with cheap CPApproved but poor 30-day-activation is feeding the funnel with dead-weight users.</li><li>It informs CRM design — pre-trigger journeys (welcome, top-up reminders, first-transaction nudges) target this window.</li><li>It sets a defensible CAC ceiling — if you know 30-day activation rate × eventual LTV, you can confidently bid up to that CAC.</li></ul>"},
+{id:83,section:"YouTrip + Fintech",type:"short",prompt:"In your own words: why is YouTrip's growth tied to international travel volume, and what's the implication for ad spend timing?",model:"<p>YouTrip earns from foreign-currency card spend. No travel = no FX spend = no revenue. So YouTrip's revenue tracks travel volume — seasonal peaks (June-Aug school holidays, Nov-Dec year-end, CNY) drive more spend per user, troughs (Feb, post-CNY) drive less.</p><p><strong>Implication for ad spend:</strong> push acquisition spend BEFORE travel peaks, not during. Users who sign up 3-6 weeks before a trip have time to receive the card and become activated. Signing up during the trip is too late — they'll use whatever they brought. So Q4 / Pre-summer-holiday months get heavier paid acquisition; off-peak months get heavier CRM/retention focus on existing users.</p>"},
+{id:84,section:"YouTrip + Fintech",type:"applied",prompt:"YouTrip Singapore is considering adding domestic SGD card spend (currently the card is mainly used for foreign-currency spend) as a feature. From a fintech business-model perspective, why might this be a strategic trade-off?",applied_prompt:"List 2 arguments FOR and 2 AGAINST. Pick a side and justify.",model:"<p><strong>FOR:</strong></p><ul><li><strong>Habituation.</strong> If users use YouTrip for daily SGD spend (groceries, coffee), the card stays top-of-wallet — so when they travel, it's already the default. Today, many users only remember YouTrip when they're packing for a trip.</li><li><strong>Interchange volume.</strong> Even at lower domestic interchange (~0.5%), the volume of daily SGD spend could dwarf occasional foreign spend. Revenue is volume × take rate; volume could 10×.</li></ul><p><strong>AGAINST:</strong></p><ul><li><strong>FX margin is zero on SGD-in-SGD.</strong> The 0.7% FX margin disappears. YouTrip would be relying purely on interchange, which is regulated lower for prepaid cards (~0.5-0.8%) — half the current take rate per dollar.</li><li><strong>Cannibalisation risk.</strong> Users might prefer YouTrip for daily SGD AND for travel, but if YouTrip becomes \"just another card,\" the differentiation (\"the travel card\") gets diluted. Brand positioning matters for top-of-funnel marketing.</li></ul><p><strong>My pick:</strong> Yes, but position it as a habituation play, not a domestic-spend play. Encourage SGD use during \"travel prep\" months (3 weeks before trip) — keep YouTrip top-of-wallet but don't market as a daily card. Preserve the travel-card brand while capturing some local volume.</p>"},
+{id:85,section:"YouTrip + Fintech",type:"applied",prompt:"A user installs YouTrip but doesn't top up after 14 days. What CRM/Marketing actions COULD be taken? (List 3, ranked by likelihood of impact.)",model:"<ol><li><strong>Push notification with concrete top-up nudge + benefit reminder.</strong> \"S$0 monthly fees, save up to 4% on FX. Top up in 60 seconds.\" Sent at peak-engagement time (evening). Most impactful because it re-anchors the value prop they may have forgotten between install + now.</li><li><strong>Email with a destination-specific scenario.</strong> If you know they researched a trip to Japan (via signup form / location), \"Top up before your Japan trip — here's how much you'd save vs your bank's card.\" Personalisation lifts response 2-3× over generic.</li><li><strong>In-app banner or popup on next app-open.</strong> Lower deliverability than push (requires app open) but higher visibility when triggered. Good as a backup channel if push isn't enabled.</li></ol><p><strong>Watch-out:</strong> Pre-KYC users can't receive push, so segment the audience before journey design. And measure with a control group — sending nudges to non-toppers might not lift activation if those users were never going to convert anyway (incrementality matters).</p>"},
+
+// =================== CRM INTRO (15 questions) ===================
+{id:86,section:"CRM Intro",type:"mcq",prompt:"\"Lifecycle marketing\" (also called \"CRM\" in YouTrip context) refers to:",choices:["Customer service tickets","Marketing to existing users at different stages of their journey (welcome, activation, retention, win-back)","Acquisition campaigns only","Compliance communications"],correct:1,explanation:"CRM in marketing context = the marketing-to-existing-users discipline. Distinct from acquisition (paid ads to non-users) and from compliance comms (mandatory legal messages). Stages: pre-KYC, post-KYC pre-first-top-up, active spender, churning, churned. Each stage has different journeys with different objectives."},
+{id:87,section:"CRM Intro",type:"mcq",prompt:"A control group in a CRM test is:",choices:["Users who unsubscribed","A randomly held-out group that does NOT receive the test campaign","Users who didn't open emails","The least valuable user segment"],correct:1,explanation:"The control is a random sub-sample of the eligible audience that is deliberately NOT sent the campaign. Comparing test (sent) vs control (not sent) outcomes isolates the incremental impact of the campaign. Without a control, you can't tell if conversions happened BECAUSE of the campaign or anyway."},
+{id:88,section:"CRM Intro",type:"mcq",prompt:"The iTV (incremental Transaction Volume) formula is:",choices:["(Test TV / Control TV) × 100","(Test TV per user − Control TV per user) × Test Segment Size","Test TV − Control TV","Average TV across test group"],correct:1,explanation:"iTV = per-user lift × test group size. Step-by-step: compute average TV per test user, average TV per control user, subtract → that's incremental TV per user. Multiply by size of test group to get total $ value the campaign generated. Always pair with p-value to confirm the lift is statistically real, not noise."},
+{id:89,section:"CRM Intro",type:"mcq",prompt:"Push vs email for a YouTrip user — which channel is BEST for time-sensitive, FX-rate-related messages?",choices:["Email — more space for context","Push — immediate, on-device, highest open rate within minutes","SMS — most reliable delivery","In-app banner — lowest cost"],correct:1,explanation:"Push is for \"act now\" moments: rate alerts (\"SGD strengthened against JPY — top up now\"), travel-day reminders, fraud alerts. Email is for educational, long-form, less-time-sensitive (welcome series, monthly statements, feature announcements). SMS is expensive and usually reserved for critical comms. In-app banners require the user to open the app."},
+{id:90,section:"CRM Intro",type:"mcq",prompt:"Pre-KYC users (signed up but identity not verified) cannot receive:",choices:["Email","Push notifications","SMS","All of the above"],correct:1,explanation:"Push is restricted for pre-KYC users (regulatory + privacy reasons — see earlier YouTrip section). Email and SMS are usually allowed because they go to channels the user actively provided. Always check journey audience eligibility before launching — sending pre-KYC users push will silently fail, inflating your \"sent\" count without delivery."},
+{id:91,section:"CRM Intro",type:"mcq",prompt:"A CRM journey shows: Test group has 5% conversion, Control group has 4% conversion. Without other info, you should:",choices:["Roll out immediately — 25% relative lift!","Ask: what's the sample size and p-value?","Cut the journey — only 1pp lift","Run for another month"],correct:1,explanation:"5% vs 4% sounds like a 25% relative lift, but with 100 users each group, that's 5 vs 4 conversions — well within random variance. With 10,000 users each, 5% vs 4% is highly significant. NEVER act on lift without checking sample size + p-value (usually < 0.05 for significance)."},
+{id:92,section:"CRM Intro",type:"short",prompt:"Explain iTV (incremental Transaction Volume) in your own words as if you were teaching a new analyst. Include why we use it instead of just \"total TV from the test group.\"",model:"<p>iTV measures the dollar value a CRM campaign generated that would NOT have happened without it. The formula is per-user lift (test TV/user minus control TV/user) multiplied by test group size.</p><p><strong>Why not just total TV from the test group?</strong> Because most of that TV would have happened anyway — users transact regardless of being nudged. If the test group spent $1M total but the control group (same size, no campaign) would have spent $900K, the campaign only generated $100K of <em>incremental</em> value, not $1M. Reporting total TV would massively over-credit the campaign.</p><p>iTV is honest about causation. It's also harder to manipulate — you can't game it by targeting already-likely-to-spend users (because the control group of those same users would also have spent).</p>"},
+{id:93,section:"CRM Intro",type:"short",prompt:"Why is a p-value (statistical significance) important when reporting iTV uplift?",model:"<p>iTV is a difference between two samples (test minus control). Sample-based differences carry noise — random variation could make a 0%-true-lift campaign look like a 5% lift, or vice versa. The p-value tells you how likely your observed lift is just noise.</p><p><strong>Convention:</strong> p < 0.05 means there's less than 5% chance the lift is random — significant. p > 0.05 means could be noise; don't roll out yet.</p><p>If you report iTV without p-value, you're risking acting on noise — which means scaling a journey that doesn't actually work. YouTrip's rule: always include p-value (or confidence interval) with iTV. Boss has flagged this multiple times.</p>"},
+{id:94,section:"CRM Intro",type:"short",prompt:"What's the difference between a \"segment\" and a \"cohort\"? Give one example of each at YouTrip.",model:"<p><strong>Segment</strong> = a group of users defined by a current attribute, regardless of when they joined. Example: \"Singapore users who have topped up but haven't transacted in 30 days.\" Membership can change daily as users meet/leave the criteria.</p><p><strong>Cohort</strong> = a group of users defined by a shared event in time, usually their signup or activation date. Example: \"Users who signed up in April 2026.\" Membership is fixed — once you're in a cohort, you stay there forever.</p><p>Segments are useful for current-state targeting (\"who should I send a nudge to TODAY?\"). Cohorts are useful for tracking time-series performance (\"how did Apr 2026 signups behave vs Mar 2026?\"). Most CRM journeys target segments; most retention/LTV analysis uses cohorts.</p>"},
+{id:95,section:"CRM Intro",type:"short",prompt:"Why does YouTrip use a \"control group\" (held-out from the campaign) instead of comparing campaign performance to last month's average?",model:"<p>Comparing to last month confounds the campaign's effect with everything else that changed — seasonality, FX rates, product features, news cycles, competitor activity. If conversion went up 5% in the test period, you can't tell if it was the campaign or just that exchange rates moved favourably.</p><p>A control group, randomly selected from the SAME audience during the SAME time period, eliminates all that. The only systematic difference between test and control is the campaign itself. So any difference in outcomes can be attributed (with statistical confidence) to the campaign — not external factors.</p><p>This is why proper A/B-style tests are the gold standard for measuring CRM impact, and why \"vs last month\" comparisons are misleading.</p>"},
+{id:96,section:"CRM Intro",type:"short",prompt:"List 3 distinct reasons a CRM journey might show no statistically significant uplift (iTV ≈ 0). For each, what's the right diagnostic step?",model:"<ol><li><strong>Wrong audience.</strong> The journey targeted users who weren't going to convert regardless (e.g., long-dormant accounts) — campaign hit, but no behaviour change possible. Diagnostic: check eligibility criteria, segment for users with at least some recent engagement signal.</li><li><strong>Wrong channel/message.</strong> The trigger and copy don't resonate. Diagnostic: A/B test variant messages, check open rate vs click rate vs conversion — drop-off pattern shows where to fix.</li><li><strong>Already-active behaviour.</strong> Users were going to convert anyway (high-intent baseline). The journey isn't \"adding\" — it's just preceding a conversion that would've happened. Diagnostic: incrementality test with a true holdout for at least 4 weeks; check if control group also converts at similar rate.</li></ol><p>Common 4th: insufficient sample size — looks like 0% lift but variance is too wide to detect a real 3-5% effect. Diagnostic: power analysis upfront, scale test before declaring failure.</p>"},
+{id:97,section:"CRM Intro",type:"short",prompt:"A YouTrip Top-Up reminder journey runs for 4 weeks with: 10,000 test users, 1,000 control users. Test top-up rate = 12%, Control = 11%. The PM wants to scale it. What questions/concerns would you raise?",model:"<ol><li><strong>Is 1pp difference significant?</strong> With 10k test users (1,200 top-ups) and 1k control (110 top-ups), the difference is small. Compute the p-value before deciding — could easily be noise. Need at least p < 0.05.</li><li><strong>What's the iTV in actual dollars?</strong> 1pp lift × 10k users × avg top-up size × take rate. If the journey generates $X in incremental TV but costs $Y to run (sends, opportunity cost of sending to these users vs others), is X > Y by a comfortable margin?</li><li><strong>Control group size feels lopsided.</strong> 10:1 test:control is unusual — typically 50:50 or 80:20. The small control increases variance. Was this a power-analysis choice or arbitrary?</li><li><strong>What happens after 30 days?</strong> Does the 1pp lift persist, or do test users just \"front-load\" top-ups that would've happened anyway? Long-tail measurement matters for fintech.</li></ol>"},
+{id:98,section:"CRM Intro",type:"applied",prompt:"Design a basic CRM test for a hypothetical journey: \"Push notification to users who installed YouTrip 7 days ago but haven't completed KYC, reminding them to finish setup.\"",applied_prompt:"Cover: trigger condition, audience eligibility, control group, success metric, and 1 risk.",model:"<p><strong>Trigger condition:</strong> User has been installed for exactly 7 days AND has not completed KYC. Fires once per user. (Don't re-trigger if they install + uninstall + reinstall.)</p><p><strong>Audience eligibility:</strong> Singapore market (assuming we're testing SG first); has a valid push token (i.e., opted into notifications); has not unsubscribed from marketing. Pre-KYC users — but verify they can still receive push notifications for this specific use case (might be a transactional/onboarding exemption).</p><p><strong>Control group:</strong> 20% of eligible users held out (random), receive nothing. Run for 4 weeks to capture KYC completion patterns.</p><p><strong>Success metric:</strong> KYC completion rate within 14 days of trigger fire (test vs control). Secondary: subsequent top-up rate within 30 days (downstream impact). Report iTV-style: per-user lift × test size, with p-value.</p><p><strong>Risk:</strong> Pre-KYC users may not be reachable via push (regulatory constraint). If 80% of the audience can't actually receive the push, the journey will report low impact not because the message is bad, but because deliverability is broken. Verify deliverability rate before measuring effect — and consider email/SMS as channel fallback if push isn't viable for this segment.</p>"},
+{id:99,section:"CRM Intro",type:"applied",prompt:"A journey shows 2% iTV uplift (p < 0.01, statistically significant). The PM wants to scale to 100% of the audience (currently 50% test, 50% control). What are 2 valid arguments FOR full rollout and 2 AGAINST keeping a holdout?",applied_prompt:"List 2 FOR, 2 AGAINST, and recommend a path.",model:"<p><strong>FOR full rollout:</strong></p><ul><li><strong>You've proven the lift.</strong> 2% iTV at p<0.01 with adequate sample = real effect. Continuing to hold out 50% means leaving incremental TV on the table — every week of holdout costs measurable revenue.</li><li><strong>Audience may be time-sensitive.</strong> If the journey targets a moment-in-time (e.g., \"7 days post-install\"), users in the control group eventually age out and miss the window forever. Better to convert them than preserve a permanent holdout.</li></ul><p><strong>AGAINST full rollout (keep some holdout):</strong></p><ul><li><strong>Effect may decay over time.</strong> What works today might not work in 6 months as user behaviour shifts. Keeping a small permanent control (5-10%) lets you measure ongoing lift; full rollout means flying blind.</li><li><strong>Cross-journey interactions.</strong> If you scale this journey to 100%, and later launch another journey targeting overlapping users, you can't isolate the two effects. A small permanent holdout enables ongoing measurement across the journey portfolio.</li></ul><p><strong>Recommendation:</strong> Scale to ~90-95% test, keep 5-10% permanent control. You capture most of the incremental TV while preserving measurement integrity. This is YouTrip's default \"learning forever\" CRM design — pure 100% rollout is rarely justified for journeys that will run continuously.</p>"},
+{id:100,section:"CRM Intro",type:"applied",prompt:"You're the new CRM analyst at YouTrip and the team's lead asks: \"What's one thing you'd want to measure or learn in your first month that we probably aren't measuring well today?\"",applied_prompt:"Pick ONE measurable thing, justify why it matters, and outline how you'd measure it.",model:"<p><strong>Pick:</strong> The TRUE incrementality of branded-push messages on users who would have opened the app anyway.</p><p><strong>Why it matters:</strong> Most CRM journeys at YouTrip likely report \"users who received push converted at X%\" — but high-intent users (the ones already planning to top up) are also the most likely to open the push. If we never compared to a true holdout, we'd over-credit push for behaviour that was already going to happen. The risk: we double-down on push frequency, fatigue users, and increase unsubscribes — all while reporting \"high uplift.\"</p><p><strong>How I'd measure:</strong></p><ol><li>Pick ONE journey with clear conversion event (e.g., \"3-day inactive → push reminder → app reopen + top-up\").</li><li>Randomly hold out 20% of the audience as control (no push) for 4 weeks.</li><li>Compare top-up rate within 7 days post-trigger between test and control. If lift is significant (p < 0.05), report iTV honestly. If not, surface to PM that the journey isn't earning its CRM-cost vs alternative use of that send.</li><li>Repeat across 3 journeys before generalising. Look for patterns — which journey types have real incremental impact, which are mostly harvesting?</li></ol><p><strong>Why this is valuable for first month:</strong> It's a small, contained test with a clear methodology. It demonstrates statistical rigour, surfaces a meaningful question (are we over-counting CRM impact?), and gives the team a measurement standard to apply across more journeys. Better than \"build dashboards\" or \"run a new journey\" — measurement quality compounds.</p>"}
+];
+
+const STORAGE_KEY = 'quiz-w1d1';
+const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function letter(i) { return String.fromCharCode(65 + i); }
+
+function renderQuiz() {
+  const root = document.getElementById('quiz-root');
+  let html = '';
+  let currentSection = '';
+  const sectionMeta = {
+    "Performance Marketing": { count: 60, intro: "60 questions on metrics, diagnostics, channels, and applied scenarios. This is your focus area." },
+    "YouTrip + Fintech": { count: 25, intro: "25 questions on how YouTrip earns money, interchange, FX margin, KYC, and the broader fintech model." },
+    "CRM Intro": { count: 15, intro: "15 questions on lifecycle marketing, control groups, iTV, and journey measurement." }
+  };
+  QUESTIONS.forEach((q, idx) => {
+    if (q.section !== currentSection) {
+      currentSection = q.section;
+      const meta = sectionMeta[currentSection] || { count: 0, intro: '' };
+      html += `<div class="section-header"><h2>${currentSection}</h2><span class="meta">${meta.count} questions</span></div>`;
+      html += `<p class="section-intro">${meta.intro}</p>`;
+    }
+    html += renderQuestion(q);
+  });
+  root.innerHTML = html;
+  attachHandlers();
+  updateScore();
+}
+
+function renderQuestion(q) {
+  const saved = state[q.id] || {};
+  const isAnswered = saved.answered;
+  const correctness = saved.correctness || '';
+  const typeLabel = q.type === 'mcq' ? 'MCQ' : (q.type === 'short' ? 'Short Answer' : 'Applied');
+  let body = '';
+  if (q.type === 'mcq') {
+    body = `<div class="choices">`;
+    q.choices.forEach((c, i) => {
+      let cls = 'choice';
+      if (isAnswered) {
+        cls += ' answered';
+        if (i === q.correct) cls += ' correct-answer';
+        else if (saved.picked === i) cls += ' wrong-pick';
+      } else if (saved.picked === i) {
+        cls += ' selected';
+      }
+      body += `<button class="${cls}" data-q="${q.id}" data-choice="${i}" ${isAnswered?'disabled':''}><span class="letter">${letter(i)}.</span> ${c}</button>`;
+    });
+    body += `</div>`;
+    if (isAnswered) {
+      body += `<div class="explanation show"><strong>Explanation:</strong> ${q.explanation}</div>`;
+    }
+  } else {
+    const userText = saved.userText || '';
+    const inputCls = q.type === 'applied' ? 'open-input applied-input' : 'open-input';
+    const promptText = q.applied_prompt || (q.type === 'applied' ? 'Write your answer below.' : '');
+    body = `<textarea class="${inputCls}" data-q="${q.id}" placeholder="Type your answer here..." ${isAnswered?'disabled':''}>${userText}</textarea>`;
+    if (promptText && q.applied_prompt) {
+      body = `<p class="prompt" style="font-style:italic;color:var(--ink-2);margin-top:8px;">${q.applied_prompt}</p>` + body;
+    }
+    body += `<button class="reveal-btn" data-reveal="${q.id}" ${isAnswered?'disabled':''}>Reveal model answer</button>`;
+    body += `<div class="model${saved.revealed?' show':''}" id="model-${q.id}"><span class="label">Model Answer</span>${q.model}</div>`;
+    body += `<div class="self-rate${saved.revealed?' show':''}" id="rate-${q.id}">`;
+    body += `<button class="rate-btn got-it${correctness==='correct'?' active':''}" data-rate="${q.id}" data-r="correct">✓ Got it</button>`;
+    body += `<button class="rate-btn partial${correctness==='partial'?' active':''}" data-rate="${q.id}" data-r="partial">~ Partial</button>`;
+    body += `<button class="rate-btn missed${correctness==='incorrect'?' active':''}" data-rate="${q.id}" data-r="incorrect">✗ Missed it</button>`;
+    body += `</div>`;
+  }
+  const qClass = `q ${isAnswered ? 'answered '+correctness : ''}`;
+  const dataBlock = q.data ? `<div class="data"><ul>${q.data.map(d=>`<li>${d}</li>`).join('')}</ul></div>` : '';
+  const diff = saved.difficulty || '';
+  const why = saved.comment || '';
+  const fbBlock = `<div class="feedback${isAnswered?' show':''}" id="fb-${q.id}">
+    <span class="fb-label">How did this question feel?</span>
+    <div class="diff-row">
+      <button class="diff-btn${diff==='too-easy'?' active':''}" data-diff="${q.id}" data-d="too-easy">Too easy</button>
+      <button class="diff-btn${diff==='just-right'?' active':''}" data-diff="${q.id}" data-d="just-right">Just right</button>
+      <button class="diff-btn${diff==='hard'?' active':''}" data-diff="${q.id}" data-d="hard">Hard</button>
+      <button class="diff-btn${diff==='too-hard'?' active':''}" data-diff="${q.id}" data-d="too-hard">Too hard</button>
+    </div>
+    <label class="why-label">Why? (optional — what made it easy/hard, confusing wording, anything else)</label>
+    <textarea class="why-box" data-comment="${q.id}" placeholder="Optional feedback to help Sandra improve the quiz...">${why}</textarea>
+  </div>`;
+  return `<div class="${qClass}" id="q-${q.id}">
+    <div class="num">Q${q.id} <span class="type ${q.type}">${typeLabel}</span></div>
+    <p class="prompt">${q.prompt}</p>
+    ${dataBlock}
+    ${body}
+    ${fbBlock}
+  </div>`;
+}
+
+function attachHandlers() {
+  document.querySelectorAll('.choice').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = parseInt(e.currentTarget.dataset.q);
+      const pick = parseInt(e.currentTarget.dataset.choice);
+      const q = QUESTIONS.find(x => x.id === id);
+      const isCorrect = pick === q.correct;
+      state[id] = { answered: true, picked: pick, correctness: isCorrect ? 'correct' : 'incorrect' };
+      save();
+      // re-render just this question
+      const wrap = document.getElementById('q-'+id);
+      wrap.outerHTML = renderQuestion(q);
+      attachHandlers();
+      updateScore();
+    });
+  });
+  document.querySelectorAll('.reveal-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = parseInt(e.currentTarget.dataset.reveal);
+      const ta = document.querySelector(`textarea[data-q="${id}"]`);
+      const userText = ta ? ta.value : '';
+      if (!state[id]) state[id] = {};
+      state[id].revealed = true;
+      state[id].userText = userText;
+      save();
+      document.getElementById('model-'+id).classList.add('show');
+      document.getElementById('rate-'+id).classList.add('show');
+      if (ta) ta.disabled = true;
+      e.currentTarget.disabled = true;
+    });
+  });
+  document.querySelectorAll('.rate-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = parseInt(e.currentTarget.dataset.rate);
+      const r = e.currentTarget.dataset.r;
+      const q = QUESTIONS.find(x => x.id === id);
+      state[id].answered = true;
+      state[id].correctness = r;
+      save();
+      const wrap = document.getElementById('q-'+id);
+      wrap.outerHTML = renderQuestion(q);
+      attachHandlers();
+      updateScore();
+    });
+  });
+  document.querySelectorAll('textarea[data-q]').forEach(ta => {
+    ta.addEventListener('input', e => {
+      const id = parseInt(e.currentTarget.dataset.q);
+      if (!state[id]) state[id] = {};
+      state[id].userText = e.currentTarget.value;
+      save();
+    });
+  });
+  document.querySelectorAll('.diff-btn[data-diff]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = parseInt(e.currentTarget.dataset.diff);
+      const d = e.currentTarget.dataset.d;
+      if (!state[id]) state[id] = {};
+      state[id].difficulty = d;
+      save();
+      // toggle active class within this question's diff-row
+      document.querySelectorAll(`.diff-btn[data-diff="${id}"]`).forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    });
+  });
+  document.querySelectorAll('textarea[data-comment]').forEach(ta => {
+    ta.addEventListener('input', e => {
+      const id = parseInt(e.currentTarget.dataset.comment);
+      if (!state[id]) state[id] = {};
+      state[id].comment = e.currentTarget.value;
+      save();
+    });
+  });
+}
+
+function buildFeedbackSummary() {
+  const total = QUESTIONS.length;
+  let correct = 0, partial = 0, missed = 0, answered = 0;
+  const diffCount = { 'too-easy': 0, 'just-right': 0, 'hard': 0, 'too-hard': 0, 'unrated': 0 };
+  const byDifficulty = { 'too-easy': [], 'just-right': [], 'hard': [], 'too-hard': [] };
+  const withComments = [];
+  QUESTIONS.forEach(q => {
+    const s = state[q.id] || {};
+    if (s.answered) {
+      answered++;
+      if (s.correctness === 'correct') correct++;
+      else if (s.correctness === 'partial') partial++;
+      else if (s.correctness === 'incorrect') missed++;
+    }
+    if (s.difficulty) {
+      diffCount[s.difficulty]++;
+      byDifficulty[s.difficulty].push({ id: q.id, section: q.section, prompt: q.prompt.replace(/<[^>]+>/g,'').substring(0,140), comment: (s.comment||'').trim() });
+    } else {
+      diffCount.unrated++;
+    }
+    if (s.comment && s.comment.trim()) withComments.push({ id: q.id, section: q.section, difficulty: s.difficulty || 'unrated', comment: s.comment.trim(), prompt: q.prompt.replace(/<[^>]+>/g,'').substring(0,100) });
+  });
+  const pct = answered > 0 ? Math.round((correct + 0.5*partial) / answered * 100) : 0;
+  let md = `# Day 1 Quiz Feedback\n\n`;
+  md += `**Score:** ${correct + 0.5*partial} / ${answered} (${pct}%) — ${correct} correct, ${partial} partial, ${missed} missed, ${total-answered} unanswered\n\n`;
+  md += `## Difficulty distribution\n`;
+  md += `- Too easy: ${diffCount['too-easy']}\n`;
+  md += `- Just right: ${diffCount['just-right']}\n`;
+  md += `- Hard: ${diffCount['hard']}\n`;
+  md += `- Too hard: ${diffCount['too-hard']}\n`;
+  md += `- Unrated: ${diffCount.unrated}\n\n`;
+  ['too-hard','too-easy','hard'].forEach(d => {
+    if (byDifficulty[d].length > 0) {
+      md += `## Flagged as "${d.replace('-',' ')}" (${byDifficulty[d].length})\n`;
+      byDifficulty[d].forEach(q => {
+        md += `- **Q${q.id}** (${q.section}): ${q.prompt}${q.prompt.length>=140?'…':''}`;
+        if (q.comment) md += `\n  - 💬 ${q.comment}`;
+        md += `\n`;
+      });
+      md += `\n`;
+    }
+  });
+  if (withComments.length > 0) {
+    md += `## All comments\n`;
+    withComments.forEach(c => {
+      md += `- **Q${c.id}** (${c.section}, rated: ${c.difficulty}): ${c.comment}\n`;
+    });
+  }
+  return md;
+}
+
+function attachExportHandlers() {
+  const copyBtn = document.getElementById('copy-feedback-btn');
+  const dlBtn = document.getElementById('download-feedback-btn');
+  const status = document.getElementById('export-status');
+  if (copyBtn) copyBtn.addEventListener('click', async () => {
+    const md = buildFeedbackSummary();
+    try {
+      await navigator.clipboard.writeText(md);
+      status.textContent = '✓ Copied to clipboard. Paste in Slack/email to Sandra.';
+      status.classList.add('show');
+      setTimeout(() => status.classList.remove('show'), 4000);
+    } catch (e) {
+      status.textContent = 'Could not copy automatically. Use Download JSON instead.';
+      status.classList.add('show');
+    }
+  });
+  if (dlBtn) dlBtn.addEventListener('click', () => {
+    const payload = { generated: new Date().toISOString(), state: state, summary: buildFeedbackSummary() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `quiz-w1d1-feedback-${new Date().toISOString().substring(0,10)}.json`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    status.textContent = '✓ Downloaded. Send the JSON file to Sandra.';
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 4000);
+  });
+}
+
+function updateScore() {
+  let answered = 0, correct = 0, partial = 0;
+  QUESTIONS.forEach(q => {
+    const s = state[q.id] || {};
+    if (s.answered) {
+      answered++;
+      if (s.correctness === 'correct') correct++;
+      else if (s.correctness === 'partial') partial++;
+    }
+  });
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('answered-count').textContent = answered;
+  const totalPossible = answered;
+  const score = correct + 0.5 * partial;
+  const pct = totalPossible > 0 ? Math.round((score / totalPossible) * 100) : 0;
+  document.getElementById('score-pct').textContent = answered > 0 ? pct + '%' : '—';
+  document.getElementById('progress-bar').style.width = (answered / QUESTIONS.length * 100) + '%';
+  renderFinal(correct, partial, answered);
+}
+
+function renderFinal(correct, partial, answered) {
+  const total = QUESTIONS.length;
+  const isDone = answered === total;
+  const score = correct + 0.5 * partial;
+  const pct = answered > 0 ? Math.round((score / answered) * 100) : 0;
+  document.getElementById('final-heading').textContent = isDone ? 'You finished Day 1.' : 'Your progress so far';
+  document.getElementById('final-tagline').textContent = isDone
+    ? 'Here\'s how you did. The "topics to revisit" list is what to read before Day 2.'
+    : `${answered} / ${total} answered. Keep going — your score and section breakdown update live. Hit "Copy feedback" anytime to send Sandra your ratings + comments so far.`;
+  document.getElementById('final-pct').textContent = answered > 0 ? pct + '%' : '—';
+  document.getElementById('final-detail').textContent = `${correct} fully correct · ${partial} partial · ${answered - correct - partial} missed · ${total - answered} unanswered`;
+  const breakdown = {};
+  QUESTIONS.forEach(q => {
+    if (!breakdown[q.section]) breakdown[q.section] = { total: 0, correct: 0, partial: 0 };
+    breakdown[q.section].total++;
+    const s = state[q.id] || {};
+    if (s.correctness === 'correct') breakdown[q.section].correct++;
+    else if (s.correctness === 'partial') breakdown[q.section].partial++;
+  });
+  let bHtml = '';
+  Object.keys(breakdown).forEach(sec => {
+    const b = breakdown[sec];
+    const sPct = Math.round(((b.correct + 0.5*b.partial)/b.total) * 100);
+    bHtml += `<div class="breakdown-row"><span>${sec}</span><span>${b.correct + 0.5*b.partial} / ${b.total} (${sPct}%)</span></div>`;
+  });
+  document.getElementById('final-breakdown').innerHTML = bHtml;
+  const missed = QUESTIONS.filter(q => (state[q.id] || {}).correctness === 'incorrect');
+  if (missed.length > 0) {
+    document.getElementById('revisit-block').style.display = 'block';
+    document.getElementById('revisit-list').innerHTML = missed.slice(0, 12).map(q =>
+      `<li><strong>Q${q.id}</strong> (${q.section}): ${q.prompt.replace(/<[^>]+>/g,'').substring(0,100)}${q.prompt.length>100?'…':''}</li>`
+    ).join('');
+  } else {
+    document.getElementById('revisit-block').style.display = 'none';
+  }
+}
+
+renderQuiz();
+attachExportHandlers();
+</script>
+</body>
+</html>
