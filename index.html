@@ -472,25 +472,31 @@ function renderQuestion(q) {
   </div>`;
 }
 
+// Event delegation: bind ONCE to #quiz-root. Prevents listener stacking on re-render.
+let handlersBound = false;
 function attachHandlers() {
-  document.querySelectorAll('.choice').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = parseInt(e.currentTarget.dataset.q);
-      const pick = parseInt(e.currentTarget.dataset.choice);
+  const root = document.getElementById('quiz-root');
+  if (!root || handlersBound) return;
+  handlersBound = true;
+
+  root.addEventListener('click', e => {
+    const choice = e.target.closest('.choice');
+    if (choice && !choice.disabled) {
+      const id = parseInt(choice.dataset.q);
+      const pick = parseInt(choice.dataset.choice);
       const q = QUESTIONS.find(x => x.id === id);
       const isCorrect = pick === q.correct;
-      state[id] = { answered: true, picked: pick, correctness: isCorrect ? 'correct' : 'incorrect' };
+      const prior = state[id] || {};
+      state[id] = { ...prior, answered: true, picked: pick, correctness: isCorrect ? 'correct' : 'incorrect' };
       save();
-      // re-render just this question
       const wrap = document.getElementById('q-'+id);
-      wrap.outerHTML = renderQuestion(q);
-      attachHandlers();
+      if (wrap) wrap.outerHTML = renderQuestion(q);
       updateScore();
-    });
-  });
-  document.querySelectorAll('.reveal-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = parseInt(e.currentTarget.dataset.reveal);
+      return;
+    }
+    const reveal = e.target.closest('.reveal-btn');
+    if (reveal && !reveal.disabled) {
+      const id = parseInt(reveal.dataset.reveal);
       const ta = document.querySelector(`textarea[data-q="${id}"]`);
       const userText = ta ? ta.value : '';
       if (!state[id]) state[id] = {};
@@ -500,50 +506,48 @@ function attachHandlers() {
       document.getElementById('model-'+id).classList.add('show');
       document.getElementById('rate-'+id).classList.add('show');
       if (ta) ta.disabled = true;
-      e.currentTarget.disabled = true;
-    });
-  });
-  document.querySelectorAll('.rate-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = parseInt(e.currentTarget.dataset.rate);
-      const r = e.currentTarget.dataset.r;
+      reveal.disabled = true;
+      return;
+    }
+    const rate = e.target.closest('.rate-btn');
+    if (rate) {
+      const id = parseInt(rate.dataset.rate);
+      const r = rate.dataset.r;
       const q = QUESTIONS.find(x => x.id === id);
-      state[id].answered = true;
-      state[id].correctness = r;
+      const prior = state[id] || {};
+      state[id] = { ...prior, answered: true, correctness: r };
       save();
       const wrap = document.getElementById('q-'+id);
-      wrap.outerHTML = renderQuestion(q);
-      attachHandlers();
+      if (wrap) wrap.outerHTML = renderQuestion(q);
       updateScore();
-    });
-  });
-  document.querySelectorAll('textarea[data-q]').forEach(ta => {
-    ta.addEventListener('input', e => {
-      const id = parseInt(e.currentTarget.dataset.q);
-      if (!state[id]) state[id] = {};
-      state[id].userText = e.currentTarget.value;
-      save();
-    });
-  });
-  document.querySelectorAll('.diff-btn[data-diff]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      const id = parseInt(e.currentTarget.dataset.diff);
-      const d = e.currentTarget.dataset.d;
+      return;
+    }
+    const diff = e.target.closest('.diff-btn[data-diff]');
+    if (diff) {
+      const id = parseInt(diff.dataset.diff);
+      const d = diff.dataset.d;
       if (!state[id]) state[id] = {};
       state[id].difficulty = d;
       save();
-      // toggle active class within this question's diff-row
       document.querySelectorAll(`.diff-btn[data-diff="${id}"]`).forEach(b => b.classList.remove('active'));
-      e.currentTarget.classList.add('active');
-    });
+      diff.classList.add('active');
+      return;
+    }
   });
-  document.querySelectorAll('textarea[data-comment]').forEach(ta => {
-    ta.addEventListener('input', e => {
-      const id = parseInt(e.currentTarget.dataset.comment);
+
+  root.addEventListener('input', e => {
+    const t = e.target;
+    if (t.matches && t.matches('textarea[data-q]')) {
+      const id = parseInt(t.dataset.q);
       if (!state[id]) state[id] = {};
-      state[id].comment = e.currentTarget.value;
+      state[id].userText = t.value;
       save();
-    });
+    } else if (t.matches && t.matches('textarea[data-comment]')) {
+      const id = parseInt(t.dataset.comment);
+      if (!state[id]) state[id] = {};
+      state[id].comment = t.value;
+      save();
+    }
   });
 }
 
