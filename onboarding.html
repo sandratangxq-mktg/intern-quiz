@@ -1,0 +1,1664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YouTrip — Fintech & Business Onboarding</title>
+<style>
+:root {
+  --ink: #0f1922; --ink-2: #2a3744;
+  --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155;
+  --brand: #2563eb; --brand-2: #1d4ed8; --accent: #f59e0b;
+  --good: #16a34a; --warn: #d97706; --bad: #dc2626;
+  --teal: #0d9488; --purple: #7c3aed;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink); background: var(--gray-50);
+  line-height: 1.62; font-size: 16px; -webkit-font-smoothing: antialiased;
+}
+.wrapper { max-width: 820px; margin: 0 auto; padding: 32px 28px 80px; }
+.hero {
+  background: linear-gradient(135deg, #0f1922 0%, #1e3a5f 100%);
+  color: white; padding: 48px 28px; margin: -32px -28px 32px;
+  border-radius: 0 0 12px 12px;
+}
+.hero .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 1.4px; opacity: 0.75; margin-bottom: 12px; }
+.hero h1 { font-size: 32px; margin: 0 0 14px; font-weight: 700; letter-spacing: -0.5px; }
+.hero .lede { font-size: 17px; line-height: 1.55; margin: 0; opacity: 0.92; max-width: 640px; }
+.hero .meta { margin-top: 22px; font-size: 13px; opacity: 0.7; display: flex; gap: 18px; flex-wrap: wrap; }
+h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin: 56px 0 4px; color: var(--ink); scroll-margin-top: 20px; }
+h3 { font-size: 19px; font-weight: 650; margin: 36px 0 6px; color: var(--ink-2); }
+h4 { font-size: 16px; font-weight: 650; margin: 22px 0 4px; color: var(--ink-2); }
+.day-badge { display: inline-block; background: var(--brand); color: white; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; padding: 5px 12px; border-radius: 999px; margin-bottom: 8px; }
+.day-badge.d2 { background: var(--teal); }
+.day-badge.d3 { background: var(--purple); }
+.day-badge.d4 { background: var(--accent); }
+.day-badge.d5 { background: var(--good); }
+.checklist { background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+.checklist h4 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-500); font-weight: 650; }
+.checklist ol { margin: 6px 0 0; padding-left: 22px; }
+.checklist ol li { margin: 5px 0; }
+.gotcha-list { background: #fef2f2; border-left: 3px solid var(--bad); padding: 14px 18px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+.gotcha-list .num { display: inline-block; background: var(--bad); color: white; font-size: 11px; font-weight: 700; width: 22px; height: 22px; line-height: 22px; text-align: center; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+.gotcha-list .item { margin: 10px 0; }
+.gotcha-list .item strong { color: var(--bad); }
+.section-meta { font-size: 13px; color: var(--gray-500); margin: 0 0 18px; }
+p { margin: 12px 0; }
+ul, ol { margin: 12px 0; padding-left: 22px; }
+li { margin: 4px 0; }
+strong { color: var(--ink); font-weight: 650; }
+em { color: var(--ink-2); }
+code { font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace; font-size: 13.5px; background: var(--gray-100); padding: 1.5px 5px; border-radius: 3px; color: var(--ink-2); }
+a { color: var(--brand); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.callout { background: #fffbeb; border-left: 3px solid var(--accent); padding: 14px 18px; margin: 18px 0; border-radius: 0 6px 6px 0; }
+.callout.info { background: #eff6ff; border-color: var(--brand); }
+.callout.warn { background: #fef2f2; border-color: var(--bad); }
+.callout.good { background: #f0fdf4; border-color: var(--good); }
+.callout p:first-child { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
+.callout .label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1.1px; font-weight: 700; margin-bottom: 6px; color: var(--warn); }
+.callout.info .label { color: var(--brand); }
+.callout.warn .label { color: var(--bad); }
+.callout.good .label { color: var(--good); }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+th { background: var(--gray-100); font-weight: 650; color: var(--ink-2); font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; }
+tr:last-child td { border-bottom: none; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.flow-diagram { background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 20px; margin: 18px 0; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; white-space: pre; overflow-x: auto; line-height: 1.65; color: var(--ink-2); }
+.flow-diagram .arrow { color: var(--brand); font-weight: 700; }
+.toc { background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 22px 26px; margin: 28px 0; }
+.toc h3 { margin-top: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); font-weight: 650; }
+.toc ol { margin: 8px 0; padding-left: 22px; }
+.toc ol li { margin: 6px 0; font-size: 14.5px; }
+.toc .day-toc { margin-bottom: 16px; }
+.toc .day-toc:last-child { margin-bottom: 0; }
+.toc .day-toc h4 { margin: 0 0 6px; font-size: 13.5px; }
+.day-section { margin-top: 64px; padding-top: 24px; border-top: 2px solid var(--gray-200); }
+.day-section:first-of-type { border-top: none; padding-top: 0; }
+.q-check { background: var(--ink); color: white; padding: 22px 26px; border-radius: 8px; margin: 32px 0; }
+.q-check h3 { color: white; margin-top: 0; font-size: 16px; }
+.q-check ol { margin: 10px 0 0; padding-left: 22px; }
+.q-check ol li { margin: 6px 0; color: #e2e8f0; font-size: 14.5px; }
+.pw-overlay { position: fixed; inset: 0; background: #0f1922; display: flex; align-items: center; justify-content: center; z-index: 99999; font-family: -apple-system, sans-serif; }
+.pw-card { background: white; padding: 32px; border-radius: 8px; max-width: 380px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.pw-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+.pw-card p { margin: 0 0 18px; color: #6b7280; font-size: 13px; line-height: 1.5; }
+.pw-card input { width: 100%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; }
+.pw-card input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.pw-card button { width: 100%; margin-top: 12px; padding: 10px; background: #2563eb; color: white; border: 0; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 500; }
+.pw-card button:hover { background: #1d4ed8; }
+.pw-error { color: #dc2626; font-size: 12px; margin-top: 10px; min-height: 14px; }
+.kbd { font-family: ui-monospace, monospace; background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 3px; padding: 1px 5px; font-size: 12px; }
+.tag { display: inline-block; font-size: 11px; background: var(--gray-100); color: var(--ink-2); padding: 2px 8px; border-radius: 999px; margin-right: 4px; font-weight: 500; }
+.tag.brand { background: #dbeafe; color: var(--brand-2); }
+.tag.warn { background: #fef3c7; color: #92400e; }
+.role-table { font-size: 13.5px; }
+.role-table td { padding: 8px 12px; }
+.role-table .role { font-weight: 650; color: var(--ink); white-space: nowrap; }
+.metric-card { display: inline-block; background: white; border: 1px solid var(--gray-200); border-radius: 8px; padding: 14px 18px; margin: 6px 8px 6px 0; min-width: 140px; }
+.metric-card .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-500); font-weight: 600; }
+.metric-card .value { font-size: 22px; font-weight: 700; color: var(--ink); margin-top: 4px; }
+.metric-card .sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+.divider { border-top: 1px solid var(--gray-200); margin: 32px 0; }
+hr { border: 0; border-top: 1px solid var(--gray-200); margin: 32px 0; }
+</style>
+</head>
+<body>
+<div id="pw-overlay" class="pw-overlay" style="display:none;">
+  <div class="pw-card">
+    <h2>Restricted Access</h2>
+    <p>This onboarding doc contains internal YouTrip data. Enter the password to continue.</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off" />
+    <button id="pw-submit">Open Doc</button>
+    <div id="pw-error" class="pw-error"></div>
+  </div>
+</div>
+<script>
+(function() {
+  const STORED_HASH = 'c54d008cfc10bc30b18da22f45e229ce4e1424b130dfb435a0cf16d6853ef1b8';
+  const SESSION_KEY = 'youtrip-intern-onboarding-auth';
+  if (sessionStorage.getItem(SESSION_KEY) === STORED_HASH) return;
+  document.documentElement.style.visibility = 'hidden';
+  function ready() {
+    document.documentElement.style.visibility = 'visible';
+    const main = document.querySelector('.wrapper');
+    if (main) main.style.visibility = 'hidden';
+    const overlay = document.getElementById('pw-overlay');
+    overlay.style.display = 'flex';
+    const input = document.getElementById('pw-input');
+    const button = document.getElementById('pw-submit');
+    const error = document.getElementById('pw-error');
+    setTimeout(() => input.focus(), 50);
+    async function check() {
+      const enc = new TextEncoder().encode(input.value);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hex === STORED_HASH) {
+        sessionStorage.setItem(SESSION_KEY, STORED_HASH);
+        overlay.remove();
+        if (main) main.style.visibility = '';
+      } else {
+        error.textContent = 'Incorrect password. Try again.';
+        input.value = ''; input.focus();
+      }
+    }
+    button.addEventListener('click', check);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ready);
+  } else { ready(); }
+})();
+</script>
+
+<div class="wrapper">
+
+<div class="hero">
+  <div class="eyebrow">3-Day Onboarding · Restricted</div>
+  <h1>Fintech, Payments &amp; YouTrip — the full picture</h1>
+  <p class="lede">Everything you need to understand the industry we operate in, how money actually moves when a card is tapped, how YouTrip makes money, and the state of our business today. Designed to give you the conceptual mastery of a CEO — not the implementation depth of an engineer, but enough to hold any conversation about how this all works.</p>
+  <div class="meta">
+    <span>📚 ~3 hours of reading</span>
+    <span>📅 3 days, 1 hour each</span>
+    <span>🔒 Confidential — do not share</span>
+  </div>
+</div>
+
+<div class="callout info">
+  <span class="label">How to use this doc</span>
+  <p>Read one day per day. Don't speedrun it — the goal is internalisation, not completion. Each day ends with a short quick-check; if you can't answer the questions in your own words, re-read the section before moving on.</p>
+  <p><strong>Day 1</strong> — The fundamentals: how payments work, networks, interchange, take rate, FX.<br>
+  <strong>Day 2</strong> — The modern stack: issuing/acquiring, Stripe, Apple Pay, Google Pay, how YouTrip plugs in.<br>
+  <strong>Day 3</strong> — YouTrip the business: markets, users, where they spend, how we measure.<br>
+  <strong>Day 4</strong> — How we measure paid performance: the metrics, the SSOT, the spending tracker, currency &amp; GST.<br>
+  <strong>Day 5</strong> — How a Monday report gets made: the 7 stages, Metabase, the four weekly reports, the gotchas.</p>
+</div>
+
+<div class="toc">
+  <h3>Contents</h3>
+
+  <div class="day-toc">
+    <h4>Day 1 — How money moves</h4>
+    <ol>
+      <li><a href="#d1-1">What is fintech, and why does it exist?</a></li>
+      <li><a href="#d1-2">The four-party model — who's involved in every card payment</a></li>
+      <li><a href="#d1-3">Visa, Mastercard &amp; the networks — what they actually do</a></li>
+      <li><a href="#d1-4">Tap-to-pay in 2 seconds: the 12 things that happen</a></li>
+      <li><a href="#d1-5">Authorization, clearing, settlement — three different events</a></li>
+      <li><a href="#d1-6">The money cuts — interchange, scheme fees, acquirer markup</a></li>
+      <li><a href="#d1-7">"Take rate" — the single most important number in fintech</a></li>
+      <li><a href="#d1-8">FX in payments — DCC, markups, mid-market</a></li>
+    </ol>
+  </div>
+
+  <div class="day-toc">
+    <h4>Day 2 — The modern payment stack</h4>
+    <ol>
+      <li><a href="#d2-1">Issuing vs. acquiring — the two halves of the card business</a></li>
+      <li><a href="#d2-2">Stripe, Adyen, Checkout.com — what acquirers really do</a></li>
+      <li><a href="#d2-3">Apple Pay &amp; Google Pay — tokenization, not a new network</a></li>
+      <li><a href="#d2-4">The compliance layer — 3DS, PCI, KYC, AML</a></li>
+      <li><a href="#d2-5">BIN sponsorship — how non-banks issue cards</a></li>
+      <li><a href="#d2-6">YouTrip × Mastercard — how we're actually structured</a></li>
+      <li><a href="#d2-7">How YouTrip makes money — the 3.4% take rate broken down</a></li>
+      <li><a href="#d2-8">Unit economics of a multi-currency card</a></li>
+    </ol>
+  </div>
+
+  <div class="day-toc">
+    <h4>Day 3 — YouTrip the business</h4>
+    <ol>
+      <li><a href="#d3-1">The three markets at a glance</a></li>
+      <li><a href="#d3-2">Users — MAU, DAU, and what they mean here</a></li>
+      <li><a href="#d3-3">Demographics &amp; segments</a></li>
+      <li><a href="#d3-4">Where YouTrippers travel — top corridors</a></li>
+      <li><a href="#d3-5">Top merchants &amp; spending categories</a></li>
+      <li><a href="#d3-6">Average transaction volume per user — and why TV beats MAU</a></li>
+      <li><a href="#d3-7">Acquisition — CAC, CPApproved, the channel mix</a></li>
+      <li><a href="#d3-8">CRM &amp; retention — how we keep them coming back</a></li>
+      <li><a href="#d3-9">What's actually hard right now</a></li>
+      <li><a href="#d3-10">Your first month — what to do with all this</a></li>
+    </ol>
+  </div>
+
+  <div class="day-toc">
+    <h4>Day 4 — How we measure paid performance</h4>
+    <ol>
+      <li><a href="#d4-1">The four reports at a glance</a></li>
+      <li><a href="#d4-2">The metrics that drive everything</a></li>
+      <li><a href="#d4-3">The 4-week window — why we never look at one week alone</a></li>
+      <li><a href="#d4-4">Where the data lives — the five platforms + Metabase</a></li>
+      <li><a href="#d4-5">The Spending Tracker — one Google Sheet per market</a></li>
+      <li><a href="#d4-6">Currency and GST — the multi-market reality</a></li>
+    </ol>
+  </div>
+
+  <div class="day-toc">
+    <h4>Day 5 — How a Monday report gets made</h4>
+    <ol>
+      <li><a href="#d5-1">The 7 stages — in the order they happen</a></li>
+      <li><a href="#d5-2">Session token refresh — the #1 reason the report breaks</a></li>
+      <li><a href="#d5-3">The three Metabase Cards — one per market</a></li>
+      <li><a href="#d5-4">Channel classification — campaign-name filters</a></li>
+      <li><a href="#d5-5">The four reports, walked through — how each one differs</a></li>
+      <li><a href="#d5-6">The twelve things that go wrong — and how to spot them</a></li>
+      <li><a href="#d5-7">The pre-send checklist — what gets verified before any report leaves</a></li>
+      <li><a href="#d5-8">What to do with all this</a></li>
+    </ol>
+  </div>
+</div>
+<div class="day-section">
+<span class="day-badge">Day 1</span>
+<h2>How money moves</h2>
+<p class="section-meta">~60 minutes · The foundations. Everything in Day 2 builds on this — read carefully, don't skim.</p>
+
+<h2 id="d1-1">1. What is fintech, and why does it exist?</h2>
+<p><strong>Fintech</strong> is shorthand for "financial technology" — companies that use software to do things banks traditionally did, usually faster, cheaper, or with a better user experience. The category exists for one reason: banks were built in an era of paper, branches, and slow networks, and they're structurally bad at moving with consumer expectations.</p>
+
+<p>Three forces created the fintech wave:</p>
+<ol>
+  <li><strong>Smartphones became universal.</strong> The phone became the wallet, the bank branch, and the customer service desk all in one. Suddenly anyone could distribute financial services without bricks-and-mortar.</li>
+  <li><strong>APIs became standard.</strong> Card networks, banks, and processors started exposing programmatic access. A startup could now plug into Visa or Mastercard without building its own card network — something that would have taken decades and billions in the 1990s.</li>
+  <li><strong>Regulatory reform.</strong> Open banking in Europe (PSD2), digital banking licences in Singapore, fintech sandboxes in the UK and Asia — regulators began letting non-banks offer banking-like services under specific licences.</li>
+</ol>
+
+<p>Fintech is not one industry — it's a stack of categories:</p>
+<table>
+  <thead><tr><th>Category</th><th>What they do</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Payments</strong></td><td>Move money between people, businesses, currencies</td><td>Stripe, PayPal, Wise, YouTrip</td></tr>
+    <tr><td><strong>Neobanks</strong></td><td>Mobile-first banking — accounts, cards, savings</td><td>Revolut, Monzo, Chime, Nubank</td></tr>
+    <tr><td><strong>Lending</strong></td><td>Personal loans, BNPL, SME credit</td><td>Klarna, Affirm, Atome</td></tr>
+    <tr><td><strong>Wealth / brokerage</strong></td><td>Investing, robo-advisory, crypto</td><td>Robinhood, Wealthfront, eToro</td></tr>
+    <tr><td><strong>Infrastructure</strong></td><td>The plumbing other fintechs sit on</td><td>Plaid, Marqeta, Adyen</td></tr>
+    <tr><td><strong>Insurtech</strong></td><td>Software-first insurance</td><td>Lemonade, bolttech</td></tr>
+  </tbody>
+</table>
+
+<p><strong>YouTrip lives in the payments category — specifically the "issuing" side of card payments, focused on cross-border consumer spend.</strong> We are a fintech because we offer card and FX services without being a traditional bank. We don't take deposits, lend money, or run a branch network. We sit on top of card-network rails (Mastercard) and bank rails (a "BIN sponsor" bank, more on this in Day 2) and use software to deliver a better experience than the banks ever bothered to.</p>
+
+<div class="callout info">
+  <span class="label">Why this matters</span>
+  <p>The number-one strategic question for any fintech is: <em>which part of the bank's business are we taking, and how durable is that take?</em> For YouTrip it's the FX margin and foreign card-spend volume that banks have historically charged 3–5% for. Our wedge is "we charge near zero, banks charge a lot." If banks ever match us on price, our wedge collapses. (They mostly haven't, and won't, because FX is a big revenue line for them.)</p>
+</div>
+
+<h2 id="d1-2">2. The four-party model — who's involved in every card payment</h2>
+<p>Every card transaction in the world — every tap, every swipe, every online checkout — involves at least four parties. Once you have this model in your head, the rest of payments becomes intuitive.</p>
+
+<div class="flow-diagram">
+        ┌──────────────────┐                    ┌──────────────────┐
+        │   1. CARDHOLDER  │  ── pays ────────▶ │   2. MERCHANT    │
+        │   (you, w/ card) │                    │   (the shop)     │
+        └──────────────────┘                    └──────────────────┘
+                 ▲                                       │
+                 │ statement,                            │ deposits
+                 │ funds                                 │ batched txns
+                 │                                       ▼
+        ┌──────────────────┐    ◀── NETWORK ──▶ ┌──────────────────┐
+        │   3. ISSUER      │  (Visa, Mastercard)│   4. ACQUIRER    │
+        │   (your bank or  │   routes auth and  │   (merchant's    │
+        │    fintech)      │   settles money    │    bank/PSP)     │
+        └──────────────────┘                    └──────────────────┘
+</div>
+
+<p>The four roles:</p>
+<table class="role-table">
+  <thead><tr><th>Role</th><th>What they do</th><th>How they earn</th></tr></thead>
+  <tbody>
+    <tr><td class="role">1. Cardholder</td><td>The consumer holding the card. Initiates the payment.</td><td>Doesn't earn — pays. (May get rewards/cashback from the issuer.)</td></tr>
+    <tr><td class="role">2. Merchant</td><td>The shop, restaurant, online store. Accepts the payment.</td><td>Sells goods. Pays a fee — the <strong>Merchant Discount Rate (MDR)</strong> — to accept cards.</td></tr>
+    <tr><td class="role">3. Issuer</td><td>The bank or fintech that issued the card. Holds the cardholder's funds (or extends credit).</td><td>Earns <strong>interchange</strong> (a cut of every transaction) plus annual fees, FX margin, interest, etc.</td></tr>
+    <tr><td class="role">4. Acquirer</td><td>The bank or processor that signs up the merchant. Settles the funds into the merchant's account.</td><td>Earns the <strong>acquirer markup</strong> on top of interchange + scheme fees.</td></tr>
+  </tbody>
+</table>
+
+<p>And gluing it all together: <strong>the network</strong> (Visa, Mastercard, American Express, Discover, UnionPay, JCB). Networks aren't a fifth party in the formal sense — they're the rails that connect issuers and acquirers. They earn <strong>scheme fees</strong> on every transaction. We'll come back to them in section 3.</p>
+
+<div class="callout">
+  <span class="label">The YouTrip lens</span>
+  <p>YouTrip is the <strong>issuer</strong> (role 3). When you tap your YouTrip card at a restaurant in Tokyo, we're the party authorising the payment against your loaded balance. We earn interchange + FX margin. We are <em>not</em> the acquirer — that's whoever the Tokyo restaurant signed up with to accept cards (often a Japanese acquirer like SMBC or Square Japan).</p>
+</div>
+</div>
+<div>
+<h2 id="d1-3">3. Visa, Mastercard &amp; the networks — what they actually do</h2>
+<p>People often think of Visa and Mastercard as "card companies." They're not. They don't issue cards, they don't hold your money, they don't lend you money. What they actually are: <strong>two-sided networks that connect issuers to acquirers.</strong> Think of them as the SWIFT or the AWS of card payments.</p>
+
+<h3>What a network does in a single transaction</h3>
+<ol>
+  <li><strong>Routing the auth.</strong> When you tap your card, the acquirer's system needs to ask <em>your</em> issuer "is this card valid and does it have funds?" — but they don't know who your issuer is. They send the message to Visa/MC, which looks up the card's <strong>BIN</strong> (Bank Identification Number, the first 6–8 digits) and routes the message to the correct issuer.</li>
+  <li><strong>Enforcing rules.</strong> Networks dictate the rules of the road: max authorisation hold times, chargeback procedures, what counts as a contactless transaction, what data must be sent, dispute timelines, etc. These rule books are thousands of pages. Both issuers and acquirers must comply or they lose network access.</li>
+  <li><strong>Setting interchange rates.</strong> Networks publish interchange tables — how much the issuer gets per transaction, broken down by merchant category, card type, region, and many other variables. (They <em>publish</em> the rates; they don't <em>take</em> interchange — that goes to the issuer.)</li>
+  <li><strong>Settling the funds.</strong> Networks batch up all the transactions every day and tell issuers how much they owe acquirers. The actual movement of money happens through settlement banks, but the network tells everyone what they owe whom.</li>
+  <li><strong>Charging scheme fees.</strong> For all of the above, the network takes a small cut from <em>both</em> the issuer side and the acquirer side. These are scheme fees. They are smaller than interchange but more numerous (assessment fees, cross-border fees, FX-related fees, etc).</li>
+</ol>
+
+<h3>Visa vs. Mastercard — what's actually different?</h3>
+<p>For most consumer purposes, Visa and Mastercard are interchangeable — they both route payments, settle money, and enforce rules. The differences are mostly commercial:</p>
+<table>
+  <thead><tr><th>Aspect</th><th>Visa</th><th>Mastercard</th></tr></thead>
+  <tbody>
+    <tr><td>Market share globally</td><td>~60% of card volume</td><td>~30% of card volume</td></tr>
+    <tr><td>Strength</td><td>Dominant in US, Australia, Brazil</td><td>Strong in Europe, growing in Asia/LatAm</td></tr>
+    <tr><td>Branding angle</td><td>"Everywhere you want to be"</td><td>"Priceless" — more lifestyle/experience-led</td></tr>
+    <tr><td>Network for innovation</td><td>Visa Direct (push-to-card)</td><td>Mastercard Send (push-to-card)</td></tr>
+    <tr><td>Notable acquisitions</td><td>Plaid (cancelled), Currencycloud</td><td>Vocalink, Finicity, Aiia</td></tr>
+  </tbody>
+</table>
+
+<p>For an issuer like YouTrip, the choice of network is partly strategic (rate negotiation, marketing co-funding, regional acceptance) and partly historical (whichever they signed first). <strong>YouTrip is on Mastercard</strong> — this means Mastercard routes our transactions, sets our interchange rates, and provides certain co-marketing budgets. Wise is also Mastercard. Revolut runs both Visa and Mastercard depending on market.</p>
+
+<h3>The other networks (briefly)</h3>
+<ul>
+  <li><strong>American Express</strong> — unusual: AmEx is both the issuer <em>and</em> the network ("closed-loop"). Higher interchange but lower merchant acceptance.</li>
+  <li><strong>Discover</strong> — US-focused, also closed-loop.</li>
+  <li><strong>UnionPay</strong> — China's domestic network, larger by transaction count than Visa/MC combined but mostly intra-China.</li>
+  <li><strong>JCB</strong> — Japan's domestic network. Wide acceptance in Japan, narrower internationally.</li>
+  <li><strong>Domestic schemes</strong> — most countries have a domestic network (NETS in Singapore, Bancomat in Italy, Cartes Bancaires in France). Cheaper than Visa/MC for in-country transactions.</li>
+</ul>
+
+<div class="callout info">
+  <span class="label">Why YouTrip cares about Mastercard specifically</span>
+  <p>Beyond rate economics: Mastercard provides certain marketing co-funding for travel-card products, access to FX rate feeds, and certain compliance/risk tooling. When we negotiate annual contracts with Mastercard, the things on the table are: interchange rate buckets, scheme fee waivers in growth markets, co-marketing dollars, and access to new programs (e.g., Click to Pay, Mastercard Travel Rewards).</p>
+</div>
+
+<h2 id="d1-4">4. Tap-to-pay in 2 seconds: the 12 things that happen</h2>
+<p>When you tap your YouTrip card at a vending machine in Osaka, the transaction completes in roughly 2 seconds. In that 2 seconds, twelve distinct things happen. Understanding this sequence is the single most important payments-literacy skill — once you have it, you can reason about almost any payments product.</p>
+
+<div class="flow-diagram">
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  THE 2-SECOND CHOREOGRAPHY OF A TAP                             │
+  ├─────────────────────────────────────────────────────────────────┤
+  │  T+0.0s  1. Card emits NFC signal — encrypted card data + cryptogram
+  │  T+0.1s  2. POS terminal reads — captures amount + currency + MCC
+  │  T+0.2s  3. POS sends auth request → Acquirer
+  │  T+0.4s  4. Acquirer sends → Network (Visa/MC) using BIN routing
+  │  T+0.6s  5. Network identifies Issuer (YouTrip) and forwards
+  │  T+0.8s  6. Issuer checks: card active? funds available? fraud
+  │              checks pass? velocity OK? geo plausible?
+  │  T+1.0s  7. Issuer authorises (or declines) → back to Network
+  │  T+1.2s  8. Network → Acquirer → POS terminal
+  │  T+1.4s  9. POS prints/displays approval; cardholder sees "OK"
+  │  T+1.6s 10. Funds are HELD on cardholder side (not yet moved!)
+  │  T+24h+  11. Merchant batches the day's auths → submits for capture
+  │  T+1–3d  12. Settlement: network instructs issuer to pay acquirer,
+  │              acquirer credits merchant's bank account
+  └─────────────────────────────────────────────────────────────────┘
+</div>
+
+<p>The crucial insight: <strong>what you experience as "the payment" is only steps 1–10.</strong> Steps 11–12 happen later — sometimes much later. This is why authorisation, clearing, and settlement are three distinct things, and why a charge can disappear from your statement, reappear, dispute, or refund days after the fact.</p>
+
+<p>Two pieces of jargon to know:</p>
+<ul>
+  <li><strong>Cryptogram</strong> — the encrypted blob the chip generates each time you tap. It's a one-time signature that proves the card is physically present and prevents replay attacks. The chip generates a new cryptogram per transaction; the issuer verifies it.</li>
+  <li><strong>MCC (Merchant Category Code)</strong> — a 4-digit code that classifies the merchant (5411 = grocery, 4111 = transport, 7011 = lodging, 4722 = travel agency, etc.). Interchange rates differ by MCC. We use MCC heavily in CRM ("users who spent in MCC 7011 last month" = recent hotel guests, prime for a travel CRM journey).</li>
+</ul>
+</div>
+<div>
+<h2 id="d1-5">5. Authorization, clearing, settlement — three different events</h2>
+<p>Three words that look interchangeable but aren't. Getting this right separates payments-literate people from everyone else.</p>
+
+<table>
+  <thead><tr><th>Event</th><th>What happens</th><th>When</th><th>Money moved?</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Authorisation</strong></td>
+      <td>Issuer says "yes, the card is good for this amount." Funds are <em>held</em> on the cardholder's side.</td>
+      <td>Real-time (the 2 seconds you experience)</td>
+      <td>No — only a hold</td>
+    </tr>
+    <tr>
+      <td><strong>Clearing</strong></td>
+      <td>Merchant submits the captured amount to be processed. Acquirer + network match it against the auth.</td>
+      <td>Usually end-of-day, sometimes 1–3 days</td>
+      <td>No — accounting only</td>
+    </tr>
+    <tr>
+      <td><strong>Settlement</strong></td>
+      <td>Actual money moves: issuer's settlement account → network → acquirer → merchant's bank.</td>
+      <td>T+1 to T+3 typically</td>
+      <td><strong>Yes — funds move</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Why this matters in practice:</p>
+<ul>
+  <li><strong>"Pending" charges</strong> on your bank statement are authorisations that haven't cleared yet. They can disappear if the merchant doesn't capture (e.g., hotel pre-auth that gets adjusted at check-out).</li>
+  <li><strong>Authorisation amount ≠ final amount.</strong> Hotels pre-auth ~120% of expected bill. Petrol stations pre-auth $100 then capture the actual fill. This auth/capture mismatch is why your YouTrip balance can look weird mid-trip.</li>
+  <li><strong>FX is locked at settlement, not authorisation.</strong> The exchange rate that ends up on your statement is the rate on the day of <em>settlement</em>, not the day you tapped. For travel cards this matters — if FX moves 1% between Monday's tap and Wednesday's settlement, the user sees the Wednesday rate.</li>
+  <li><strong>Disputes and chargebacks</strong> can be raised up to 120 days after settlement under most network rules.</li>
+</ul>
+
+<div class="callout warn">
+  <span class="label">Real example</span>
+  <p>You tap your YouTrip card at a Tokyo restaurant for ¥10,000. The Yen→SGD rate at auth time is 0.0089. Auth holds ¥10,000 (~S$89). Two days later, settlement happens. By then JPY has weakened to 0.0086. Your statement shows S$86. Net of FX margin and any fees, this is what actually gets debited. The S$89 hold "disappears" and the S$86 final lands. <strong>If you call CS angry that the amount changed, this is why.</strong></p>
+</div>
+
+<h2 id="d1-6">6. The money cuts — interchange, scheme fees, acquirer markup</h2>
+<p>When a customer pays $100 by card, the merchant does <em>not</em> receive $100. Somewhere between 0.5% and 3% gets eaten in fees before the money lands. That total is the <strong>MDR (Merchant Discount Rate)</strong>. It's split between three parties.</p>
+
+<div class="flow-diagram">
+                   Merchant accepts $100 card payment
+                                    │
+                                    ▼
+                       ┌─────────────────────────┐
+                       │  MDR ≈ $1.50 (1.5%)     │
+                       └─────────────────────────┘
+                                    │
+              ┌────────────────────┼────────────────────┐
+              ▼                    ▼                    ▼
+       ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+       │ Interchange │      │ Scheme fee  │      │ Acquirer    │
+       │ ~1.10–1.30% │      │ ~0.10–0.15% │      │ markup      │
+       │             │      │             │      │ ~0.10–0.30% │
+       ├─────────────┤      ├─────────────┤      ├─────────────┤
+       │ Goes to     │      │ Goes to     │      │ Goes to     │
+       │ ISSUER      │      │ NETWORK     │      │ ACQUIRER    │
+       │ (YouTrip)   │      │ (Mastercard)│      │ (e.g.       │
+       │             │      │             │      │  Adyen)     │
+       └─────────────┘      └─────────────┘      └─────────────┘
+</div>
+
+<p><strong>Interchange</strong> is the biggest piece, and it flows from acquirer to issuer (i.e., the issuer is paid by the acquirer's side of the transaction). It's the fundamental reason issuing is a business at all.</p>
+
+<p>Interchange varies enormously by:</p>
+<ul>
+  <li><strong>Region.</strong> EU interchange is regulated to 0.2% (debit) / 0.3% (credit). US is mostly unregulated at ~1.5–2.5%. APAC varies — Singapore averages ~0.6–1.0%, Australia regulated similar to EU.</li>
+  <li><strong>Card type.</strong> Consumer debit &lt; consumer credit &lt; premium credit &lt; commercial.</li>
+  <li><strong>MCC.</strong> Supermarkets pay less than restaurants. Petrol stations pay less than airlines.</li>
+  <li><strong>Cross-border or domestic.</strong> Cross-border transactions earn higher interchange than domestic ones. <em>This is hugely important for YouTrip</em> — our customers spend abroad, so we earn cross-border interchange which is materially better than domestic.</li>
+  <li><strong>Card-present (in-person tap) vs. card-not-present (online).</strong> Card-not-present pays more — higher fraud risk.</li>
+</ul>
+
+<p><strong>Scheme fees</strong> (network fees) are small but plentiful. Mastercard publishes about 60 different fee categories. They sum to roughly 0.10–0.15% per transaction, plus some flat per-message fees. They go to the network.</p>
+
+<p><strong>Acquirer markup</strong> is what the merchant's processor (Stripe, Adyen, Razer, etc.) adds on top. It's their margin for connecting the merchant. Tiny merchants pay more (3% all-in), big merchants negotiate down (~0.5% above interchange+scheme).</p>
+
+<h2 id="d1-7">7. "Take rate" — the single most important number in fintech</h2>
+<p>If you take only one term from this entire document, take this one.</p>
+
+<div class="callout good">
+  <span class="label">Definition</span>
+  <p><strong>Take rate = revenue ÷ gross transaction volume (GTV).</strong><br>
+  It's the percentage of money flowing through your platform that you keep as revenue.</p>
+</div>
+
+<p>Take rate is the universal yardstick for any platform that moves money or volume — payments, marketplaces, ride-hailing, BNPL, anything. It answers the question: <em>for every $100 of activity, how much is mine?</em></p>
+
+<table>
+  <thead><tr><th>Company</th><th>What they do</th><th>Approximate take rate</th></tr></thead>
+  <tbody>
+    <tr><td>Visa / Mastercard (network)</td><td>Route transactions</td><td>~0.13–0.15%</td></tr>
+    <tr><td>Stripe (acquirer)</td><td>Acquiring + payment processing</td><td>~1.5–2.9% (charged) / ~0.4% net margin</td></tr>
+    <tr><td>Big-bank issuer (US credit card)</td><td>Card issuing</td><td>~2.0–2.5% gross</td></tr>
+    <tr><td>Wise</td><td>Cross-border transfer + card</td><td>~0.6–0.8%</td></tr>
+    <tr><td><strong>YouTrip</strong></td><td>Travel multi-currency card</td><td><strong>~3.4%</strong></td></tr>
+    <tr><td>Uber</td><td>Ride matching</td><td>~25%</td></tr>
+    <tr><td>Shopify</td><td>E-commerce platform + payments</td><td>~2.5% (blended)</td></tr>
+  </tbody>
+</table>
+
+<p>YouTrip's <strong>3.4% take rate</strong> is high for a card business. The norm for a pure-issuing operation is closer to 1.5–2.0% (interchange alone). The reason we earn 3.4% is that we stack <em>two</em> revenue streams on every transaction:</p>
+<ol>
+  <li><strong>Cross-border interchange</strong> — roughly 1.0–1.5% (varies by region and MCC).</li>
+  <li><strong>FX margin</strong> — roughly 1.5–2.0% on the currency conversion, baked into the rate we show the customer.</li>
+</ol>
+
+<p>(Plus a small amount of float interest and ancillary fees, but those are rounding errors.) The full breakdown sits in Day 2, section 7 — but lock in the headline now: <strong>3.4% take rate. For every $100 a YouTrip user spends abroad, we earn $3.40.</strong></p>
+
+<div class="callout info">
+  <span class="label">Why take rate, not revenue?</span>
+  <p>Revenue tells you scale; take rate tells you <em>quality</em>. A business doing $1B GTV at 0.5% take rate ($5M revenue) is in trouble. A business doing $100M GTV at 5% take rate ($5M revenue) is in great shape — same revenue, but the higher take rate is a moat. Wise is "low take rate, transparent"; YouTrip is "higher take rate, premium UX." Both are valid; both have different defensibility profiles. <strong>The whole strategic conversation at YouTrip is: how do we grow GTV without compromising take rate?</strong></p>
+</div>
+
+<h2 id="d1-8">8. FX in payments — DCC, markups, mid-market</h2>
+<p>When you spend in a currency that isn't your card's home currency, an exchange happens. There are three rates worth knowing.</p>
+
+<table>
+  <thead><tr><th>Rate</th><th>What it is</th><th>Who quotes it</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Mid-market rate</strong></td><td>The "true" rate — midpoint between buy and sell on the wholesale market. What you see on Google or XE.</td><td>Interbank market. Not directly available to consumers.</td></tr>
+    <tr><td><strong>Network rate</strong></td><td>The rate Visa or Mastercard publishes daily for settling transactions. Typically ~0.2–0.5% off mid-market.</td><td>Visa/Mastercard (different for each).</td></tr>
+    <tr><td><strong>Customer rate</strong></td><td>What the customer is actually charged. Network rate + issuer's FX margin.</td><td>The issuer (e.g., YouTrip, your bank).</td></tr>
+  </tbody>
+</table>
+
+<p>Banks typically charge customers <strong>2–4% above the network rate</strong> on foreign spend. YouTrip charges close to 0% above the network rate during weekdays — that's the "0% FX fee" promise. The reason we can do this and still earn money is the <em>network rate</em> itself sits just inside mid-market (Mastercard takes its margin there), plus we capture small additional spreads at weekends and on certain currency pairs.</p>
+
+<p><strong>DCC (Dynamic Currency Conversion)</strong> is a scam you should know about. When you tap your YouTrip card at a Bali hotel, the terminal might ask: "Pay in IDR (local) or SGD (your home)?" If you choose SGD, the hotel's acquirer does the conversion — at <em>their</em> rate, which is typically 3–7% worse than what YouTrip would give you. <strong>Always choose the local currency.</strong> YouTrip earns nothing if you accept DCC; the merchant's acquirer does. This is one of the things our marketing actively educates customers about.</p>
+
+<div class="callout warn">
+  <span class="label">Memorise this</span>
+  <p>The cardinal rule of cross-border spending: <strong>always pay in the local currency.</strong> If the terminal offers you "pay in SGD" while you're in Tokyo, hit decline and pay in JPY. DCC takes 3–7% out of your wallet and gives it to the merchant's acquirer. It's the most expensive mistake travellers make.</p>
+</div>
+
+<div class="q-check">
+  <h3>Day 1 quick check — can you answer in your own words?</h3>
+  <ol>
+    <li>Who are the four parties in every card transaction, and what does each one do?</li>
+    <li>What's the difference between authorisation, clearing, and settlement? Why does it matter that they're three separate things?</li>
+    <li>If a merchant takes a $100 payment, where does the $1.50 in fees actually go — and which slice does YouTrip earn?</li>
+    <li>Define "take rate" in one sentence. Why is 3.4% considered high for a card business?</li>
+    <li>What's DCC, and why is it bad for the cardholder?</li>
+  </ol>
+  <p style="margin-top:14px;color:#94a3b8;font-size:13.5px;">If any of these are fuzzy, scroll back. Day 2 builds on this.</p>
+</div>
+</div>
+<div class="day-section">
+<span class="day-badge d2">Day 2</span>
+<h2>The modern payment stack</h2>
+<p class="section-meta">~60 minutes · How the building blocks fit together. By the end you'll understand how YouTrip plugs into Mastercard and why the 3.4% take rate adds up.</p>
+
+<h2 id="d2-1">1. Issuing vs. acquiring — the two halves of the card business</h2>
+<p>Day 1 introduced two of the parties in the four-party model — the issuer and the acquirer. They're worth a deeper look because they're <em>completely different businesses</em> that happen to use the same rails.</p>
+
+<table>
+  <thead><tr><th></th><th>ISSUING (card-issuer side)</th><th>ACQUIRING (merchant side)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>What you do</strong></td><td>Hand out cards. Hold the cardholder's money. Authorise their payments.</td><td>Sign up merchants. Accept the payments. Settle funds into the merchant's bank.</td></tr>
+    <tr><td><strong>Customer</strong></td><td>The cardholder (consumer or business)</td><td>The merchant</td></tr>
+    <tr><td><strong>Main revenue</strong></td><td>Interchange + fees + FX margin + interest</td><td>Acquirer markup on top of interchange + scheme fees</td></tr>
+    <tr><td><strong>Main cost</strong></td><td>Network/scheme fees, card production, customer acquisition, fraud losses</td><td>Network/scheme fees, infra, merchant CAC, fraud losses</td></tr>
+    <tr><td><strong>Volume tilt</strong></td><td>Domestic users, but cross-border spend is the gold</td><td>Whichever merchants accept your service</td></tr>
+    <tr><td><strong>Examples</strong></td><td>Banks (consumer cards), Marqeta (issuing infra), Revolut, Wise, <strong>YouTrip</strong></td><td>Stripe, Adyen, Worldpay, Square, Checkout.com, PayPal</td></tr>
+  </tbody>
+</table>
+
+<p>It's possible to be <em>both</em> issuer and acquirer (Adyen does both; Revolut is doing both increasingly), but they're different organisational muscles. Most fintechs pick one side and go deep.</p>
+
+<p>YouTrip is <strong>issuer-only</strong>. We do not sign up merchants. We do not run the acquiring side of our customers' transactions. We sit on the cardholder side of every transaction and earn interchange from acquirers.</p>
+
+<div class="callout info">
+  <span class="label">Why issuer-only is a focused bet</span>
+  <p>The issuing side of cross-border travel has a clearer wedge against incumbents (banks charge 3–5% FX, we charge ~0%). Acquiring is a tougher game — Stripe/Adyen already do it well, and merchant CAC is brutal. YouTrip's strategic clarity is: <em>be the best travel issuer in Asia. Don't get distracted into merchant acquiring.</em></p>
+</div>
+
+<h2 id="d2-2">2. Stripe, Adyen, Checkout.com — what acquirers really do</h2>
+<p>You'll hear "Stripe" thrown around casually. Worth understanding what they actually do — both because it's the other half of payments, and because the techniques they pioneered (developer-first onboarding, transparent pricing, API-first stack) inform how fintech is built generally.</p>
+
+<p>A modern acquirer / payment service provider (PSP) does five things:</p>
+<ol>
+  <li><strong>Merchant onboarding.</strong> Sign up the business: KYB (Know Your Business), bank verification, MCC assignment, risk profiling.</li>
+  <li><strong>Payment acceptance.</strong> Take card data (chip, online, wallet, etc.) and submit auth requests to the network. Handle 3D Secure where required.</li>
+  <li><strong>Routing &amp; smart processing.</strong> Where multiple acquirer relationships exist, route each transaction to the one most likely to approve and at the lowest cost.</li>
+  <li><strong>Settlement.</strong> Receive funds from the network, deduct fees, payout to the merchant's bank (usually T+2 to T+7).</li>
+  <li><strong>Risk &amp; chargebacks.</strong> Detect fraudulent merchants, manage disputes, handle the network's chargeback procedures, refunds, etc.</li>
+</ol>
+
+<table>
+  <thead><tr><th>Acquirer</th><th>Strength</th><th>Where you see them</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Stripe</strong></td><td>Developer-first, API quality, global scale</td><td>SaaS, marketplaces, modern e-commerce. Default for tech startups.</td></tr>
+    <tr><td><strong>Adyen</strong></td><td>Enterprise, full stack (issuing + acquiring + POS), global single platform</td><td>Uber, Spotify, Microsoft. Premium pricing, premium service.</td></tr>
+    <tr><td><strong>Checkout.com</strong></td><td>Strong in MENA, gaming, crypto, Asia growth</td><td>Binance, Klarna, Wise (partially).</td></tr>
+    <tr><td><strong>Square (Block)</strong></td><td>SMB physical retail, integrated POS</td><td>Cafes, salons, food trucks.</td></tr>
+    <tr><td><strong>Worldpay / FIS</strong></td><td>Legacy enterprise, global volume</td><td>Big retailers, banks rebranded.</td></tr>
+    <tr><td><strong>PayPal / Braintree</strong></td><td>Consumer wallet + acquirer, big in US e-com</td><td>eBay, marketplace checkout.</td></tr>
+  </tbody>
+</table>
+
+<p>Why YouTrip doesn't compete with Stripe: <strong>we sit on the cardholder side; they sit on the merchant side.</strong> A Stripe-acquired merchant in Tokyo is exactly the kind of place our cards get tapped. They're our complement, not our competition.</p>
+
+<h2 id="d2-3">3. Apple Pay &amp; Google Pay — tokenization, not a new network</h2>
+<p>The most common misconception in fintech: thinking Apple Pay is a payment network. <strong>It isn't.</strong> Apple Pay and Google Pay are <em>wallets</em>. They don't move money; they tokenize cards. The underlying transaction still goes Visa/Mastercard → issuer → acquirer, exactly like a plastic-card tap.</p>
+
+<h3>What happens when you provision a card to Apple Pay</h3>
+<ol>
+  <li>You open Apple Wallet → "Add Card" → enter card details (or scan).</li>
+  <li>Apple's servers contact the network (Visa or MC) and request a <strong>DPAN (Device Primary Account Number)</strong> — a tokenized version of your real card number, scoped to <em>your specific device</em>.</li>
+  <li>The network asks the issuer (YouTrip) "is this card eligible? Approve this tokenisation request?"</li>
+  <li>If approved, the network creates a token mapping: DPAN ↔ real PAN. The DPAN is stored in the device's Secure Element (hardware-level encrypted chip).</li>
+  <li>When you tap, the device transmits the DPAN — not your real card number — plus a one-time cryptogram.</li>
+  <li>The acquirer routes the transaction to the network. The network looks up the token, swaps it for the real PAN, and forwards to the issuer.</li>
+  <li>From the issuer's POV, it's the same transaction as a plastic-card tap, with one extra signal: "this came via Apple Pay" (the issuer can see token type).</li>
+</ol>
+
+<p>The crucial implication: <strong>Apple Pay does not earn interchange.</strong> Interchange still goes to the issuer (YouTrip). Apple charges the issuer a small fee for provisioning each card (roughly 0.15% of the user's spend, depending on negotiation) — that's where Apple's revenue from Apple Pay comes from. Google Pay charges issuers nothing.</p>
+
+<h3>Why this matters</h3>
+<ul>
+  <li><strong>Tokenisation is a security upgrade.</strong> The DPAN is useless outside that one device. Apple Pay transactions have ~5× lower fraud rates than plastic-card transactions.</li>
+  <li><strong>Apple Pay provisioning is a high-intent signal.</strong> A user who provisions a card to Apple Pay is significantly more likely to be active. We track wallet provisioning as a key activation event (table <code>RAW_WALLET_TOKEN</code> in BigQuery).</li>
+  <li><strong>Apple has structural power.</strong> Because Apple controls the device + the wallet + the Secure Element, they can extract economic rent from issuers (the 0.15% fee). Banks have spent years trying to negotiate it down. Mostly unsuccessfully.</li>
+  <li><strong>Google Pay is more open</strong> — runs on Android, doesn't charge issuers, but doesn't have the same brand pull as Apple Pay.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">Regional note</span>
+  <p>In China, neither Apple Pay nor Google Pay matter much — Alipay and WeChat Pay dominate, running on QR-code rails outside the card networks entirely. In Singapore, Apple Pay is widely used; PayNow (QR + bank transfer rails, not card) is also dominant for peer-to-peer and low-value payments. Travel cards like YouTrip are spent abroad, where card rails still dominate — so the wallet/QR question matters less to us than to a domestic Singapore card.</p>
+</div>
+</div>
+<div>
+<h2 id="d2-4">4. The compliance layer — 3DS, PCI, KYC, AML</h2>
+<p>Four acronyms that come up constantly. Get them straight once and you're set.</p>
+
+<table>
+  <thead><tr><th>Acronym</th><th>Stands for</th><th>What it protects against</th><th>Who's bound by it</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>3DS</strong></td>
+      <td>3-D Secure (Verified by Visa / Mastercard SecureCode)</td>
+      <td>Fraudulent online (card-not-present) transactions</td>
+      <td>Issuers must support it; merchants choose when to invoke it</td>
+    </tr>
+    <tr>
+      <td><strong>PCI DSS</strong></td>
+      <td>Payment Card Industry Data Security Standard</td>
+      <td>Storing/transmitting card data insecurely</td>
+      <td>Anyone touching card numbers — issuers, acquirers, merchants</td>
+    </tr>
+    <tr>
+      <td><strong>KYC</strong></td>
+      <td>Know Your Customer</td>
+      <td>Identity fraud, sanctions evasion, terrorist financing</td>
+      <td>Financial institutions when onboarding customers</td>
+    </tr>
+    <tr>
+      <td><strong>AML</strong></td>
+      <td>Anti-Money Laundering</td>
+      <td>Laundering money through the financial system</td>
+      <td>Ongoing — covers transaction monitoring, suspicious activity reporting</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3DS in one paragraph</h3>
+<p>When you check out online and a "verify with your phone" pop-up appears, you're going through 3DS. The issuer (us) gets to challenge the cardholder for additional auth before approving. If the merchant invokes 3DS and the user passes, <strong>liability for fraud shifts from the merchant to the issuer.</strong> Most online merchants now invoke 3DS by default. Cardholders hate it (friction), regulators love it (PSD2 in Europe basically mandates it). The current standard is 3DS 2.x, which can be silent (risk-scored) instead of always-challenge.</p>
+
+<h3>KYC at YouTrip in one paragraph</h3>
+<p>When a user signs up on the YouTrip app, they don't have an active card yet. They have to submit identity documents (NRIC + selfie in SG; passport elsewhere) and we run them through KYC checks — name match, document validity, sanctions screening, PEP (Politically Exposed Person) check, address verification. If they pass, the user becomes <strong>"approved"</strong> — they can load funds and start spending. <strong>CPApproved (cost per approved user) is therefore our most important paid-marketing metric</strong> — it's the cost of producing a user who has actually cleared the regulatory gate and can transact. (Sign-ups who never complete KYC are wasted spend; we don't celebrate them.)</p>
+
+<h3>AML in one paragraph</h3>
+<p>Once a user is active, we have to keep watching them. Transaction monitoring rules look for patterns: structuring (many small loads just under reporting thresholds), unusual geo (card used in 4 countries in one day), high-value transactions, sudden behaviour change. Hits get reviewed; some get reported to the MAS via a <strong>STR (Suspicious Transaction Report)</strong>. AML failures are existential risk for any fintech — fines run into hundreds of millions, and the regulator can pull our licence.</p>
+
+<h3>PCI DSS in one paragraph</h3>
+<p>Anyone who touches raw card numbers is required to be PCI-compliant. There are four levels based on transaction volume; YouTrip is Level 1 (the strictest). In practice, this means we never store raw PANs (we tokenise everything), we segregate the card-data systems from everything else, we encrypt everything at rest and in transit, and we get audited annually. The reason Stripe and similar PSPs are so popular is they take the PCI burden off the merchant — if you use Stripe Elements, you're not storing card data, so you only need the lightest PCI tier.</p>
+
+<h2 id="d2-5">5. BIN sponsorship — how non-banks issue cards</h2>
+<p>Here's the question every fintech-curious person asks: <em>if YouTrip is not a bank, how is it allowed to issue cards?</em></p>
+
+<p>The answer: <strong>BIN sponsorship</strong>. The card networks (Visa, Mastercard) only license BINs — the first 6–8 digits of a card number — to licensed financial institutions. So if you're not a bank, you can't get your own BIN directly. What you can do is partner with a bank that <em>does</em> have a BIN, and operate under their licence. They sponsor your card program; you do the consumer-facing product.</p>
+
+<div class="flow-diagram">
+   [ NETWORK ]                        [ NETWORK ]
+       │                                  │
+       │ licences BIN                     │ licences BIN
+       ▼                                  ▼
+  [ BANK X ]                         [ BANK Y ]
+       │                                  │
+       │ sponsors                         │ sponsors
+       ▼                                  ▼
+  [ FINTECH A ]                      [ FINTECH B ]
+  (issues cards                      (issues cards
+   under Bank X's                     under Bank Y's
+   licence)                           licence)
+</div>
+
+<p>There are two flavours of this relationship:</p>
+<ul>
+  <li><strong>Principal member</strong> — the entity holds the network licence directly and bears all the rule-compliance, settlement, and reporting obligations to the network. Big banks are usually principal members.</li>
+  <li><strong>Affiliate (or "sponsored") member</strong> — operates under a principal member's umbrella. The principal carries the formal compliance, the affiliate runs the product. Most fintechs operate this way until they reach scale.</li>
+</ul>
+
+<p>What does the sponsor bank get out of it?</p>
+<ul>
+  <li>A cut of interchange (typically a sleeve of 5–15% of the fintech's gross interchange).</li>
+  <li>Monthly platform / sponsorship fees.</li>
+  <li>Compliance oversight obligations (they're on the hook to the regulator if the fintech screws up).</li>
+</ul>
+
+<p>The big consequence for fintechs: <strong>your BIN sponsor is a single point of failure.</strong> If they pull the plug, your card program dies — every card stops working overnight. Wirecard's collapse in 2020 stranded several fintechs because Wirecard had been their sponsor. Picking a stable BIN sponsor and having a contingency plan is a core ops responsibility for every issuing fintech.</p>
+
+<h2 id="d2-6">6. YouTrip × Mastercard — how we're actually structured</h2>
+<p>Pulling the threads together: here's how YouTrip is wired into the global payments machine.</p>
+
+<div class="flow-diagram">
+                       ┌─────────────────────────┐
+                       │      MASTERCARD         │
+                       │   (network — rails)     │
+                       └─────────────────────────┘
+                                  │
+                                  │ licenses BIN to
+                                  ▼
+                       ┌─────────────────────────┐
+                       │   BIN-SPONSOR BANK      │
+                       │   (regulated, licensed) │
+                       └─────────────────────────┘
+                                  │
+                                  │ sponsors program for
+                                  ▼
+                       ┌─────────────────────────┐
+                       │        YOUTRIP          │
+                       │  (issuer, product,      │
+                       │   tech, marketing, CRM) │
+                       └─────────────────────────┘
+                                  │
+                                  │ issues cards to
+                                  ▼
+                       ┌─────────────────────────┐
+                       │      CARDHOLDERS        │
+                       │  (~millions across SG,  │
+                       │   TH, AU and growing)   │
+                       └─────────────────────────┘
+</div>
+
+<p>What YouTrip owns:</p>
+<ul>
+  <li>The product and app (UX, KYC flow, loading flows, in-app FX, etc.)</li>
+  <li>The user (data, marketing, CRM, churn)</li>
+  <li>The card design and program brand</li>
+  <li>Transaction-level decisions: which cards to issue, what limits to set, what FX margin to apply, what merchants to block, etc.</li>
+  <li>All consumer-facing economics — interchange share, FX margin, fees</li>
+</ul>
+
+<p>What the network (Mastercard) does:</p>
+<ul>
+  <li>Routes our transactions worldwide</li>
+  <li>Sets interchange rate tables we operate within</li>
+  <li>Provides FX rate feeds for settlement</li>
+  <li>Co-funds some marketing (Mastercard travel co-promotions)</li>
+  <li>Provides certain compliance/risk tooling</li>
+</ul>
+
+<p>What the BIN-sponsor bank does:</p>
+<ul>
+  <li>Holds the formal network membership</li>
+  <li>Holds the settlement account at the network</li>
+  <li>Bears regulatory responsibility</li>
+  <li>Takes a small interchange sleeve as their economic share</li>
+</ul>
+
+<div class="callout info">
+  <span class="label">Strategic note</span>
+  <p>One long-term strategic question for YouTrip is whether to eventually pursue our own principal membership — i.e., become directly licensed by Mastercard rather than going through a sponsor. That would mean more revenue retention, more control, and more compliance burden. Most fintechs make this jump around the 5–10 million active card mark. The economics of that step is one of the big "level-up" decisions in the company's life.</p>
+</div>
+</div>
+<div>
+<h2 id="d2-7">7. How YouTrip makes money — the 3.4% take rate broken down</h2>
+<p>Day 1 told you the headline: 3.4% take rate. Now we'll decompose it.</p>
+
+<table>
+  <thead><tr><th>Revenue stream</th><th>Approx contribution to take rate</th><th>What drives it</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>1. Interchange (cross-border)</strong></td>
+      <td>~1.2–1.5%</td>
+      <td>Every foreign transaction. We earn the issuer's share of the MDR. Cross-border rates &gt; domestic.</td>
+    </tr>
+    <tr>
+      <td><strong>2. FX margin</strong></td>
+      <td>~1.5–1.8%</td>
+      <td>Spread baked into our conversion rate. Bigger on exotic currency pairs, smaller on major ones.</td>
+    </tr>
+    <tr>
+      <td><strong>3. Weekend/holiday FX surcharge</strong></td>
+      <td>~0.05–0.1%</td>
+      <td>We don't charge consumers — but we do capture a tiny additional spread on weekend rates the network publishes.</td>
+    </tr>
+    <tr>
+      <td><strong>4. ATM withdrawal economics</strong></td>
+      <td>~0.05–0.1%</td>
+      <td>ATM operators pay interchange to issuers on cash withdrawals. Net of any operator fees we absorb.</td>
+    </tr>
+    <tr>
+      <td><strong>5. Float income</strong></td>
+      <td>~0.1–0.2%</td>
+      <td>Interest earned on the float (money loaded on cards but not yet spent). Higher when interest rates are high.</td>
+    </tr>
+    <tr>
+      <td><strong>6. Ancillary (top-up fees, premium tier, etc.)</strong></td>
+      <td>~0.05%</td>
+      <td>Card replacement fees, future premium tiers, partner referrals.</td>
+    </tr>
+    <tr style="background: var(--gray-100); font-weight: 650;">
+      <td><strong>Total take rate</strong></td>
+      <td><strong>~3.4%</strong></td>
+      <td>Of every $100 a YouTrip user spends abroad, ~$3.40 is YouTrip revenue.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>(The exact percentages shift by market and quarter — these are directional shares to help you reason about the business. Numbers 1 and 2 are the dominant pieces; together they're roughly 90% of our revenue.)</p>
+
+<h3>Subtractions: what comes out of that 3.4%</h3>
+<p>3.4% take rate is gross. To get to <em>net</em> revenue (what flows to YouTrip's P&amp;L after the costs of being in the payment business), subtract:</p>
+<ul>
+  <li><strong>BIN sponsor sleeve</strong> — small % of interchange goes to the sponsor bank</li>
+  <li><strong>Scheme fees</strong> — Mastercard's small per-transaction charges</li>
+  <li><strong>Card production + delivery</strong> — physical card cost (~$2 per card)</li>
+  <li><strong>Tokenisation fees</strong> — Apple Pay's ~0.15% per provisioned-card transaction</li>
+  <li><strong>Fraud losses</strong> — typically &lt;0.1% of GTV for a clean travel-card book</li>
+  <li><strong>Processing infrastructure</strong> — issuing processor (Marqeta or similar) per-txn fees</li>
+</ul>
+<p>Net contribution margin per transaction is meaningfully lower than 3.4% — but the unit economics work because cross-border travel spend is high-ticket (avg transaction $30–80) and high-frequency during trips.</p>
+
+<h3>Worked example: one user, one trip</h3>
+<div class="callout">
+  <p>A YouTrip user takes a 5-day trip to Tokyo. She spends ¥120,000 over 30 transactions (food, transport, shopping, one hotel). At a typical S$/¥ rate (~0.0089), that's S$1,068 of GTV.</p>
+  <p><strong>YouTrip revenue on this trip:</strong></p>
+  <ul style="margin: 8px 0;">
+    <li>Interchange (~1.3%): S$13.88</li>
+    <li>FX margin (~1.7%): S$18.16</li>
+    <li>Float (1 month at loaded balance ~S$1,500, ~3.5% APR / 12): ~S$4.38</li>
+    <li><strong>Total: ~S$36.40 of revenue from one user, one trip.</strong></li>
+  </ul>
+  <p>If our CPApproved is S$15–17 (the SG target), this user's <em>first trip alone</em> already pays back her acquisition cost ~2.2× over. Every subsequent trip is gravy. <strong>This is why the business works.</strong></p>
+</div>
+
+<h2 id="d2-8">8. Unit economics of a multi-currency card</h2>
+<p>To run a card business sustainably, you have to keep four numbers in a healthy relationship:</p>
+
+<table>
+  <thead><tr><th>Number</th><th>What it is</th><th>YouTrip's directional position</th></tr></thead>
+  <tbody>
+    <tr><td><strong>CPApproved</strong></td><td>Cost to acquire one KYC-approved user</td><td>SG target: S$14–17. AU: A$25–30. TH: ~฿200–350.</td></tr>
+    <tr><td><strong>Activation rate</strong></td><td>% of approved users who actually transact</td><td>Healthy travel-card range is 50–70% — we're in that range.</td></tr>
+    <tr><td><strong>Avg TV per active user per year</strong></td><td>How much an active user spends through us in a year</td><td>Several hundred S$ on the low end; thousands for frequent travellers.</td></tr>
+    <tr><td><strong>Take rate</strong></td><td>Our revenue % of that TV</td><td>~3.4% (covered above)</td></tr>
+  </tbody>
+</table>
+
+<p>The simple LTV equation:</p>
+<pre><code>LTV ≈ Avg TV/user/year × Take rate × Years retained × Activation rate
+    ≈ (e.g.) S$3,000     × 3.4%     × 3 years        × 0.6
+    ≈ S$184</code></pre>
+
+<p>(Rough — real LTV models discount future cashflows, model cohort decay, etc.) The headline punch: <strong>each approved user is worth significantly more than they cost to acquire.</strong> The job of performance marketing is to keep that ratio &gt;3× (industry-healthy benchmark for consumer fintech).</p>
+
+<h3>The four levers — what we can move</h3>
+<table>
+  <thead><tr><th>Lever</th><th>How to grow it</th><th>Who owns it</th></tr></thead>
+  <tbody>
+    <tr><td>More approved users</td><td>Lower CPApproved (better creative, more channels, better LP); or higher budget at constant CPA</td><td>Performance marketing (your team)</td></tr>
+    <tr><td>Higher activation rate</td><td>Better onboarding, push-notification journeys, first-trip nudges</td><td>CRM + product</td></tr>
+    <tr><td>Higher TV per user</td><td>More trips, larger trips, higher card-share-of-wallet abroad</td><td>CRM + product + brand</td></tr>
+    <tr><td>Higher take rate</td><td>Optimise FX margin without breaking the "0% FX" promise; ancillary revenue; premium tiers</td><td>Product + finance</td></tr>
+  </tbody>
+</table>
+
+<p>You'll spend the bulk of your time on the first two. The third and fourth are more product-led but still come up in marketing decisions (premium-tier positioning, partner promos, geo-targeted upsell).</p>
+
+<div class="q-check">
+  <h3>Day 2 quick check — can you answer in your own words?</h3>
+  <ol>
+    <li>Why is YouTrip an issuer and not an acquirer? What's the difference?</li>
+    <li>If Apple Pay isn't a network, what is it — and how does it affect interchange?</li>
+    <li>What is BIN sponsorship, and what role does our sponsor bank play?</li>
+    <li>Roughly how does YouTrip's 3.4% take rate decompose? (Hint: two streams account for ~90% of it.)</li>
+    <li>If you wanted to grow LTV per user, what are the four levers — and which two are your job?</li>
+  </ol>
+</div>
+</div>
+<div class="day-section">
+<span class="day-badge d3">Day 3</span>
+<h2>YouTrip the business</h2>
+<p class="section-meta">~60 minutes · Days 1 and 2 gave you the industry. Today you'll see how YouTrip actually plays in it — where we are, who uses us, where they spend, and what's hard.</p>
+
+<div class="callout warn">
+  <span class="label">A note on these numbers</span>
+  <p>Some figures below are directional rather than exact — they're meant to give you the <em>shape</em> of the business. Where exact numbers matter (CPApproved targets, take rate), they're called out as ⭐. The fresh numbers for any specific metric live in Metabase — by month two you should be pulling them yourself. For now, internalise the patterns.</p>
+</div>
+
+<h2 id="d3-1">1. The three markets at a glance</h2>
+<p>YouTrip operates in three markets today: Singapore (home), Thailand, and Australia. They're at radically different stages and behave like three different products from a marketing perspective.</p>
+
+<table>
+  <thead>
+    <tr><th>Market</th><th>Stage</th><th>Spend share</th><th>Currency reality</th><th>Strategic priority</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Singapore (SG)</strong></td>
+      <td>Mature, dominant. Multi-year market leader in the travel-card category.</td>
+      <td>~70–80% of total marketing spend</td>
+      <td>Reports in SGD. Meta / TikTok / Apple Search Ads bill in USD; Google Ads bills in SGD.</td>
+      <td>Defend leadership. Squeeze efficiency. Grow ARPU/retention.</td>
+    </tr>
+    <tr>
+      <td><strong>Thailand (TH)</strong></td>
+      <td>Growth phase. Different user behaviour — more mobile-first, more price-sensitive, KOL-led.</td>
+      <td>~15–20%</td>
+      <td>Sheet reports in THB; all platform spend native USD (THB ÷ 31.5 ≈ USD).</td>
+      <td>Win share against LINE Pay, bank wallets, FX booths.</td>
+    </tr>
+    <tr>
+      <td><strong>Australia (AU)</strong></td>
+      <td>Early-stage. Testing channels and creative against Wise, Revolut, Up Bank's travel card.</td>
+      <td>~5–10%</td>
+      <td>All platforms AUD-native. No GST issue (only SG).</td>
+      <td>Find product-market fit signal. Validate channels.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Top travel corridors per market</h3>
+<table>
+  <thead><tr><th>Market</th><th>Where their users travel (in rough order)</th></tr></thead>
+  <tbody>
+    <tr><td>SG</td><td>Malaysia (especially JB &amp; Touch'n'Go top-ups), Japan, Korea, Thailand, China, Indonesia (Bali), Philippines</td></tr>
+    <tr><td>TH</td><td>Japan, Korea, China, Singapore, Vietnam</td></tr>
+    <tr><td>AU</td><td>Bali (Indonesia), Japan, USA, NZ, Europe (UK/France/Italy)</td></tr>
+  </tbody>
+</table>
+
+<h3>Seasonality — when YouTrip is busy</h3>
+<table>
+  <thead><tr><th>Market</th><th>Peaks</th><th>Troughs</th></tr></thead>
+  <tbody>
+    <tr><td>SG</td><td><strong>December</strong> (~2.6× average — Christmas/New Year travel), Jun–Jul (school holidays + Northern summer)</td><td>Q3 generally; weeks 1–2 of any month</td></tr>
+    <tr><td>TH</td><td>Songkran (April), Q4 year-end</td><td>Mid-quarter rainy season</td></tr>
+    <tr><td>AU</td><td>Dec–Jan (summer holidays), Apr (Easter), Sep–Oct (warmer travel window)</td><td>Australian winter</td></tr>
+  </tbody>
+</table>
+
+<p>Marketing follows seasonality. We spend more in the lead-up to peak weeks. Budgets aren't equal across the year — Q4 SG can absorb 30%+ of annual budget.</p>
+
+<h2 id="d3-2">2. Users — MAU, DAU, and what they mean here</h2>
+<p>"MAU" (Monthly Active Users) and "DAU" (Daily Active Users) are universal product metrics. The trick is that "active" means different things for different businesses. For a chat app, "active" might mean "opened the app." For a card business, "active" means <em>actually transacted with the card</em>. Opens-without-spend don't move our P&amp;L.</p>
+
+<h3>How we define active</h3>
+<table>
+  <thead><tr><th>Cohort</th><th>Definition</th><th>What it tells you</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Approved users (total)</strong></td><td>Cumulative users who've passed KYC since launch</td><td>The eligible base. The denominator for everything else.</td></tr>
+    <tr><td><strong>Messageable</strong></td><td>Approved users we can still push/email (haven't opted out / unsubscribed / deleted app)</td><td>~3.4M in SG (vs ~5.2M total players in OneSignal) — the CRM-reachable audience</td></tr>
+    <tr><td><strong>MAU</strong></td><td>Users who transacted on the card in the last 30 days</td><td>The live revenue-producing base. The metric that pays our bills.</td></tr>
+    <tr><td><strong>DAU</strong></td><td>Users who transacted in the last 1 day</td><td>Volatile — spikes during peak travel weeks (Dec, Songkran)</td></tr>
+    <tr><td><strong>Activation rate</strong></td><td>% of approved users who transact within 60 days of approval</td><td>Tells us how leaky our onboarding is</td></tr>
+    <tr><td><strong>Retention curve</strong></td><td>% of approved users still transacting in month 3, 6, 12, 24</td><td>The single most important business health metric. Decays naturally — the curve shape is what we manage.</td></tr>
+  </tbody>
+</table>
+
+<h3>How to think about our DAU/MAU ratio</h3>
+<p>A typical mobile app brags about DAU/MAU = 50% (very engaged). For YouTrip, that ratio is <em>structurally lower</em> — and that's fine. You don't spend on a card every day. A healthy travel-card business has DAU/MAU somewhere around 5–15% because users transact in bursts (on trips) then go dormant. <strong>The right metric for us is not DAU/MAU but "% of users who travelled this quarter."</strong></p>
+
+<div class="callout info">
+  <span class="label">If you want exact MAU/DAU numbers</span>
+  <p>They live in Metabase. The cleanest starting point is Card <strong>#2958</strong> (users who spent) which can be filtered to 30-day and 1-day windows. Card <strong>#3548</strong> tracks approved users in SG. <strong>#5555</strong> for AU, <strong>#7623</strong> for TH. By the end of month one you should be pulling these yourself — don't memorise the snapshot; learn to refresh.</p>
+</div>
+
+<h2 id="d3-3">3. Demographics &amp; segments</h2>
+<p>Two ways to slice YouTrip users — by who they are (demographics) and by how they behave (segments).</p>
+
+<h3>By demographics (SG, directional)</h3>
+<ul>
+  <li><strong>Age:</strong> Skews 25–44. Slight female lean overall, but flips to male-skewed in the older &amp; higher-spend bands.</li>
+  <li><strong>Income:</strong> Card is free, but users skew mid-to-upper-middle income (people who travel internationally). Not a mass-affluent product, not a low-income product.</li>
+  <li><strong>Phone:</strong> ~55–60% iOS / 40–45% Android in SG (closer to AU iOS share, much higher iOS than the SG smartphone average — our customer skews iPhone).</li>
+  <li><strong>Travel frequency:</strong> Bimodal. A large chunk of one-trip users (one holiday/year) and a smaller but highly profitable chunk of frequent flyers (3+ trips/year).</li>
+</ul>
+
+<h3>By behavioural segment</h3>
+<table>
+  <thead><tr><th>Segment</th><th>What they look like</th><th>What CRM does for them</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>1. First-time travellers</strong></td>
+      <td>Young, often students/early career. Low loads but high in-trip frequency. Trip = 5–10 days, MY/JP/KR most common.</td>
+      <td>Activation journeys; "how to use YouTrip" educational pushes.</td>
+    </tr>
+    <tr>
+      <td><strong>2. Frequent travellers</strong></td>
+      <td>Multiple trips per year, often higher spend per trip. Mid-career professionals.</td>
+      <td>Retention: pre-trip nudges, FX-rate notifications, premium-tier upsell.</td>
+    </tr>
+    <tr>
+      <td><strong>3. Business travellers</strong></td>
+      <td>Corporate trips, higher ticket sizes, expense-claim use.</td>
+      <td>Different value prop — currently underserved (potential 2026 product wedge).</td>
+    </tr>
+    <tr>
+      <td><strong>4. One-time users</strong></td>
+      <td>Sign up for a specific trip, never come back. The biggest leak in the funnel.</td>
+      <td>Reactivation journeys — try to convert them into segment 1 or 2.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A large fraction of CRM work is moving users between segments — segment 4 → segment 1, segment 1 → segment 2. The economics dictate where to invest CRM dollars: a 1-time user is &lt;1× CAC recovered, a frequent traveller is &gt;5× CAC recovered. <strong>Retention is therefore worth materially more per user than acquisition.</strong></p>
+</div>
+<div>
+<h2 id="d3-4">4. Where YouTrippers travel — top corridors</h2>
+<p>Because we're an issuer focused on foreign spend, "where users travel" = "where our revenue comes from." Knowing the top corridors per market is fundamental — it's the input into seasonality planning, creative targeting (Japan ads in Q3, Bali ads year-round for AU), partnership decisions, and product features (e.g., currency support, in-app guides).</p>
+
+<h3>SG users — top spending destinations (directional, FY23–25 averages)</h3>
+<table>
+  <thead><tr><th>Rank</th><th>Destination</th><th>% of cross-border TV</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Malaysia (MYR)</td><td>~20–25%</td><td>Hugely driven by JB day trips + Touch'n'Go top-ups. Highest <em>frequency</em>, lower per-transaction.</td></tr>
+    <tr><td>2</td><td>Japan (JPY)</td><td>~15–20%</td><td>Highest <em>per-trip</em> spend. Concentrated in Mar (sakura), Jun–Jul, Nov–Dec.</td></tr>
+    <tr><td>3</td><td>Korea (KRW)</td><td>~8–10%</td><td>K-pop, K-drama tourism. Strong in shoulder seasons.</td></tr>
+    <tr><td>4</td><td>Thailand (THB)</td><td>~7–10%</td><td>Year-round; spike at Songkran (April).</td></tr>
+    <tr><td>5</td><td>China (CNY)</td><td>~5–8%</td><td>Recovering post-pandemic. Tier-1 cities + Sanya.</td></tr>
+    <tr><td>6</td><td>Indonesia / Bali (IDR)</td><td>~4–6%</td><td>Long-stay, lower-MCC spend.</td></tr>
+    <tr><td>7</td><td>Philippines, Vietnam, Hong Kong, AUS, UK</td><td>~3–5% each</td><td>Long tail.</td></tr>
+    <tr><td>8</td><td>USA / Europe</td><td>~5–8% combined</td><td>Big-ticket trips, fewer customers, high spend per trip.</td></tr>
+  </tbody>
+</table>
+
+<p><strong>The Malaysia-Japan duopoly is the heart of SG's TV.</strong> Anything that moves these corridors moves the business — a weak yen makes Japan trips boom; a Touch'n'Go integration improvement moves the entire MY corridor; political tension in either country puts pressure on quarterly numbers. As an intern, knowing this is the most useful single fact about SG TV.</p>
+
+<h3>TH and AU corridors (briefly)</h3>
+<ul>
+  <li><strong>TH:</strong> Japan (#1 by spend), Korea, China, Singapore, Vietnam. Songkran spike (April) is the equivalent of SG's December.</li>
+  <li><strong>AU:</strong> Bali (#1 — distinctly Australian phenomenon), Japan, USA, NZ, Europe. The AU traveller is different: longer trips, higher per-trip spend, fewer trips per year.</li>
+</ul>
+
+<h2 id="d3-5">5. Top merchants &amp; spending categories</h2>
+<p>Two views: <em>where</em> people spend (merchant names) and <em>what</em> they spend on (MCC categories).</p>
+
+<h3>Top MCC categories (SG, directional)</h3>
+<table>
+  <thead><tr><th>MCC bucket</th><th>What's in it</th><th>~% of TV</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lodging (7011)</strong></td><td>Hotels, Airbnb (categorised here in most cases), serviced apartments</td><td>~18–22%</td></tr>
+    <tr><td><strong>Eating &amp; drinking (5812, 5813, 5814)</strong></td><td>Restaurants, bars, fast food, cafes</td><td>~14–18%</td></tr>
+    <tr><td><strong>Air carriers + travel agents (3000-series, 4511, 4722)</strong></td><td>Airline tickets, OTA bookings (Klook, Booking.com, Agoda)</td><td>~12–15%</td></tr>
+    <tr><td><strong>Transportation (4111, 4121, 4131)</strong></td><td>Public transit, taxis/rideshare, buses/trains</td><td>~10–14%</td></tr>
+    <tr><td><strong>Shopping (5311, 5651, 5691, 5944, 5977)</strong></td><td>Department stores, clothing, jewellery, cosmetics</td><td>~10–14%</td></tr>
+    <tr><td><strong>Groceries / convenience (5411, 5499)</strong></td><td>Supermarkets, 7-Eleven, FamilyMart, Lawson (huge in JP/KR)</td><td>~6–9%</td></tr>
+    <tr><td><strong>Entertainment &amp; attractions (7991, 7996, 7832)</strong></td><td>Theme parks, museums, cinemas, tours</td><td>~3–5%</td></tr>
+    <tr><td><strong>ATM / cash (6011)</strong></td><td>Cash withdrawals abroad</td><td>~3–5%</td></tr>
+    <tr><td><strong>Petrol / autorental (5541, 7512)</strong></td><td>Fuel, rental cars (big in AU corridors)</td><td>~2–3%</td></tr>
+    <tr><td><strong>Other</strong></td><td>Long tail of MCC codes</td><td>~5–10%</td></tr>
+  </tbody>
+</table>
+
+<p>The shape is intuitive: hotels + food + transport + shopping = ~70% of spend. Travel-shaped, exactly as expected for a travel card.</p>
+
+<h3>Top merchant patterns</h3>
+<p>Specific merchant rankings shift month to month, but the persistent leaders look like this:</p>
+<ul>
+  <li><strong>Malaysia corridor:</strong> Touch'n'Go top-ups dominate — likely the single most-frequent merchant for SG users (small ticket, very high frequency).</li>
+  <li><strong>Japan:</strong> 7-Eleven Japan, FamilyMart, Lawson convenience stores; JR (rail); Don Quijote; hotel chains (Henn-na, Toyoko Inn).</li>
+  <li><strong>Korea:</strong> CU and GS25 convenience stores; T-money (transit); Olive Young (cosmetics).</li>
+  <li><strong>Online (everywhere):</strong> Agoda, Booking.com, Klook (huge in Asia), Trip.com, Airbnb, Expedia.</li>
+  <li><strong>Airlines:</strong> Singapore Airlines, Scoot, AirAsia, ANA, JAL, Korean Air, Cebu Pacific.</li>
+</ul>
+
+<div class="callout info">
+  <span class="label">Why merchant data matters for marketing</span>
+  <p>Three direct uses: (1) <strong>Partnership prospecting</strong> — the merchants where our users already spend are obvious partnership candidates (Klook, Touch'n'Go). (2) <strong>Geo-triggered CRM</strong> — if we see a spike in JPY-currency MCC 5411 (Japan convenience stores), that user is mid-trip in Japan; a "you might also like..." push is timely. (3) <strong>Creative direction</strong> — top merchants give us the user's actual travel reality, which beats stock photos in creative.</p>
+</div>
+
+<h2 id="d3-6">6. Average transaction volume per user — and why TV beats MAU</h2>
+<p>Possibly the most under-appreciated fact about YouTrip's economics: <strong>not all users are equal, and the spread is enormous.</strong> A median active user looks completely different from a P90 user, who looks completely different from a P99 user.</p>
+
+<h3>Directional shape of TV-per-user (active SG users, annual)</h3>
+<table>
+  <thead><tr><th>Percentile band</th><th>Annual TV through YouTrip (directional)</th><th>What this user looks like</th></tr></thead>
+  <tbody>
+    <tr><td>P10 (bottom decile of active)</td><td>~S$100–300</td><td>One short trip per year, low loads.</td></tr>
+    <tr><td>P50 (median active)</td><td>~S$1,500–2,500</td><td>1–2 trips per year. Typical YouTripper.</td></tr>
+    <tr><td>P75</td><td>~S$4,000–6,000</td><td>Frequent traveller, 2–3 trips per year.</td></tr>
+    <tr><td>P90</td><td>~S$8,000–12,000</td><td>Heavy traveller; possibly using YouTrip as default abroad spend.</td></tr>
+    <tr><td>P99</td><td>~S$25,000–40,000+</td><td>Power users — sometimes business travellers, sometimes very wealthy leisure travellers.</td></tr>
+  </tbody>
+</table>
+
+<p>Two practical implications:</p>
+<ol>
+  <li><strong>The top decile of users generates roughly half the revenue.</strong> This is a classic power-law distribution. Losing a single P99 user costs us as much as losing 40 median users. Retention work has wildly different ROI by segment.</li>
+  <li><strong>"Approved users" and "active users" diverge dramatically.</strong> Plenty of approved users never transact. Plenty more transact once and stop. The KPI ladder is approved → active → recurring → high-value — and the conversion at each step matters more than the absolute count of approved.</li>
+</ol>
+
+<div class="callout good">
+  <span class="label">The North Star, in one sentence</span>
+  <p>YouTrip's North Star metric is <strong>Transaction Volume</strong>. Not MAU, not approved users, not loads, not sign-ups. TV is what we earn take rate on; TV is the cash through the rails. Every marketing investment, CRM journey, and product decision should be evaluable against "does it grow profitable TV?" If you only remember one thing from Day 3, remember this.</p>
+</div>
+</div>
+<div>
+<h2 id="d3-7">7. Acquisition — CAC, CPApproved, the channel mix</h2>
+<p>How users actually find YouTrip. Paid acquisition is the bulk of new-user volume; organic (referrals, brand search, App Store discovery) is meaningful but smaller. Here's the working channel set.</p>
+
+<h3>Channels and what they do</h3>
+<table>
+  <thead><tr><th>Channel</th><th>Role</th><th>SG behaviour</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Meta (FB + IG)</strong></td><td>Workhorse for performance — wide reach, mid-funnel intent</td><td>Largest paid channel by spend. Both BAU + IMC creative.</td></tr>
+    <tr><td><strong>Google Ads (UAC, Search)</strong></td><td>Demand capture (Search) + reach amplification (UAC)</td><td>UAC = app install campaigns. Search captures branded + competitive intent.</td></tr>
+    <tr><td><strong>TikTok</strong></td><td>Lower-funnel reach, younger audience, creator-led</td><td>Heavy creator/KOL content; BAU pulls performance creative.</td></tr>
+    <tr><td><strong>Apple Search Ads (ASA)</strong></td><td>Bottom-of-funnel App Store search</td><td>Small absolute volume, very efficient. iOS-only.</td></tr>
+    <tr><td><strong>Referral program</strong></td><td>Friend-gets-friend incentive — viral coefficient lever</td><td>Steady contributor; lever for activations</td></tr>
+    <tr><td><strong>Organic search / SEO</strong></td><td>Long-tail discovery (e.g., "best travel card Singapore")</td><td>Growing as we publish content; high LTV per acquired user</td></tr>
+  </tbody>
+</table>
+
+<h3>The two metrics that matter most</h3>
+<ul>
+  <li><strong>⭐ CPApproved</strong> — Cost per KYC-approved user. The most important paid-metric. Target: <strong>S$14–17 in SG</strong>. Below S$14 → we can scale up. Above S$17.5 → we cut back. Source of truth is Metabase Card <strong>#3548</strong>. The reason this and not CPI (cost per install) or CPSU (cost per sign-up): only approved users can transact, so paid spend that produces installs but no approvals is wasted.</li>
+  <li><strong>Activation rate (approved → transacting)</strong> — % of approved users who actually spend on the card within X days. Healthy range 50–70%. CRM lives or dies on this metric.</li>
+</ul>
+
+<h3>BAU vs IMC</h3>
+<p>Two flavours of campaigns you'll hear constantly:</p>
+<ul>
+  <li><strong>BAU (Business As Usual)</strong> — Always-on, performance-optimised campaigns. The base load.</li>
+  <li><strong>IMC (Integrated Marketing Campaign)</strong> — Brand pushes, seasonal pushes, partnership activations, campaign-specific creative. Less efficient on CPApproved but builds brand and audience.</li>
+</ul>
+
+<p>Tracker convention: BAU and IMC are reported separately. Overall = BAU + IMC. When someone asks "what's our CPApproved?" they almost always mean BAU CPApproved, because IMC is intentionally less efficient.</p>
+
+<h2 id="d3-8">8. CRM &amp; retention — how we keep them coming back</h2>
+<p>Retaining users is worth more than acquiring them, because a retained user has already paid back their CAC and every additional transaction is gross profit. The CRM stack and how we think about retention:</p>
+
+<h3>The platform stack</h3>
+<table>
+  <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><strong>OneSignal</strong></td><td>Primary push/email/SMS/in-app messaging engine. Holds segments, runs journeys, A/B tests.</td></tr>
+    <tr><td><strong>BigQuery</strong></td><td>The data warehouse. Source for cohort definitions, custom events, transaction-level analysis.</td></tr>
+    <tr><td><strong>Metabase</strong></td><td>Day-to-day dashboards and ad-hoc analysis. Live cards (#3548, #2956, etc).</td></tr>
+    <tr><td><strong>Mixpanel</strong></td><td>App event analytics (screen views, button taps, funnels).</td></tr>
+    <tr><td><strong>AppsFlyer</strong></td><td>Mobile attribution — which paid channel produced which install/sign-up.</td></tr>
+  </tbody>
+</table>
+
+<h3>How we measure CRM</h3>
+<p>The methodology that matters most here is <strong>iTV (incremental Transaction Volume)</strong> — the lift a CRM campaign creates above what would have happened anyway. The formula:</p>
+<pre><code>iTV = (Test TV per user − Control TV per user) × Test segment size</code></pre>
+<p>Every CRM campaign should have a control group (random hold-out who don't receive the message). After the journey window, we compare test vs. control on TV per user. If test &gt; control with statistical significance (p &lt; 0.05), the journey is incremental — meaning it caused additional spend that wouldn't have happened. If not, we kill or iterate.</p>
+
+<div class="callout info">
+  <span class="label">Anchor concept</span>
+  <p>A push notification can <em>correlate</em> with spend (the user spent after receiving it) but that doesn't mean it <em>caused</em> the spend. A user about to travel might spend regardless. The control group is what separates "correlation" from "incremental." If you only remember one thing about CRM measurement: <strong>no control group, no causal claim.</strong></p>
+</div>
+
+<h3>Live journey types (high level)</h3>
+<ul>
+  <li><strong>Welcome / onboarding</strong> — fired on KYC approval. Push the first load, the first transaction.</li>
+  <li><strong>Geo-triggered</strong> — when we detect a transaction in a specific currency, fire local-merchant guides / tips for that destination.</li>
+  <li><strong>Pre-trip</strong> — when behavioural signals suggest an upcoming trip (e.g., big load, recent flight purchase), nudge with FX rate alerts and tips.</li>
+  <li><strong>Reactivation</strong> — for users who've gone dormant 3+ months.</li>
+  <li><strong>Bill-split / referral</strong> — viral loops for activation.</li>
+</ul>
+
+<h2 id="d3-9">9. What's actually hard right now</h2>
+<p>An onboarding doc that only tells you the success story is useless. Here are the genuine problems we wrestle with — knowing them gives you context for everything else.</p>
+
+<ol>
+  <li><strong>Defending SG market share against well-funded competitors.</strong> Wise is the #1 threat globally and is investing heavily in Singapore. They have a higher brand-trust ceiling because of their transparent-pricing positioning. Our defence is product breadth + Triple Zero clarity, but the moat isn't unassailable.</li>
+  <li><strong>Cracking AU and TH economics.</strong> SG works because we built the category. AU and TH are harder — different competitor landscape, different behaviour, different unit economics. Both markets are still in "find the working channel mix" mode.</li>
+  <li><strong>iOS attribution mess.</strong> Apple's SKAN framework deliberately blinds iOS attribution. Meta's reported iOS conversions consistently undercount by 21–47%. AppsFlyer is more trustworthy but still modelled. We have to triangulate constantly.</li>
+  <li><strong>Creative fatigue cycles.</strong> Every performance channel decays as audiences see the same creative repeatedly. We're on a perpetual treadmill of new hooks, new UGC, new KOL content, especially on Meta and TikTok.</li>
+  <li><strong>Power-law in users means power-law in risk.</strong> Top-decile users carry half the revenue — losing them concentration-risks the business. We have to retain heavy users specifically, not just "users in general."</li>
+  <li><strong>The future of card rails.</strong> Stablecoins, account-to-account rails (Singapore's PayNow + cross-border equivalents), and super-apps (Alipay+, LINE Pay's regional push) are all chipping at the long-term role of card networks. None of them threaten our take rate today — but the 5-year question is real.</li>
+</ol>
+
+<h2 id="d3-10">10. Your first month — what to do with all this</h2>
+<p>You don't have to act on everything. Here's a sensible Week 1 → Month 1 path.</p>
+
+<h3>Week 1 — internalise</h3>
+<ul>
+  <li>Re-read this doc once more. Do the quick-checks again — verbalise the answers.</li>
+  <li>Open Metabase. Find cards #3548, #5555, #7623, #2956, #2957, #2958. Look at the last 30 days for each.</li>
+  <li>Read the existing marketing intern guide in <code>knowledge/intern-onboarding/</code> for the operational mechanics.</li>
+  <li>Ask Sandra to walk you through one weekly Monday report end-to-end.</li>
+</ul>
+
+<h3>Week 2 — start handling things</h3>
+<ul>
+  <li>Own one weekly reporting task end-to-end (e.g., one channel's BAU pull).</li>
+  <li>Sit in on one creative review.</li>
+  <li>Pick one CRM journey and trace it end-to-end: trigger → segment → message → result.</li>
+</ul>
+
+<h3>Week 3–4 — start owning</h3>
+<ul>
+  <li>Own one channel's BAU weekly reporting from end to end.</li>
+  <li>Propose one creative idea — write a brief, pitch it.</li>
+  <li>Suggest one A/B test in any function and walk through the math (test size, expected effect, control group).</li>
+</ul>
+
+<div class="callout good">
+  <span class="label">The skill ladder</span>
+  <p>By month three you should be able to answer "what changed in CPApproved this week, and why?" without help. By month six you should be able to look at last week's TV and predict next week's. By month twelve you should be running your own optimization experiments and your own CRM journeys, and arguing about take-rate strategy. <strong>The journey is from "interpret the dashboard" → "predict the dashboard" → "move the dashboard."</strong></p>
+</div>
+
+<div class="q-check">
+  <h3>Day 3 quick check — can you answer in your own words?</h3>
+  <ol>
+    <li>Which two travel corridors dominate SG TV, and roughly what share?</li>
+    <li>What's the difference between MAU and "active" in our context — and why is DAU/MAU ratio a bad metric here?</li>
+    <li>What does CPApproved measure, and why is it the canonical paid-marketing metric?</li>
+    <li>What's iTV? Why does CRM measurement require a control group?</li>
+    <li>What is YouTrip's North Star metric, and what does it mean in dollars?</li>
+  </ol>
+</div>
+
+<!-- DAYS_4_5_INSERTION_POINT -->
+
+<div class="day-section">
+<span class="day-badge d4">Day 4</span>
+<h2>How we measure paid performance</h2>
+<p class="section-meta">Read time ~45 min · The vocabulary, the SSOT, the metrics that drive every weekly conversation</p>
+
+<p>Days 1&ndash;3 covered <em>why</em> YouTrip exists and how the business works. Days 4&ndash;5 zoom into the single weekly rhythm that most of marketing revolves around: <strong>the performance reports</strong>. Four reports, three markets, one set of metrics. This day teaches you the language and the data; Day 5 teaches you how they get made.</p>
+
+<div class="callout info">
+  <span class="label">What you'll be able to do after Day 4</span>
+  <p>Open any of the four weekly reports and read the numbers fluently: know which metric matters, which platform owns the truth, why the same row can look different depending on the tab, and why nobody trusts a single number on its own. You won't be running the reports — you'll be able to follow along when Sandra walks through one.</p>
+</div>
+
+<h2 id="d4-1">1. The four reports at a glance</h2>
+<p>There are four recurring performance reports across the three markets. They all share the same metric set, but each has its own cadence, audience, and quirks.</p>
+
+<table>
+  <thead>
+    <tr><th>Report</th><th>Market</th><th>Day</th><th>Audience</th><th>What it answers</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>SG Monday</strong></td><td>Singapore</td><td>Mon AM</td><td>COO + perf team</td><td>Did last week's paid spend buy efficient approved users? What changed WoW?</td></tr>
+    <tr><td><strong>AU Monday</strong></td><td>Australia</td><td>Mon AM</td><td>COO + AU lead</td><td>Same question, AU economics. Smaller scale, more volatile, no ASA channel.</td></tr>
+    <tr><td><strong>TH Monday</strong></td><td>Thailand</td><td>Mon AM</td><td>COO + TH lead</td><td>Same question, TH economics. KOL-heavy, all USD-billed natively.</td></tr>
+    <tr><td><strong>TH Tuesday</strong></td><td>Thailand</td><td>Tue AM</td><td>TH team deep-dive</td><td>The longer-form version: campaign-level and creator-level for the TH team to act on.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <span class="label">A common confusion</span>
+  <p>Thailand also has a Thursday and Friday report that fire automatically through a Slack bot called <strong>perfbot</strong> in <code>#th-kol-boostpost</code>. <em>Those are not the Tuesday deep-dive.</em> Thursday/Friday are KOL-spend digests. Tuesday is a written deep-dive done by a human into a Google Sheet. If someone says "the TH report," ask <em>which one</em>.</p>
+</div>
+
+<h3>Why four reports for three markets?</h3>
+<p>The Monday reports go to the COO. They're punchy, top-line, action-oriented. One number per channel, one delta vs. last week, one recommendation. The TH team wanted a second pass with more granularity — per-campaign, per-creator, per-creative — to actually act on. So Tuesday became the deep-dive, owned by the TH lead, that goes into the working sheet for the week's decisions. SG and AU don't have a Tuesday equivalent because SG/AU don't lean on KOLs the way TH does — there's less per-creator data to dig into.</p>
+
+<h2 id="d4-2">2. The metrics that drive everything</h2>
+<p>Every report uses the same five core metrics. Learn what each one <em>actually</em> counts and you'll understand every weekly meeting.</p>
+
+<table>
+  <thead>
+    <tr><th>Metric</th><th>What it measures</th><th>Where it comes from</th><th>Why it matters</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Spend</strong></td>
+      <td>What we paid the ad platform</td>
+      <td>Each platform's own reporting (Meta, Google, TikTok, ASA)</td>
+      <td>The denominator of everything. Cheap to get, easy to verify.</td>
+    </tr>
+    <tr>
+      <td><strong>Installs</strong></td>
+      <td>App downloads attributed to a campaign</td>
+      <td>AppsFlyer (the truth) &mdash; not the ad platform's number</td>
+      <td>Meta and TikTok each undercount iOS by 21&ndash;47% because of Apple's SKAN. AppsFlyer is the only neutral attribution source.</td>
+    </tr>
+    <tr>
+      <td><strong>Approved</strong></td>
+      <td>Users who completed KYC and got an active card</td>
+      <td>Metabase (Card #3548 SG, #5555 AU, #7623 TH)</td>
+      <td>This is the conversion event we actually care about. An install that never KYCs is worthless.</td>
+    </tr>
+    <tr>
+      <td><strong>CPI</strong></td>
+      <td>Cost per install = Spend / Installs</td>
+      <td>Calculated</td>
+      <td>Cheap proxy for top-of-funnel efficiency. Useful but not the headline.</td>
+    </tr>
+    <tr>
+      <td><strong>CPApproved</strong></td>
+      <td>Cost per approved user = Spend / Approved</td>
+      <td>Calculated</td>
+      <td><strong>This is the headline metric.</strong> What the COO looks at first. SG benchmark is roughly $14&ndash;16.50; AU target is around US$100.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="label">The one-line rule</span>
+  <p>If you remember one thing about which number to trust: <strong>spend comes from the ad platform, installs come from AppsFlyer, approved comes from Metabase.</strong> Never use a single source for two of those — they'll quietly disagree and the headline metric will be wrong.</p>
+</div>
+
+<h2 id="d4-3">3. The 4-week window — why we never look at one week alone</h2>
+<p>Every Monday report uses a <strong>4-week comparison window</strong>: the reporting week (W0) plus the three prior weeks (W-1, W-2, W-3). Not one week, not five.</p>
+
+<p>The reasoning is practical:</p>
+<ul>
+  <li><strong>One week alone is noise.</strong> A holiday, a creative pause, a competitor's launch &mdash; any of these can swing a single week ±20% without telling you anything durable.</li>
+  <li><strong>Three priors give you a trend.</strong> If W0 is bad, you can tell whether it's a one-week dip or a four-week slide. Those need very different responses.</li>
+  <li><strong>Five weeks adds noise without adding signal.</strong> Creative cycles, audience refreshes, and seasonality usually play out inside 4 weeks. Going wider muddles the comparison.</li>
+</ul>
+
+<p>You'll see this everywhere: every funnel table is 4 columns wide, every WoW delta is W0 vs. W-1, and any chart with more than 4 bars is probably a special-purpose deep-dive, not the weekly report.</p>
+
+
+<h2 id="d4-4">4. Where the data lives &mdash; the five platforms + Metabase</h2>
+<p>Six data sources, each with one job. You'll have access to all of them already (Metabase is the only one to check).</p>
+
+<table>
+  <thead><tr><th>Source</th><th>What it owns</th><th>What it's wrong about</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Meta Ads Manager</strong></td><td>Meta spend, impressions, clicks, frequency, CTR</td><td>iOS installs (undercounts 21&ndash;47% due to SKAN). For installs, use AppsFlyer.</td></tr>
+    <tr><td><strong>Google Ads</strong></td><td>UAC spend, impressions, clicks, conversions (Android-dominant)</td><td>Billed in SGD for SG account (÷1.35 for USD). AU and TH are billed in AUD and USD respectively.</td></tr>
+    <tr><td><strong>TikTok Ads Manager</strong></td><td>TikTok spend, impressions, CTR, frequency. Spark Ads for KOL content.</td><td>iOS attribution is also weak; lean on AppsFlyer. Smart+ campaigns hide ad-level budget.</td></tr>
+    <tr><td><strong>Apple Search Ads (ASA)</strong></td><td>App Store search spend per keyword. SG only &mdash; AU does not run ASA.</td><td>The tracker column for ASA is roughly 30% of actual. Always use the ASA API live pull, never the tracker column.</td></tr>
+    <tr><td><strong>AppsFlyer</strong></td><td>The neutral install attribution truth across all 4 platforms above. Owns "which channel drove this install."</td><td>iOS is modelled, not deterministic. Numbers settle over 3&ndash;4 days as SKAN postbacks arrive.</td></tr>
+    <tr><td><strong>Metabase</strong></td><td>The KYC-approved number. Lives in <code>VIEW_PERFORMANCE_MARKETING_ACQ_SSOT</code> in BigQuery, surfaced through Cards #3548 / #5555 / #7623.</td><td>Session token expires every 14 days &mdash; the #1 reason a report breaks. (Day 5 covers the fix.)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="d4-5">5. The Spending Tracker &mdash; one Google Sheet per market</h2>
+<p>Each market has a tracker Google Sheet that consolidates all six sources above into one weekly view. The tracker is the canonical input for every Monday report.</p>
+
+<table>
+  <thead><tr><th>Market</th><th>Tracker tab name</th><th>What rows mean</th></tr></thead>
+  <tbody>
+    <tr><td><strong>SG</strong></td><td><code>claude test weekly</code></td><td>Rows 4&ndash;22 are <strong>BAU</strong> per-channel; rows 49&ndash;78 are <strong>Overall</strong> (BAU + Branding). Both refresh every Monday.</td></tr>
+    <tr><td><strong>AU</strong></td><td><code>claude test au weekly</code></td><td>Channel-summed Q22&ndash;Q25 for the canonical weekly approved number. <strong>Excludes Promo</strong> (which SG includes).</td></tr>
+    <tr><td><strong>TH</strong></td><td><code>claude test th weekly</code></td><td>Six channels. iOS SKAN approved is OR-clause filtered. Boost KOL approved is filled in manually each week.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout warn">
+  <span class="label">The "two sections" gotcha &mdash; SG only</span>
+  <p>The SG <code>claude test weekly</code> tab has <strong>two sections</strong> that look almost identical: BAU at the top (rows 4&ndash;22) and Overall = BAU + Branding (rows 49&ndash;78). When someone says "what's our weekly CPApproved?" they almost always mean the BAU number (cell Q43). When they say "what was our total weekly spend?" they often mean Overall (cell Q84). They look the same; they answer different questions. Read the section header in column A first &mdash; never just trust the row number.</p>
+</div>
+
+<h3>Why a tracker and not just the dashboards?</h3>
+<p>Each platform has its own dashboard. None of them know about each other. The tracker exists because:</p>
+<ul>
+  <li>You need spend across all 4 platforms in one place to compute blended CPApproved.</li>
+  <li>You need historical 4-week comparison without hopping between tools.</li>
+  <li>You need the same currency &mdash; the tracker normalises SGD/AUD/THB into USD where needed.</li>
+  <li>You need GST treatment (SG only &mdash; ×1.09) handled consistently.</li>
+  <li>You need attribution-lag flagging (the last 3 days of iOS data are incomplete).</li>
+</ul>
+
+<p>If we relied on the dashboards alone, every report would re-do these reconciliations from scratch. The tracker codifies the reconciliations so the only question on Monday is "how do the numbers look?" not "are the numbers right?"</p>
+
+<h2 id="d4-6">6. Currency and GST &mdash; the multi-market reality</h2>
+<p>Three markets, three currencies, two billing conventions. This trips up every new joiner. Memorize the table.</p>
+
+<table>
+  <thead><tr><th>Market / platform</th><th>Native billing currency</th><th>Conversion rule</th><th>GST?</th></tr></thead>
+  <tbody>
+    <tr><td>SG &mdash; Meta</td><td>USD</td><td>No conversion needed</td><td>×1.09 GST applied at tracker level</td></tr>
+    <tr><td>SG &mdash; Google Ads</td><td><strong>SGD</strong></td><td>÷1.35 to convert to USD</td><td>×1.09 GST</td></tr>
+    <tr><td>SG &mdash; TikTok</td><td>USD</td><td>None</td><td>×1.09 GST</td></tr>
+    <tr><td>SG &mdash; ASA</td><td>USD</td><td>None</td><td>×1.09 GST</td></tr>
+    <tr><td>AU &mdash; all platforms</td><td><strong>AUD</strong></td><td>÷1.40 to convert to USD</td><td>No GST applied to USD figures</td></tr>
+    <tr><td>TH &mdash; all platforms</td><td><strong>USD</strong> natively</td><td>None &mdash; despite the market being Thailand, the ad platforms bill USD</td><td>No GST</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="label">Why GST only on SG</span>
+  <p>YouTrip is registered for GST in Singapore. Ad spend invoiced to a SG-registered entity is GST-inclusive (currently 9%). For the cost-of-acquisition calculation to match the books, the tracker multiplies SG ad spend by 1.09 before computing CPApproved. AU and TH do not have this adjustment &mdash; their CPApproved is computed on raw USD ad spend.</p>
+</div>
+
+<h3>The "exec briefings default to USD" rule</h3>
+<p>Any report that goes to the COO is in USD. Always. The COO thinks in USD because it's the only currency that makes SG / AU / TH comparable. Inside a single market, working currency is fine; the moment a report crosses markets, switch everything to USD.</p>
+
+<div class="q-check">
+  <h3>Day 4 quick check &mdash; can you answer in your own words?</h3>
+  <ol>
+    <li>Which four reports run each week, on which days, and for what audience?</li>
+    <li>What's the difference between Installs (AppsFlyer) and CPI (calculated)? Why don't we just use Meta's install number?</li>
+    <li>What does CPApproved measure, and why is it the COO's headline metric?</li>
+    <li>Why is the comparison window 4 weeks, not 1 or 5?</li>
+    <li>The SG <code>claude test weekly</code> tab has two sections. What's in each? Which one is the BAU CPApproved cell?</li>
+    <li>If a TH spend figure shows up as THB 1,000,000 in some old sheet, what does that suggest about that sheet's freshness? (Hint: see the TH currency row above.)</li>
+  </ol>
+</div>
+
+</div>
+
+
+<div class="day-section">
+<span class="day-badge d5">Day 5</span>
+<h2>How a Monday report gets made</h2>
+<p class="section-meta">Read time ~1 hr · The 7 stages, the data pulls, the gotchas. Understanding the process &mdash; not running it solo.</p>
+
+<p>You learned Day 4 what the report contains. Day 5 is how it gets built &mdash; the order of operations Sandra goes through every Monday morning, and the things that go wrong. By the end, when Sandra walks you through one live, you'll recognize every step.</p>
+
+<div class="callout warn">
+  <span class="label">Before you start &mdash; check Metabase access</span>
+  <p>You have access to Meta Ads Manager, Google Ads, TikTok Ads Manager, ASA, and the Spending Tracker. The one you may not have yet is <strong>Metabase</strong> (<code>mtb.you.co</code>). It's behind Google OAuth + 2FA on your @you.co email. Try logging in &mdash; if you can't see Cards #3548 / #5555 / #7623, ping Sandra. The Monday workflow uses Metabase in three of the seven stages, so this is a hard prerequisite.</p>
+</div>
+
+<h2 id="d5-1">1. The 7 stages &mdash; in the order they happen</h2>
+<p>Sandra runs the same seven stages every Monday for every market. Stages 1&ndash;7 are the <em>data and diagnosis</em> layer. (There's an eighth stage &mdash; building the slide deck for the COO &mdash; that you won't be asked to touch yet.) The seven stages exist because each one tries to answer a different question; skipping any of them produces a report that's either wrong or hand-wavy.</p>
+
+<table>
+  <thead><tr><th>#</th><th>Stage</th><th>Question it answers</th><th>Typical time</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>Top-line numbers</strong></td><td>What were spend, installs, approved, CPI, CPApproved last week vs the 3 priors?</td><td>5 min</td></tr>
+    <tr><td>2</td><td><strong>Channel funnel decomposition</strong></td><td>For each channel: how did CTR, CPM, click-to-install, install-to-approved move?</td><td>15&ndash;20 min</td></tr>
+    <tr><td>3</td><td><strong>Channel classification</strong></td><td>Is each channel <em>healthy</em>, <em>saturating</em>, in an <em>algorithm shift</em>, or showing <em>creative fatigue</em>?</td><td>10 min</td></tr>
+    <tr><td>4</td><td><strong>Campaign-level deep dive on problem channels</strong></td><td>Which specific campaign is dragging the channel down?</td><td>15 min</td></tr>
+    <tr><td>5</td><td><strong>Creative / asset-level deep dive</strong></td><td>Which specific ad or asset is the culprit?</td><td>15&ndash;20 min</td></tr>
+    <tr><td>6</td><td><strong>Platform-specific validation</strong></td><td>Meta placement breakdown, Google asset labels, ASA keyword performance, TikTok signature checks.</td><td>10 min</td></tr>
+    <tr><td>7</td><td><strong>Cross-market comparison</strong></td><td>Does this pattern show up in the other markets too? If not, why?</td><td>10 min</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="label">Why diagnosis matters more than reporting</span>
+  <p>A report that says "CPApproved went up 12%" is a fact. A report that says "CPApproved went up 12% because Meta's Smart+ is shifting clicks to cheap-traffic placements while creatives are unchanged &mdash; not a creative-fatigue problem" is a <em>diagnosis</em>. The COO can act on a diagnosis. He can't act on a fact. Sandra's job &mdash; and eventually yours &mdash; is to produce diagnoses, not facts.</p>
+</div>
+
+<h2 id="d5-2">2. Session token refresh &mdash; the #1 reason the report breaks</h2>
+<p>Metabase logs you in through Google OAuth + 2FA. The session lasts about 14 days, then it expires. When it expires, anything that talks to Metabase programmatically &mdash; including the helper scripts behind the Monday report &mdash; silently returns zero rows. Empty results, no error. Reports look fine until someone notices an entire channel is showing 0 approved.</p>
+
+<p>The fix is a 60-second routine. Roughly:</p>
+
+<div class="checklist">
+  <h4>How the token refresh works (you don't run this, but you should understand it)</h4>
+  <ol>
+    <li>Open <code>mtb.you.co</code> in Chrome. Make sure you're logged in.</li>
+    <li>Open DevTools (Cmd+Option+I). Go to the <strong>Network</strong> tab.</li>
+    <li>Refresh the page. Click any request &mdash; <code>/api/session/properties</code> is reliable because it always fires on load.</li>
+    <li>In <strong>Request Headers</strong>, find the <code>Cookie</code> line. Inside it, look for <code>metabase.SESSION=&lt;UUID&gt;</code>.</li>
+    <li>Copy just the UUID (between <code>=</code> and the next <code>;</code> if any).</li>
+    <li>Save it to <code>~/.metabase_session</code> on the machine running the report.</li>
+  </ol>
+</div>
+
+<div class="callout warn">
+  <span class="label">The common mistake</span>
+  <p>The session value is in the <code>Cookie</code> request header, not in a separate <code>X-Metabase-Session</code> header. The <code>X-Metabase-Session</code> header only appears on programmatic API calls from already-authenticated clients &mdash; not on the normal page-load request you'll be inspecting. When you see only a <code>Cookie</code> line, that's correct. Look inside it for <code>metabase.SESSION=</code>.</p>
+</div>
+
+<p>If a Monday report comes out with one channel reading 0 approved while spend looks normal, the first hypothesis is always "the session token expired." Refresh it and re-run.</p>
+
+<h2 id="d5-3">3. The three Metabase Cards &mdash; one per market</h2>
+<p>Each market has one canonical Metabase Card for approved users. All three sit on top of the same underlying BigQuery view, <code>VIEW_PERFORMANCE_MARKETING_ACQ_SSOT</code>, which AppsFlyer feeds via a daily pipeline.</p>
+
+<table>
+  <thead><tr><th>Card #</th><th>Market</th><th>What it returns</th></tr></thead>
+  <tbody>
+    <tr><td><strong>#3548</strong></td><td>SG</td><td>SG-attributed approved users by install date, by campaign, across all attribution tags (Normal, SKAN, Data Locker Unified, Promocode/Referral).</td></tr>
+    <tr><td><strong>#5555</strong></td><td>AU</td><td>AU equivalent. Different campaign naming &mdash; Google's conversion action is <code>registration</code> in AU but <code>conversion</code> in SG.</td></tr>
+    <tr><td><strong>#7623</strong></td><td>TH</td><td>TH equivalent. Has an OR-clause for iOS SKAN attribution that AU and SG don't need.</td></tr>
+  </tbody>
+</table>
+
+<h3>What "approved by install date" means</h3>
+<p>The card returns approved users grouped by the <em>install date</em>, not the approval date. So a user who installed on Mon and got approved on Wed is counted on Mon. This matters because the metric is CPA on paid spend &mdash; you want to match the approval back to the day we spent the money that drove the install, not the day KYC happened to clear.</p>
+
+<p>Consequence: <strong>the last 3 days of the card are always undercounted</strong> because some of those installs haven't been approved yet. By T+4 the numbers are stable; before T+4 they're descriptive only. Reports always flag the last 3 days as "incomplete &mdash; 72h attribution lag."</p>
+
+<div class="callout warn">
+  <span class="label">The 2000-row truncation gotcha</span>
+  <p>Metabase's <code>/api/card/{id}/query</code> endpoint silently caps results at 2000 rows. For wide date ranges (a quarter+) this can quietly drop the smallest-volume channel &mdash; usually ASA or Boost KOL &mdash; because their rows get truncated first while Meta and Google look fine. The Monday workflow defends against this in two ways: (a) when pulling a wide range, hit <code>/api/dataset</code> instead, which is uncapped; (b) always spot-check the smallest-volume channel &mdash; if it returns 0, truncation is the first hypothesis.</p>
+</div>
+
+
+<h2 id="d5-4">4. Channel classification &mdash; campaign-name filters</h2>
+<p>Within each market's card, campaigns are classified into channels by a simple "name contains" rule. The same rules apply across all three markets:</p>
+
+<table>
+  <thead><tr><th>Channel</th><th>Match rule (campaign name contains)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Google</strong></td><td><code>google</code></td></tr>
+    <tr><td><strong>Meta</strong></td><td><code>meta</code></td></tr>
+    <tr><td><strong>TikTok</strong></td><td><code>tiktok</code> or <code>pangle</code></td></tr>
+    <tr><td><strong>ASA</strong></td><td><code>asa</code> &nbsp;(SG only)</td></tr>
+    <tr><td><strong>Promo</strong></td><td><code>promo</code> &nbsp;(SG only &mdash; AU canonical excludes Promo)</td></tr>
+    <tr><td><strong>Restricted</strong></td><td><code>restricted</code> + country code = SG &nbsp;(this is TikTok view-through that AppsFlyer redacts the campaign name on)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout info">
+  <span class="label">"Restricted" = TikTok view-through</span>
+  <p>You'll see a channel called "Restricted" in SG reports. It's TikTok view-through attribution where AppsFlyer has redacted the campaign name for policy reasons. It used to be a meaningful row; in May 2026 AppsFlyer changed how they expose this and the SG Restricted bucket dropped substantially overnight. The current SG CPA targets bake in a +10% adjustment to compensate for the lost Restricted attribution.</p>
+</div>
+
+<h2 id="d5-5">5. The four reports, walked through &mdash; how each one differs</h2>
+<p>The skeleton is the same for all four: pull spend from platforms, pull approved from Metabase, write into the tracker, build a 4-week funnel table, diagnose. But each report has its own quirks. Here's what makes each different.</p>
+
+<h3>SG Monday &mdash; the most-detailed and the highest stakes</h3>
+<p>This is the report the COO leads on. The canonical SSOT is the <code>claude test weekly</code> tab in the SG spending tracker.</p>
+<ul>
+  <li><strong>Two tracker sections to refresh.</strong> BAU (rows 4&ndash;22) and Overall = BAU + Branding (rows 49&ndash;78). Both get a fresh set of numbers every Monday. If only one is updated, the COO is reading inconsistent data.</li>
+  <li><strong>Six channels.</strong> Google, Meta, TikTok, ASA, Promo, Restricted. The blended CPApp cell is Q43 for BAU, Q84 for Overall.</li>
+  <li><strong>GST applies.</strong> ×1.09 on all SG spend before computing CPApproved.</li>
+  <li><strong>Google Ads is SGD-billed.</strong> ÷1.35 to USD before everything else.</li>
+  <li><strong>ASA SSOT is the API, not column 22 in the tracker.</strong> The tracker column for ASA has historically been about 30% of actual &mdash; never quote it directly.</li>
+  <li><strong>Daily snapshot.</strong> SG also has a daily approved snapshot that builds up the BV column of <code>Spending Tracker 2026</code>. That's a separate pipeline that runs at 09:00 SGT &mdash; the Monday report uses its accumulated history.</li>
+</ul>
+
+<h3>AU Monday &mdash; smaller scale, no ASA, different naming</h3>
+<p>AU has its own tracker sheet and its own quirks. The canonical SSOT is the <code>claude test au weekly</code> tab.</p>
+<ul>
+  <li><strong>Channel-summed approved in Q22&ndash;Q25.</strong> Different cells from SG; this is the canonical weekly approved figure.</li>
+  <li><strong>Excludes Promo.</strong> Unlike SG, the AU canonical CPApproved does <em>not</em> include Promo spend. (Promo is small in AU and treated separately.)</li>
+  <li><strong>No ASA channel.</strong> Australia does not run Apple Search Ads. Don't look for it &mdash; it isn't there.</li>
+  <li><strong>AUD-billed everywhere.</strong> Meta, TikTok, and Google Ads all bill AUD in Australia. ÷1.40 to USD.</li>
+  <li><strong>Smaller volumes &mdash; more weekly noise.</strong> AU spend is around a fifth of SG. A single creative pause or a holiday can move CPApproved 15% in a single week. Don't over-react to one-week deltas; the 4-week trend is what matters.</li>
+  <li><strong>Dual-write rule.</strong> The AU rolling tab exists in both the source spreadsheet and a mirror; both must be updated when refreshing.</li>
+  <li><strong>Google Ads access.</strong> The AU Google Ads account is under a different login (a different customer ID under the same MCC). Sandra has scripts that handle that &mdash; you don't need to think about it.</li>
+</ul>
+
+<h3>TH Monday &mdash; KOL-heavy, all USD</h3>
+<p>TH has the most platforms because of KOLs. The canonical SSOT is the <code>claude test th weekly</code> tab.</p>
+<ul>
+  <li><strong>Six channels.</strong> Meta, Google, TikTok, plus KOL boost spend on Meta and TikTok (treated as separate "Boost KOL" rows).</li>
+  <li><strong>All USD natively.</strong> Despite Thailand using THB, all four ad platforms bill USD for our accounts. No conversion required.</li>
+  <li><strong>iOS SKAN OR-clause.</strong> Card #7623 has an extra <code>OR</code> in its WHERE clause to include iOS SKAN attribution that wouldn't otherwise show up under TH country code. SG and AU don't need this.</li>
+  <li><strong>Boost KOL approved is filled in manually.</strong> The card doesn't auto-populate Boost KOL approved numbers &mdash; someone has to look those up and enter them. Sandra handles this; the slot is in the tracker.</li>
+  <li><strong>No GST adjustment.</strong></li>
+</ul>
+
+<h3>TH Tuesday &mdash; the deep-dive sheet, not a Slack bot</h3>
+<p>The Tuesday report is the most-confused of the four because Thailand also has a Thursday and Friday Slack post from a bot called perfbot. <strong>Tuesday is different.</strong></p>
+<ul>
+  <li><strong>It's a manual deep-dive into a Google Sheet</strong> &mdash; not a Slack bot post. Owned by the TH lead, this is where the week's KOL decisions get made.</li>
+  <li><strong>Audience is the TH team, not the COO.</strong> So the format is longer, more granular, and includes per-creator and per-campaign breakdowns that the Monday report skips.</li>
+  <li><strong>It uses the same underlying data as TH Monday.</strong> Same tracker, same card &mdash; just sliced more granularly. If TH Monday is the headline, TH Tuesday is the working session.</li>
+  <li><strong>Perfbot is the Thursday and Friday cadence, not Tuesday.</strong> Thu and Fri perfbot posts are KOL-spend digests with Block/Weekly/MTD columns to <code>#th-kol-boostpost</code>. If someone asks for "the perfbot report," that's Thu/Fri. If someone asks for "the Tuesday deep-dive," that's the sheet.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">The four-confusions cheat-sheet for TH</span>
+  <p>Monday = top-line, Slack post + tracker refresh. Tuesday = deep-dive, Google Sheet. Thursday = perfbot KOL digest, Slack. Friday = perfbot weekly + MTD, Slack. Same data, four cadences, four audiences. Confirm which one by name before doing anything.</p>
+</div>
+
+
+<h2 id="d5-6">6. The twelve things that go wrong &mdash; and how to spot them</h2>
+<p>Every recurring failure mode has happened before. They've each cost hours when missed. Read these once now and again when something looks off in a report.</p>
+
+<div class="gotcha-list">
+  <div class="item"><span class="num">1</span><strong>Metabase session expired.</strong> Symptom: one channel reads 0 approved, spend looks fine. Fix: refresh <code>~/.metabase_session</code> from DevTools cookie.</div>
+  <div class="item"><span class="num">2</span><strong>Card 2000-row truncation.</strong> Symptom: smallest-volume channel (ASA, Boost KOL) shows 0 or weirdly low. Fix: pull from <code>/api/dataset</code> instead of <code>/api/card/{id}/query</code>, or chunk the date range to under 30 days at a time.</div>
+  <div class="item"><span class="num">3</span><strong>iOS attribution lag.</strong> Symptom: last 3 days of approved look bad. This is structural &mdash; AppsFlyer SKAN postbacks settle over 72h. Always label "incomplete &mdash; 72h attribution lag." Never use action language on T-0 to T-3 data.</div>
+  <div class="item"><span class="num">4</span><strong>Meta API default limit of 25.</strong> Symptom: ad-level spend looks 3&times; too low. Fix: always pass <code>limit=500</code> on Meta ad-level pulls and verify the count returned is less than 500.</div>
+  <div class="item"><span class="num">5</span><strong>SG ASA tracker column is wrong.</strong> Tracker column 22 has historically been about 30% of actual. Always use the ASA API live pull, never the tracker column.</div>
+  <div class="item"><span class="num">6</span><strong>Google Ads SG billed in SGD.</strong> Symptom: SG Google Ads spend looks 35% too high. Fix: divide cost_micros by 1.35 to convert to USD. AU and TH Google Ads bill in their respective platform currencies (AUD and USD).</div>
+  <div class="item"><span class="num">7</span><strong>AU tracker double-counted spend.</strong> Symptom: AU weekly spend ~A$10K higher than the platform totals add up to. This was a known bug; the rule now is: spot-check 2&ndash;3 tracker columns against platform APIs before any exec report.</div>
+  <div class="item"><span class="num">8</span><strong>Currency in TH old sheets.</strong> Symptom: a TH spend number looks 30&times; bigger than it should. The platform bills USD; some older sheets were in THB. ÷31.5 to convert THB to USD if you see that.</div>
+  <div class="item"><span class="num">9</span><strong>Partial-day data written to tracker.</strong> Symptom: today's date appears in a weekly total. Rule: never write a date range that includes today &mdash; the data is incomplete. Wait for the next morning.</div>
+  <div class="item"><span class="num">10</span><strong>SG forgot to refresh the Overall section.</strong> Symptom: BAU Q43 changed but Overall Q84 didn't. Both sections of <code>claude test weekly</code> refresh together.</div>
+  <div class="item"><span class="num">11</span><strong>OneSignal csv_export inflated by 16&times;.</strong> Not Monday-report-relevant directly but a useful reminder: bulk-export tools can return wildly wrong totals. Always spot-check against the dashboard before trusting bulk data.</div>
+  <div class="item"><span class="num">12</span><strong>Wrong campaign-name regex.</strong> Symptom: a campaign nobody recognizes appears in a channel. Common causes: a campaign was renamed to drop "meta", or "Pangle" got missed in the TikTok regex. Fix: read the campaign list before trusting the channel total.</div>
+</div>
+
+<h2 id="d5-7">7. The pre-send checklist &mdash; what gets verified before any report leaves Sandra's hands</h2>
+<p>Before any Monday or Tuesday report goes out, Sandra runs through this checklist. You don't need to memorize it, but knowing it exists helps you understand <em>why</em> a report sometimes gets held back at the last minute for "one more check."</p>
+
+<div class="checklist">
+  <h4>Pre-send checklist (7 items, ~3 min)</h4>
+  <ol>
+    <li><strong>Currency.</strong> Every USD figure is labelled USD; every native figure is labelled with the right symbol (S$, A$, ฿).</li>
+    <li><strong>GST.</strong> SG numbers have ×1.09 applied; AU and TH don't.</li>
+    <li><strong>Scope.</strong> Numerator (spend) and denominator (approved) cover the same scope &mdash; BAU only, or BAU + Branding &mdash; consistently.</li>
+    <li><strong>4-week window.</strong> The W0&ndash;W-3 boundaries are stated up-front. No 5-week comparisons unless explicitly asked.</li>
+    <li><strong>Attribution lag.</strong> Any T-0 to T-3 cell is flagged "incomplete &mdash; 72h lag." Action language ("alert", "cut") only on T-4+ data.</li>
+    <li><strong>Smallest channel sanity-check.</strong> ASA (SG) and Boost KOL (TH) are not 0. If they are, suspect Card 2000-row truncation or a session-token expiry.</li>
+    <li><strong>Partial-day check.</strong> Every date in the range is in the past &mdash; today's date is not in any weekly total.</li>
+  </ol>
+</div>
+
+<div class="callout good">
+  <span class="label">What a "diagnosis-ready" report looks like</span>
+  <p>If the checklist passes and the seven stages have been done, the output is a 4-week table per channel (spend, CTR, CPM, CPI, install-to-approved, CPApproved), one classification label per channel (HEALTHY / SATURATING / ALGO SHIFT / FATIGUE), one root-cause sentence per problem channel, and a one-liner top recommendation for the COO. That's the deliverable. Anything less is incomplete; anything more is probably overkill for a Monday cadence.</p>
+</div>
+
+<h2 id="d5-8">8. What to do with all this</h2>
+<p>You're not going to run a Monday or Tuesday report solo &mdash; not yet. The goal of Days 4&ndash;5 is that when Sandra walks you through one live in week 1, you recognize every step, you know what each platform is for, you can predict what the next click does, and you can ask intelligent questions about why something is being done a particular way.</p>
+
+<h3>Week 1 &mdash; observation</h3>
+<ul>
+  <li>Sit with Sandra through one full SG Monday report from start to finish. Take notes on the order of operations.</li>
+  <li>Open each of Cards #3548 / #5555 / #7623 yourself. Look at the campaign breakdown. See how the channel filters slice it.</li>
+  <li>Open each market's tracker tab and find the cells mentioned in this doc (SG Q43 and Q84, AU Q22&ndash;Q25, TH equivalents).</li>
+  <li>Re-read this doc. Verbalise the quick-check answers.</li>
+</ul>
+
+<h3>Week 2&ndash;3 &mdash; shadowing</h3>
+<ul>
+  <li>Run one channel's pull yourself, with Sandra checking. Probably Meta SG &mdash; it's the highest-volume channel and the failure modes are well-documented.</li>
+  <li>Try a Metabase session-token refresh yourself, with the doc open.</li>
+  <li>Build one funnel decomposition table (Stage 2) for one channel.</li>
+</ul>
+
+<h3>Month 2+ &mdash; ownership</h3>
+<ul>
+  <li>Own the data-collection side of one market's Monday report end-to-end (Stages 1, 2, and 4 from the deep-dive framework).</li>
+  <li>Hand off the diagnosis layer (Stages 3, 5, 6, 7) to Sandra for now &mdash; that part takes longer to learn and the cost of a wrong diagnosis is high.</li>
+  <li>By month 6, the goal is that you can predict next week's CPApproved before pulling the data. By month 12, you should be running TH Monday solo.</li>
+</ul>
+
+<div class="callout">
+  <span class="label">When you're unsure</span>
+  <p>This guide is a reference, not a runbook. If anything is unclear &mdash; a cell isn't where the doc says it is, a card doesn't return what's expected, currency rules look off, a channel is missing &mdash; <strong>ping Sandra before doing anything else.</strong> A 30-second clarification costs nothing; a wrong tracker write can take hours to undo. The marketing world tolerates "I'm not sure, can you check?" much better than "I went ahead and overwrote the column."</p>
+</div>
+
+<div class="q-check">
+  <h3>Day 5 quick check &mdash; can you answer in your own words?</h3>
+  <ol>
+    <li>What are the seven stages of a Monday deep-dive, in order, and what question does each one answer?</li>
+    <li>How does the Metabase session token work, where does it live, and what's the symptom when it expires?</li>
+    <li>What does Card #3548 return, and why are the last 3 days always "incomplete"?</li>
+    <li>What's the campaign-name filter for the TikTok channel? Why are both <code>tiktok</code> and <code>pangle</code> needed?</li>
+    <li>Name three differences between SG Monday and AU Monday (currency, channels, tracker conventions).</li>
+    <li>What makes TH Tuesday different from the Thursday and Friday perfbot posts?</li>
+    <li>What's the symptom of a Card 2000-row truncation, and how do you fix it?</li>
+    <li>Before any report leaves: name three of the seven pre-send checks.</li>
+  </ol>
+</div>
+
+</div>
+
+<hr>
+
+<div class="callout">
+  <span class="label">Welcome aboard</span>
+  <p>If you've read this carefully, you have more payments and YouTrip-specific context than the median person who's been here three months. That's the goal &mdash; start with mastery of how the world works, then layer on the operational mechanics over time. Sandra is your first stop for any clarifying questions. The doc will be updated as the business evolves &mdash; check the date below and ask for a refresh if it's been more than a quarter.</p>
+</div>
+
+<p style="text-align: center; font-size: 13px; color: var(--gray-500); margin-top: 48px;">
+  Last updated: 2026-06-02 &middot; Internal use only &middot; Confidential<br>
+  Maintained by Sandra Tang &mdash; questions: ask in #marketing or in person
+</p>
+
+</div>
+</div>
+</body>
+</html>
