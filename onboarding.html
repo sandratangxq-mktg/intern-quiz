@@ -1422,6 +1422,11 @@ hr { border: 0; border-top: 1px solid var(--gray-200); margin: 32px 0; }
   <p>You have access to Meta Ads Manager, Google Ads, TikTok Ads Manager, ASA, and the Spending Tracker. The one you may not have yet is <strong>Metabase</strong> (<code>mtb.you.co</code>). It's behind Google OAuth + 2FA on your @you.co email. Try logging in &mdash; if you can't see Cards #3548 / #5555 / #7623, ping Sandra. The Monday workflow uses Metabase in three of the seven stages, so this is a hard prerequisite.</p>
 </div>
 
+<div class="callout info">
+  <span class="label">What you'll need to <em>do</em> &mdash; no terminal, no code</span>
+  <p>Everything in this day is either reading or pointing-and-clicking in a browser. You don't need Claude, you don't need to install anything, you don't need to touch a terminal. The technical bits you'll see &mdash; <code>~/.metabase_session</code>, <code>/api/dataset</code>, <code>limit=500</code> &mdash; live on Sandra's machine and run automatically. They're mentioned here only so you understand <em>what's happening behind the scenes</em> when a report breaks. Anything you'll personally do is a browser action: open a card, change a date filter, scroll a Google Sheet, click "Export to CSV." That's it.</p>
+</div>
+
 <h2 id="d5-1">1. The 7 stages &mdash; in the order they happen</h2>
 <p>Sandra runs the same seven stages every Monday for every market. Stages 1&ndash;7 are the <em>data and diagnosis</em> layer. (There's an eighth stage &mdash; building the slide deck for the COO &mdash; that you won't be asked to touch yet.) The seven stages exist because each one tries to answer a different question; skipping any of them produces a report that's either wrong or hand-wavy.</p>
 
