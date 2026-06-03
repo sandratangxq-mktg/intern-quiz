@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Week 1 · Day 4 — Hard Mode Quiz</title>
+<style>
+:root {
+  --ink: #0f1922; --ink-2: #2a3744;
+  --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155;
+  --brand: #2563eb; --brand-2: #1d4ed8; --accent: #f59e0b;
+  --good: #16a34a; --warn: #d97706; --bad: #dc2626;
+  --teal: #0d9488; --purple: #7c3aed;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink); background: var(--gray-50);
+  line-height: 1.62; font-size: 15.5px; -webkit-font-smoothing: antialiased;
+}
+.wrapper { max-width: 820px; margin: 0 auto; padding: 24px 24px 120px; }
+.hero {
+  background: linear-gradient(135deg, #0f1922 0%, #1e3a5f 100%);
+  color: white; padding: 36px 28px 32px; margin: -24px -24px 24px;
+  border-radius: 0 0 12px 12px;
+}
+.hero .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; opacity: 0.75; margin-bottom: 8px; }
+.hero h1 { font-size: 26px; margin: 0 0 10px; font-weight: 700; letter-spacing: -0.3px; }
+.hero .lede { font-size: 15px; line-height: 1.5; margin: 0; opacity: 0.92; max-width: 640px; }
+.hero .meta { margin-top: 18px; font-size: 12.5px; opacity: 0.7; display: flex; gap: 16px; flex-wrap: wrap; }
+.scorebar {
+  position: sticky; top: 0; z-index: 50; background: white;
+  border-bottom: 1px solid var(--gray-200);
+  padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+  margin: 0 -24px 20px; font-size: 13.5px;
+}
+.scorebar .score { font-weight: 650; color: var(--ink); }
+.scorebar .score .good-num { color: var(--good); }
+.scorebar .score .bad-num { color: var(--bad); }
+.scorebar .progress { flex: 1; margin: 0 18px; height: 6px; background: var(--gray-200); border-radius: 999px; overflow: hidden; max-width: 320px; }
+.scorebar .progress .bar { height: 100%; background: linear-gradient(90deg, var(--brand) 0%, var(--teal) 100%); width: 0%; transition: width 0.3s; }
+.scorebar .pct { font-weight: 650; color: var(--gray-700); }
+.section-header {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 40px 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--gray-200);
+}
+.section-header h2 { font-size: 21px; font-weight: 700; margin: 0; }
+.section-header .meta { font-size: 12px; color: var(--gray-500); }
+.section-intro { font-size: 14px; color: var(--gray-700); margin: 0 0 24px; }
+.q {
+  background: white; border: 1px solid var(--gray-200);
+  border-radius: 8px; padding: 20px 22px; margin: 16px 0;
+  transition: border-color 0.2s;
+}
+.q.answered.correct { border-left: 3px solid var(--good); }
+.q.answered.incorrect { border-left: 3px solid var(--bad); }
+.q.answered.partial { border-left: 3px solid var(--warn); }
+.q .num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); margin-bottom: 6px; }
+.q .num .type { background: var(--gray-100); color: var(--ink-2); padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 600; letter-spacing: 0.6px; }
+.q .num .type.short { background: #fef3c7; color: #92400e; }
+.q .num .type.applied { background: #ede9fe; color: #6d28d9; }
+.q .prompt { font-size: 15.5px; margin: 0 0 14px; color: var(--ink); }
+.q .prompt strong { font-weight: 650; }
+.q .data { background: var(--gray-50); border-left: 3px solid var(--gray-300); padding: 10px 14px; margin: 10px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+.q .data ul { margin: 4px 0; padding-left: 20px; }
+.choices { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 0; }
+.choice {
+  border: 1px solid var(--gray-200); background: white;
+  padding: 10px 14px; border-radius: 6px; cursor: pointer;
+  text-align: left; font-size: 14.5px; font-family: inherit;
+  color: var(--ink); transition: all 0.15s;
+}
+.choice:hover:not(:disabled) { border-color: var(--brand); background: #f0f7ff; }
+.choice:disabled { cursor: default; }
+.choice.selected { border-color: var(--brand); background: #dbeafe; font-weight: 600; }
+.choice.correct-answer { border-color: var(--good); background: #f0fdf4; color: var(--good); font-weight: 600; }
+.choice.wrong-pick { border-color: var(--bad); background: #fef2f2; color: var(--bad); }
+.choice .letter { display: inline-block; width: 22px; font-weight: 700; }
+.open-input { width: 100%; min-height: 80px; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: 6px; font-family: inherit; font-size: 14.5px; resize: vertical; }
+.open-input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.applied-input { min-height: 140px; }
+.reveal-btn {
+  margin-top: 10px; padding: 8px 14px; background: var(--ink); color: white;
+  border: 0; border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.reveal-btn:hover { background: var(--ink-2); }
+.reveal-btn:disabled { background: var(--gray-300); cursor: default; }
+.model {
+  margin-top: 14px; padding: 14px 16px; background: #f0fdf4;
+  border-left: 3px solid var(--good); border-radius: 0 6px 6px 0;
+  font-size: 14.5px; display: none;
+}
+.model.show { display: block; }
+.model .label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--good); margin-bottom: 6px; }
+.model p { margin: 6px 0; }
+.model ul { margin: 6px 0; padding-left: 22px; }
+.model strong { color: var(--ink); font-weight: 650; }
+.self-rate { margin-top: 12px; display: none; gap: 8px; }
+.self-rate.show { display: flex; }
+.self-rate .rate-btn {
+  flex: 1; padding: 8px 10px; border: 1px solid var(--gray-300);
+  background: white; border-radius: 6px; font-family: inherit; font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.self-rate .rate-btn:hover { border-color: var(--ink-2); }
+.self-rate .rate-btn.got-it { color: var(--good); }
+.self-rate .rate-btn.got-it.active { background: var(--good); color: white; border-color: var(--good); }
+.self-rate .rate-btn.partial { color: var(--warn); }
+.self-rate .rate-btn.partial.active { background: var(--warn); color: white; border-color: var(--warn); }
+.self-rate .rate-btn.missed { color: var(--bad); }
+.self-rate .rate-btn.missed.active { background: var(--bad); color: white; border-color: var(--bad); }
+.explanation { margin-top: 12px; padding: 10px 14px; background: #fffbeb; border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 14px; display: none; }
+.explanation.show { display: block; }
+.final-card {
+  display: block; background: white; border: 1px solid var(--gray-200);
+  border-radius: 12px; padding: 32px; margin-top: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+.final-card h2 { margin: 0 0 6px; font-size: 24px; }
+.final-card .final-score { font-size: 48px; font-weight: 700; color: var(--brand); margin: 16px 0 4px; }
+.final-card .final-sub { color: var(--gray-500); font-size: 14px; margin-bottom: 24px; }
+.final-card .breakdown { margin: 20px 0; }
+.final-card .breakdown-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--gray-200); font-size: 14.5px; }
+.final-card .breakdown-row:last-child { border-bottom: 0; }
+.final-card .revisit { background: #fef2f2; border-left: 3px solid var(--bad); padding: 14px 18px; border-radius: 0 6px 6px 0; margin-top: 20px; font-size: 14px; }
+.final-card .revisit h4 { margin: 0 0 8px; color: var(--bad); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+.final-card .revisit ul { margin: 6px 0 0; padding-left: 22px; }
+.reset-btn { margin-top: 24px; padding: 10px 16px; background: var(--gray-200); color: var(--ink-2); border: 0; border-radius: 6px; font-family: inherit; font-size: 13.5px; cursor: pointer; }
+.reset-btn:hover { background: var(--gray-300); }
+.calc-line { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--ink-2); }
+.feedback {
+  margin-top: 16px; padding: 12px 14px; background: #f8fafc;
+  border: 1px dashed var(--gray-300); border-radius: 6px; display: none;
+}
+.feedback.show { display: block; }
+.feedback .fb-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-500); margin-bottom: 8px; }
+.feedback .diff-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.feedback .diff-btn {
+  flex: 1; min-width: 80px; padding: 7px 8px; font-size: 12.5px;
+  border: 1px solid var(--gray-300); background: white;
+  border-radius: 6px; cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.feedback .diff-btn:hover { border-color: var(--brand); }
+.feedback .diff-btn.active { color: white; border-color: transparent; font-weight: 600; }
+.feedback .diff-btn[data-d="too-easy"].active { background: #94a3b8; }
+.feedback .diff-btn[data-d="just-right"].active { background: var(--good); }
+.feedback .diff-btn[data-d="hard"].active { background: var(--warn); }
+.feedback .diff-btn[data-d="too-hard"].active { background: var(--bad); }
+.feedback .why-box {
+  width: 100%; min-height: 50px; padding: 8px 10px; border: 1px solid var(--gray-200);
+  border-radius: 6px; font-family: inherit; font-size: 13px; resize: vertical; background: white;
+}
+.feedback .why-box:focus { outline: none; border-color: var(--brand); }
+.feedback .why-label { display: block; font-size: 12px; color: var(--gray-500); margin-bottom: 4px; }
+.export-section { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--gray-200); }
+.export-section h3 { margin: 0 0 6px; font-size: 15px; }
+.export-section p { font-size: 13.5px; color: var(--gray-500); margin: 0 0 14px; }
+.export-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+.export-btn {
+  padding: 10px 16px; background: var(--brand); color: white; border: 0;
+  border-radius: 6px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+}
+.export-btn:hover { background: var(--brand-2); }
+.export-btn.secondary { background: var(--ink-2); }
+.export-btn.secondary:hover { background: var(--ink); }
+.export-status { margin-top: 10px; font-size: 12.5px; color: var(--good); display: none; }
+.export-status.show { display: block; }
+.pw-overlay { position: fixed; inset: 0; background: #0f1922; display: flex; align-items: center; justify-content: center; z-index: 99999; font-family: -apple-system, sans-serif; }
+.pw-card { background: white; padding: 32px; border-radius: 8px; max-width: 380px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.pw-card h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; }
+.pw-card p { margin: 0 0 18px; color: #6b7280; font-size: 13px; line-height: 1.5; }
+.pw-card input { width: 100%; padding: 10px 12px; box-sizing: border-box; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; }
+.pw-card input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.pw-card button { width: 100%; margin-top: 12px; padding: 10px; background: #2563eb; color: white; border: 0; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 500; }
+.pw-card button:hover { background: #1d4ed8; }
+.pw-error { color: #dc2626; font-size: 12px; margin-top: 10px; min-height: 14px; }
+</style>
+</head>
+<body>
+<div id="pw-overlay" class="pw-overlay" style="display:none;">
+  <div class="pw-card">
+    <h2>Restricted Access</h2>
+    <p>This quiz contains internal YouTrip context. Enter the password Sandra gave you to continue.</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="off" />
+    <button id="pw-submit">Open Quiz</button>
+    <div id="pw-error" class="pw-error"></div>
+  </div>
+</div>
+<script>
+(function() {
+  const STORED_HASH = 'c54d008cfc10bc30b18da22f45e229ce4e1424b130dfb435a0cf16d6853ef1b8';
+  const SESSION_KEY = 'intern-quiz-w1d1-auth';
+  if (sessionStorage.getItem(SESSION_KEY) === STORED_HASH) return;
+  document.documentElement.style.visibility = 'hidden';
+  function ready() {
+    document.documentElement.style.visibility = 'visible';
+    const main = document.querySelector('.wrapper');
+    if (main) main.style.visibility = 'hidden';
+    const overlay = document.getElementById('pw-overlay');
+    overlay.style.display = 'flex';
+    const input = document.getElementById('pw-input');
+    const button = document.getElementById('pw-submit');
+    const error = document.getElementById('pw-error');
+    setTimeout(() => input.focus(), 50);
+    async function check() {
+      const enc = new TextEncoder().encode(input.value);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hex === STORED_HASH) {
+        sessionStorage.setItem(SESSION_KEY, STORED_HASH);
+        overlay.remove();
+        if (main) main.style.visibility = '';
+      } else {
+        error.textContent = 'Incorrect password. Try again.';
+        input.value = ''; input.focus();
+      }
+    }
+    button.addEventListener('click', check);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ready);
+  } else { ready(); }
+})();
+</script>
+
+<div class="wrapper">
+
+<div class="hero">
+  <div class="eyebrow">Week 1 · Day 4 · Hard Mode</div>
+  <h1>Performance Marketing, YouTrip &amp; CRM — Day 4 Quiz (Hard Mode)</h1>
+  <p class="lede">51 questions, deliberately hard. A core of tough multiple-choice plus a block you cannot guess your way through: numeric problems you must compute, “spot the error” analyst notes, and open scenarios. Type your answer, reveal the model answer, and grade yourself honestly — Got it / Partial / Missed. The open questions only count once you rate them, so full marks means you actually earned them. Aim for ~2.5 hours.</p>
+  <div class="meta">
+    <span>📊 51 questions</span>
+    <span>⏱ ~2.5 hours</span>
+    <span>💾 Auto-saves your progress</span>
+    <span>🧠 Self-graded</span>
+  </div>
+</div>
+
+<div class="scorebar">
+  <div class="score">Score: <span class="good-num" id="score-correct">0</span> · <span id="answered-count">0</span> / 51</div>
+  <div class="progress"><div class="bar" id="progress-bar"></div></div>
+  <div class="pct" id="score-pct">—</div>
+</div>
+
+<div id="quiz-root"></div>
+
+<div class="final-card" id="final-card">
+  <h2 id="final-heading">Your progress so far</h2>
+  <p class="final-sub" id="final-tagline">Keep going — your score and section breakdown will update live. Hit "Copy feedback" anytime to send Sandra your ratings + comments.</p>
+  <div class="final-score" id="final-pct">—</div>
+  <div class="final-sub" id="final-detail">— correct out of 51</div>
+  <div class="breakdown" id="final-breakdown"></div>
+  <div class="revisit" id="revisit-block" style="display:none;">
+    <h4>Topics to revisit</h4>
+    <ul id="revisit-list"></ul>
+  </div>
+  <div class="export-section">
+    <h3>Send your feedback to Sandra</h3>
+    <p>Sandra uses your difficulty ratings + comments to calibrate Day 4-5. <strong>Best:</strong> click the email button — it opens your email with the summary pre-filled, just hit send. Or copy/download as backup.</p>
+    <div class="export-buttons">
+      <button class="export-btn" id="email-feedback-btn" style="background:#10b981;font-weight:600;">📧 Send to Sandra (opens email)</button>
+      <button class="export-btn secondary" id="copy-feedback-btn">📋 Copy summary</button>
+      <button class="export-btn secondary" id="download-feedback-btn">⬇️ Download JSON</button>
+    </div>
+    <div class="export-status" id="export-status">Copied to clipboard.</div>
+  </div>
+  <button class="reset-btn" onclick="if(confirm('Reset all progress?')){localStorage.removeItem('quiz-w1d4');location.reload();}">Reset quiz</button>
+</div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+{id:1,section:"Performance Marketing",type:"mcq",prompt:"YouTrip SG blended paid CPApproved reads S$15.5 — inside your HOLD band. But the LAST S$5k of daily Meta spend is bringing approveds at S$26 each. Correct read?",choices:["Blended is in band — hold everything as is","Marginal spend at S$26 likely exceeds your justified CPA — trim the unprofitable top layer even though blended looks fine","Cut all Meta, it is unprofitable","Scale Meta — blended is healthy"],correct:1,explanation:"Decisions at the margin use MARGINAL CPApproved, not blended. Blended S$15.5 averages cheap early spend with expensive incremental spend. The top S$5k at S$26 is what scaling adds or removes — if it exceeds your LTV-justified ceiling, trim that layer. 'In band' blended hides an unprofitable margin."},
+{id:2,section:"Performance Marketing",type:"mcq",prompt:"It is T-1 (yesterday). Card #3548 shows SG approveds down 40% vs the prior day. What language is justified?",choices:["Alert — cut budget now","Concern — investigate the campaign immediately","Descriptive only — T-1 is inside the 72h attribution window and will fill in; no action language","Scale — approveds will rebound"],correct:2,explanation:"T-0 to T-3 approved data is incomplete (iOS 3-4 day attribution lag). Only T-4+ drives action words like alert/cut. A 40% T-1 drop is almost always lag, not behaviour. Label it '(incomplete, 72h lag)' and wait."},
+{id:3,section:"Performance Marketing",type:"mcq",prompt:"In the AppsFlyer SG dashboard a chunk of approveds sits under 'Restricted' with no campaign name. What is it, and what changed in May 2026?",choices:["A YouTrip data error","TikTok For Business view-through attribution with campaign redacted; an industry-wide AF policy update made the SG bucket vanish on 2026-05-19","Google UAC retargeting traffic","Organic installs"],correct:1,explanation:"'Restricted' = TikTok VT conversions AppsFlyer redacts at campaign level. On 2026-05-19 an AF policy change made the SG Restricted bucket disappear from the AF-to-BQ pipeline (the AF aggregate dashboard stayed flat across the cutover — proof the drop is pipeline-only, not real demand). Cross-check via AF aggregate API + TikTok Ads Manager + BQ Card #3548."},
+{id:4,section:"Performance Marketing",type:"mcq",prompt:"Compared with AppsFlyer, Meta Ads Manager typically reports iOS installs that are:",choices:["Higher — Meta over-counts iOS","Accurate within 5%","Undercounted by roughly 21-47% because iOS installs arrive via delayed SKAN postbacks","Only wrong for Android"],correct:2,explanation:"iOS installs reach Meta through SKAN, which is delayed and partial, so Meta undercounts iOS ~21-47%. Never use Meta's iOS conversion numbers for CPI/CPApproved — AppsFlyer is the iOS SSOT. Android per-ad is fine."},
+{id:5,section:"Performance Marketing",type:"mcq",prompt:"A Meta Smart+/Advantage+ campaign's placements drift heavily toward Audience Network and Reels over a week while results worsen. Most likely root cause?",choices:["Bad placements — exclude AN and Reels","The algorithm is exploring because creative signal is depleting — a creative problem, not a placement problem","Budget too low","Wrong bid strategy"],correct:1,explanation:"Placement drift in Smart+ is a SYMPTOM of creative-signal depletion: as winning creative fatigues, the algo widens placements hunting for cheap delivery. Excluding placements treats the symptom; the fix is fresh creative. Forcing placements on Smart+ also fights the model."},
+{id:6,section:"Performance Marketing",type:"mcq",prompt:"Two diagnoses, opposite remedies. Channel A: CTR FALLING, CPI rising. Channel B: CTR RISING, CPApproved worsening. Match each:",choices:["Both are creative fatigue","A = creative fatigue (refresh creative); B = algo shifting to cheaper/lower-quality traffic (tighten targeting/quality signal)","A = algo shift; B = fatigue","Both are algo shift"],correct:1,explanation:"CTR direction is the diagnostic. FALLING CTR = audience tired of the creative = fatigue, refresh creative. RISING CTR but worse downstream = algo found cheaper clicks that convert worse = cheap-traffic shift, tighten quality/targeting. Same symptom, opposite fix."},
+{id:7,section:"Performance Marketing",type:"mcq",prompt:"Why must Google UAC be split into Retargeting vs Non-Retargeting before judging CPApproved?",choices:["They bill in different currencies","Retargeting is volume-capped (finite audience) while Non-Retargeting is bid-capped — bundling hides which lever is constrained","Retargeting is always cheaper","No reason — bundle them"],correct:1,explanation:"Retargeting UAC draws on a finite remarketing pool (volume-capped) — you cannot scale it by raising bids. Non-Retargeting is bid-capped and scales with budget. A bundled UAC CPApproved averages two constraint regimes and misleads the scale decision. Report USD pre-GST."},
+{id:8,section:"Performance Marketing",type:"mcq",prompt:"A campaign is 20% over CPA target and still in its learning phase. Within session budget rules, the correct move is:",choices:["Cut daily budget 35% immediately","HOLD — learning-phase campaigns are not cut, and no single change exceeds plus/minus 20% of live budget per session","Pause it entirely","Double budget to push through learning"],correct:1,explanation:"Two rules: never step a live budget more than plus/minus 20% in one session (read the LIVE platform budget first, not a sheet plan %); and learning-phase campaigns HOLD rather than cut, because cutting can reset learning. A 35% cut breaks both."},
+{id:9,section:"Performance Marketing",type:"mcq",prompt:"You are cutting Google budget and want to redeploy it. Is Apple Search Ads a good overflow home for the spend?",choices:["Yes — pour it all into ASA","No — ASA is search-volume-capped, not budget-capped; plan it at roughly current x 1.25 ceiling and check dormant ad groups for real capacity","Yes — ASA scales linearly with budget","Only if you raise bids 3x"],correct:1,explanation:"ASA delivery is bounded by branded/keyword SEARCH VOLUME, not budget. Dumping freed Google budget into ASA just inflates CPA without buying volume. Ceiling is about current x 1.25; find capacity by re-enabling relevant dormant ad groups, not raising the cap."},
+{id:10,section:"Performance Marketing",type:"mcq",prompt:"You compute blended CPApproved = paid spend (from the tracker) divided by total approved (from Metabase). Why is this wrong?",choices:["The currencies differ","The denominator includes organic and zero-spend buckets the numerator's paid spend never paid for — numerator and denominator scopes do not match","Metabase is unreliable","Approved is the wrong metric"],correct:1,explanation:"Scope must match on both sides of a ratio. Metabase 'total approved' includes organic and zero-spend sources; tracker 'paid spend' covers only paid. Dividing them understates paid CPApproved. Use paid-attributed approved against paid spend — same scope, window, currency."},
+{id:11,section:"Performance Marketing",type:"mcq",prompt:"AppsFlyer exposes installs across three reports — Normal, DLU (delayed/late updates), and SKAN (iOS). For a complete install count you should:",choices:["Use Normal only","Combine all three (de-duplicated) — each covers a different slice, so any one alone undercounts, usually on iOS","Use SKAN only","Average the three"],correct:1,explanation:"The three AF reports cover different slices: Normal misses late and SKAN-only iOS installs; SKAN is iOS-only; DLU catches delayed updates. The SSOT install count combines all three, de-duplicated. Reading one systematically undercounts."},
+{id:12,section:"Performance Marketing",type:"mcq",prompt:"A Conversion Lift Study from October says one channel is 68-75% cannibalistic. How should it drive THIS week's budget?",choices:["Anchor the budget cut directly on the 68-75% figure","It should not anchor budget — CLS is supplemental/directional, decisions run on attributed CPApproved and live holdouts, and a months-old CLS is stale","Multiply that channel's spend by 0.30","Ignore attributed data and trust the CLS"],correct:1,explanation:"CLS is a directional point-in-time POV, not a control knob, and an October read is stale. Budget anchors on attributed CPApproved plus current holdouts. Retire 'October CLS says 68-75%' as a budget argument; if you need incrementality now, run a fresh holdout."},
+{id:13,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. Meta SG BAU spend is US$40,000 buying 2,000 approveds (avg CPApproved US$20). You add US$6,000 more and approveds rise to 2,080. What is the MARGINAL CPApproved on the extra US$6,000 (USD, nearest dollar)?",model:"Marginal = change in spend / change in approved = 6,000 / (2,080 - 2,000) = 6,000 / 80 = US$75. Average barely moved (20 to about 22) but the incremental layer cost US$75 — 3.75x average. If your justified ceiling is about US$20, that last US$6k is deeply unprofitable. Scale decisions use the US$75, not the US$22."},
+{id:14,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. SG Google Ads returns cost_micros = 27,000,000,000 for the week. Google SG bills in SGD. Convert to USD using internal FX 1.35 SGD/USD. What is the USD amount?",model:"Micros to SGD: 27,000,000,000 / 1,000,000 = S$27,000. SGD to USD: 27,000 / 1.35 = US$20,000. Two traps: divide micros by 1,000,000, and remember SG Google is the ONE SG platform billed in SGD — SG Meta and TikTok are USD-native, no FX."},
+{id:15,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. AU Meta BAU spend is A$14,000 this week. AU platforms bill in AUD. Convert to USD using the canonical internal rate 1.40 AUD/USD. What is the USD amount?",model:"A$14,000 / 1.40 = US$10,000. AU is the exception market — Meta, TikTok AND Google all bill AUD, so divide by 1.40 (canonical, not market about 1.54). SG Meta/TikTok are USD; only SG Google is SGD."},
+{id:16,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. SG tracker shows BAU paid spend of S$10,000 EXCLUDING GST and 600 approveds. SG reporting is GST-inclusive at 9%. What is the GST-inclusive CPApproved in SGD (2 decimals)?",model:"GST-inclusive spend = 10,000 x 1.09 = S$10,900. CPApproved = 10,900 / 600 = S$18.17. The trap is direction: MULTIPLY ex-GST spend by 1.09 to get GST-inclusive (do not divide). Forgetting GST understates SG CPApproved by about 8%."},
+{id:17,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. Two SG paid channels: Channel A US$6,000 to 400 approved; Channel B US$4,000 to 100 approved. What is the BLENDED CPApproved across both (USD, 2 decimals)?",model:"Blended = total spend / total approved = (6,000 + 4,000) / (400 + 100) = 10,000 / 500 = US$20.00. NOT the average of the two channel CPApproveds ((15 + 40)/2 = 27.5) — that ignores volume weighting. Always sum-then-divide."},
+{id:18,section:"Performance Marketing",type:"short",prompt:"NUMERIC — type the number. A CRM-style holdout: a channel reaches 80,000 users/month with a 10% control holdout. Treatment converts at 12%, control at 10%. How many monthly conversions are FOREGONE by keeping the holdout?",model:"Control group = 80,000 x 10% = 8,000 users. Foregone = 8,000 x (12% - 10%) = 8,000 x 2% = 160 conversions/month. That is the explicit opportunity cost of measurement — real, and worth weighing against the statistical power the holdout buys."},
+{id:19,section:"Performance Marketing",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'SG iOS CPApproved looks great this week — I took Meta Ads Manager iOS conversions (1,100) and divided iOS spend (US$15,400) to get US$14.0, our best ever. Recommend scaling iOS.'"],model:"Error: using Meta Ads Manager iOS conversions. Meta undercounts iOS via SKAN by 21-47%, so the iOS conversion figure is unreliable and the US$14 is a mirage. Fix: use AppsFlyer (iOS SSOT) for iOS installs/approveds before computing CPApproved; never scale iOS off Meta-reported iOS conversions."},
+{id:20,section:"Performance Marketing",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'Meta CTR fell from 1.0% to 0.6% and CPI rose 30%. The algorithm has clearly shifted to cheap low-quality traffic — recommend excluding Audience Network and changing placements.'"],model:"Error: misdiagnosis. FALLING CTR = creative FATIGUE, not an algo cheap-traffic shift (that shows as RISING CTR with worse downstream). Changing placements treats a symptom. Fix: refresh creative (new hooks/angles), cap frequency, possibly widen the audience — the CTR direction says it is a creative problem."},
+{id:21,section:"Performance Marketing",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'Google UAC is 20% over CPA target. The live daily budget is A$2,000. I will cut it to A$1,200 tomorrow morning to protect efficiency.'"],model:"Error: A$2,000 to A$1,200 is -40%, breaking the plus/minus 20%-per-session budget bound; and if the campaign is in its learning phase it should HOLD, not be cut. Fix: cap the step at -20% (about A$1,600) at most, confirm it is out of learning first, and read the LIVE platform budget before acting, not a sheet plan %."},
+{id:22,section:"Performance Marketing",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'SG TikTok CPR this week = spend / (app_install + skan_app_install) = US$4.10. Looks efficient — scale TikTok.'"],model:"Error: wrong metric fields. For SG REGISTRATION the metric is conversion + skan_conversion, NOT the install fields. Install fields return about 2.9x the volume, which crushes CPR to a falsely low number. Fix: recompute CPR with conversion + skan_conversion (true registration); the real CPR will be materially higher."},
+{id:23,section:"Performance Marketing",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'I am cutting SG Google spend by US$8k/week and moving the full US$8k into Apple Search Ads to hold total volume flat.'"],model:"Error: ASA cannot absorb arbitrary budget — it is SEARCH-VOLUME-capped, not budget-capped. Pouring US$8k in mostly raises CPA without buying installs. Fix: plan ASA at about current x 1.25 max, find real capacity by re-enabling relevant dormant ad groups, and redeploy the remaining budget to channels that actually scale with spend."},
+{id:24,section:"Performance Marketing",type:"applied",prompt:"SCENARIO. Meta SG BAU, last 3 weeks: CTR 1.0% to 0.6%, frequency 1.8 to 4.3, CPI +35%, spend flat. Diagnose the mechanism and prescribe — be specific about what you would change and what you would NOT change.",applied_prompt:"Write 4-6 sentences: mechanism, evidence, action, and one thing you would explicitly avoid.",model:"Mechanism: creative fatigue. Evidence: falling CTR + rising frequency (audience over-exposed to the same creative) with rising CPI — the textbook fatigue signature; a cheap-traffic algo shift would instead show RISING CTR. Action: ship fresh creative (new hooks/angles/formats, not colour swaps), rotate in 2-4 net-new concepts, optionally cap frequency and modestly widen the audience to dilute exposure. Avoid: bid/placement changes or budget cuts — those do not fix a creative problem, and on Smart+ fighting placements masks the cause. Verify recovery on first-impression CTR, not reach."},
+{id:25,section:"Performance Marketing",type:"applied",prompt:"SCENARIO. You want per-AD iOS CPI to kill weak iOS creatives, but Meta only shows iOS installs at the CAMPAIGN level via SKAN. How do you get a per-ad iOS read, and what is the honest fallback if you cannot?",applied_prompt:"Write 4-6 sentences: why the limitation exists, your method, and the fallback.",model:"Why: iOS installs arrive via SKAN postbacks that, for APP_PROMOTION, resolve only at campaign level — there is no reliable per-ad iOS install in Meta. Method: use the AppsFlyer Pull API (raw-data export), which exposes install + event rows with customer_user_id, letting you attribute iOS installs to specific ad/creative IDs. Fallback: optimise iOS creatives using per-ad ANDROID CPI (real per-ad mobile_app_install) as a proxy, manage iOS at the campaign level, and never fabricate a per-ad iOS number from Meta's campaign-level SKAN. State the limitation in the report."}
+,{id:26,section:"YouTrip & Fintech",type:"mcq",prompt:"To measure SG card-spend transaction value (TV), which filter is correct and why?",choices:["TXN_TYPE != 'Topup' — everything that is not a top-up is spend","TXN_TYPE = 'Fin' — using != 'Topup' counts Auth + AuthRev pairs and over-states TV roughly 5x","TXN_TYPE = 'FX'","TXN_TYPE = 'Spend'"],correct:1,explanation:"Card-spend TV uses TXN_TYPE = 'Fin'. The intuitive '!= Topup' is wrong: the table holds paired Auth and AuthRev (reversal) rows plus other types, so it roughly 5x over-counts. Confirm enum values with SELECT DISTINCT before trusting a schema doc — 'FX' and 'Spend' return 0 rows."},
+{id:27,section:"YouTrip & Fintech",type:"mcq",prompt:"From 2026-05-28, SG daily sign-ups surged. Internal analysis found the surge is:",choices:["Driven by the new Meta prospecting campaign","About 100% sub-18, peaking at ages 13-15, from the YouTrip Family launch; adult sign-ups stayed flat","Organic word-of-mouth among adults","A tracking bug"],correct:1,explanation:"The 2026-05-28 surge is the YouTrip Family launch — essentially all sub-18 (peak 13-15, about 44% of the surge), with adult sign-ups flat. It contaminates Card #3548 CPApproved from 2026-05-28 onward, so paid-efficiency reads must isolate adults. Do NOT credit the surge to paid."},
+{id:28,section:"YouTrip & Fintech",type:"mcq",prompt:"You want to nudge users who started signup but have not completed KYC. Which channel can you use?",choices:["Push notification","Email, SMS, or in-app — pre-KYC users cannot receive push (no registered push subscription yet)","Push and SMS together","None — wait until KYC completes"],correct:1,explanation:"Pre-KYC / incomplete-signup users do not yet have a push subscription, so push cannot reach them (confirmed by the data team). Use email, SMS, or in-app messaging for that cohort. Designing a push journey for pre-KYC users is a dead end."},
+{id:29,section:"YouTrip & Fintech",type:"mcq",prompt:"Which statement about platform billing currency is correct?",choices:["All SG platforms bill SGD","SG Google bills SGD (div 1.35 for USD); SG Meta and TikTok bill USD; ALL AU platforms bill AUD (div 1.40); ALL TH platforms bill USD","TH platforms bill THB natively","AU Meta bills USD like SG Meta"],correct:1,explanation:"The map: SG — only Google is SGD (div 1.35), Meta/TikTok are USD. AU — Meta, TikTok AND Google ALL bill AUD (div 1.40, the exception market). TH — all platforms bill USD natively (the THB in sheets is a div 31.5 conversion). Mixing these up corrupts every CPApproved."},
+{id:30,section:"YouTrip & Fintech",type:"mcq",prompt:"SG paid CPApproved is S$18; organic is effectively S$0. If you cut ALL paid, what share of TOTAL approved disappears?",choices:["Exactly the paid share","LESS than the paid share — some paid-attributed users would have converted organically anyway (incrementality < 100%); only a holdout gives the true number","100%","Zero — organic replaces it fully"],correct:1,explanation:"Paid is not fully incremental. Some users exposed to ads would also have found YouTrip organically, so cutting paid removes less than the full paid share. The only way to know YouTrip's true incrementality is a geo or audience holdout — never assume attributed paid = incremental."},
+{id:31,section:"YouTrip & Fintech",type:"mcq",prompt:"AU Android approveds look mis-attributed: about 97.5% of AU Android users carry customer_user_id '-NONE' instead of '-AU' since April 2026. This means:",choices:["AU Android is genuinely performing badly","A tagging bug (all 8 media sources affected); iOS, SG and TH are unaffected — it corrupts AU Android user-level joins until the AU team fixes it","Android users churned","AppsFlyer is down"],correct:1,explanation:"It is a customer_user_id tagging bug: about 97.5% of AU Android users tagged '-NONE' not '-AU' since Apr 2026, across all 8 media sources, with iOS/SG/TH clean. It breaks user-level attribution joins for AU Android specifically — flagged to the AU team 2026-05-25. Treat AU Android user-ID joins as unreliable until resolved."},
+{id:32,section:"YouTrip & Fintech",type:"mcq",prompt:"iOS SKAN conversion values encode 6 bits. The number of distinct CV buckets your entire post-install iOS signal can occupy is:",choices:["6","36","64","256"],correct:2,explanation:"6 bits = 2^6 = 64 distinct values (0-63). Your whole post-install iOS signal (install, KYC, first-txn ranges) compresses into at most 64 buckets — the hardest constraint in iOS measurement. Most apps meaningfully use 10-20."},
+{id:33,section:"YouTrip & Fintech",type:"mcq",prompt:"Three Metabase cards report 'sign-ups' differently. For PAID SG efficiency (CPApproved) you should anchor on:",choices:["Whichever card is highest","Card #3548 — approved SG by install_date — because it matches paid-attribution scope; #2963 (signup by-approval, all) and #4233 (signup-date SG) answer different questions","Card #2963","Any of them — they are equal"],correct:1,explanation:"Card #3548 (approved, SG, by install_date) is the paid-efficiency SSOT. #2963 counts signups by approval across all; #4233 by signup-date SG — different scopes/dates. Using the wrong card silently changes the denominator. Match the card to the question; for paid CPApproved that is #3548."},
+{id:34,section:"YouTrip & Fintech",type:"short",prompt:"NUMERIC — type the number. A SG cohort has 5,000 KYC-approved users. 60% are active in a month. Active users average 4 'Fin' card transactions at S$85 each. What is the cohort's monthly card-spend TV in SGD?",model:"Active users = 5,000 x 60% = 3,000. Txns = 3,000 x 4 = 12,000. TV = 12,000 x S$85 = S$1,020,000. Use TXN_TYPE='Fin' — '!= Topup' would about 5x this. Three linked calcs, the difficulty ceiling."},
+{id:35,section:"YouTrip & Fintech",type:"short",prompt:"NUMERIC — type the number. Meta reports 100 iOS installs for an ad set, but Meta undercounts iOS via SKAN by about 30%. Estimate the TRUE iOS installs (nearest whole).",model:"If Meta captures about 70% of true iOS installs, true is about reported / 0.70 = 100 / 0.70 = about 143. Meta's iOS number is a FLOOR, not the truth — which is why CPI off Meta iOS looks worse than reality and why AppsFlyer is the iOS SSOT."},
+{id:36,section:"YouTrip & Fintech",type:"short",prompt:"NUMERIC — type the number. AU CPApproved is A$98 (FX 1.40) and SG CPApproved is S$22 (FX 1.35). Convert the AU figure to USD (2 decimals).",model:"A$98 / 1.40 = US$70.00. (SG would be 22/1.35 = US$16.30 — far lower, partly because AU's target is US$100, not SG's bucket framework.) Never compare AU and SG CPApproved in native currencies; convert to USD AND remember the targets differ by market."},
+{id:37,section:"YouTrip & Fintech",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'SG sign-ups jumped 35% last week. The new Meta Family-angle creative is clearly working — recommend doubling its budget.'"],model:"Error (post 2026-05-28): the SG sign-up surge is the YouTrip Family LAUNCH — about 100% sub-18 (peak 13-15), with ADULT sign-ups flat. It is launch-driven, not paid-driven, and it contaminates CPApproved. Fix: isolate adult sign-ups before attributing anything to paid; do not scale on a launch-driven sub-18 surge. Also: doubling budget breaks the plus/minus 20% bound."},
+{id:38,section:"YouTrip & Fintech",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'SG CPApproved is S$18 and AU CPApproved is A$95. SG is about 5x more efficient than AU — shift budget from AU to SG.'"],model:"Error: comparing different currencies (and different target frameworks) head-to-head. Convert first: SG S$18/1.35 = US$13.3; AU A$95/1.40 = US$67.9. They still differ, but AU's target is US$100 (allowed to be higher) while SG runs a bucket framework — the markets are not interchangeable. Fix: compare in USD AND against each market's own target."},
+{id:39,section:"YouTrip & Fintech",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'To measure card-spend TV I summed amounts WHERE TXN_TYPE is not Topup. Got S$4.1M for the cohort.'"],model:"Error: 'not Topup' is not the same as actual spend. The table holds paired Auth and AuthRev (reversals) and other types, so 'not Topup' roughly 5x over-counts. Fix: filter TXN_TYPE = 'Fin' for true card spend — the S$4.1M is likely about S$0.8M real. Always SELECT DISTINCT TXN_TYPE to confirm enum values before trusting a filter."},
+{id:40,section:"YouTrip & Fintech",type:"applied",prompt:"SCENARIO. A stakeholder says: 'Paid CPApproved is S$15, so paid is cheap — keep scaling.' Explain why attributed/blended CPApproved alone cannot justify scaling, and what you would measure instead.",applied_prompt:"Write 4-6 sentences covering: average vs marginal, attributed vs incremental, and the one experiment you would run.",model:"Two gaps. Average vs marginal: S$15 blended averages cheap early spend with the expensive last layer; the next dollar of scale is bought at the MARGINAL CPApproved, which can be far above S$15. Attributed vs incremental: attributed paid includes users who would have converted organically anyway, so it overstates paid's true value. To justify scaling I would compute marginal CPApproved at the current top layer vs the LTV-justified ceiling, AND run a holdout (geo or audience) to estimate true incrementality. Scale only if marginal AND incremental both clear the bar."},
+{id:41,section:"YouTrip & Fintech",type:"short",prompt:"LIST ALL THAT APPLY. Which platform/market combos bill in a NON-USD currency that must be FX-converted before USD reporting? A) SG Meta  B) SG Google Ads  C) SG TikTok  D) AU Meta  E) AU Google  F) TH Google Ads  G) TH TikTok. Type all letters that apply, then reveal and self-grade.",model:"Correct set: B, D, E. SG Google bills SGD (div 1.35); AU Meta AND AU Google (all AU platforms) bill AUD (div 1.40). NOT converted: SG Meta and SG TikTok are USD-native; TH Google and TH TikTok are USD-native (THB only appears as a sheet conversion). Got it = exactly {B, D, E}; Partial = missed or added one; Missed = otherwise."}
+,{id:42,section:"CRM",type:"mcq",prompt:"You present a CRM journey result: '+6% TV vs control.' What single element makes this presentation invalid for a rollout decision?",choices:["Missing the dollar value","No statistical significance / p-value (or confidence interval) — uplift without significance could be noise","Wrong chart colour","No screenshot attached"],correct:1,explanation:"Never present test-vs-control uplift without significance. +6% on a small or noisy sample may be random. Always attach a p-value or confidence interval (and the sample sizes). A rollout on an unsignificant lift is a coin flip dressed as analysis."},
+{id:43,section:"CRM",type:"mcq",prompt:"Attributed conversions and incremental conversions differ because:",choices:["They are the same thing","Attributed credits a touchpoint for conversions that may have happened anyway; incremental counts only conversions that would NOT have happened without the treatment (needs a holdout)","Incremental is always larger","Attribution is simply more accurate"],correct:1,explanation:"Attribution assigns credit by rules (last-touch etc.); incrementality measures causation via a holdout. A journey can be highly 'attributed' yet barely incremental. For budget/keep-kill decisions you want incremental; attribution is fine for in-channel optimisation."},
+{id:44,section:"CRM",type:"mcq",prompt:"Before designing a trigger-based journey ('user did X then send Y'), the mandatory FIRST step is:",choices:["Write the message copy","Run a historical query: of users who did X in a past month, what % reached the desired outcome within the journey window — to validate the trigger and size the audience","Pick the channel","Set up the holdout"],correct:1,explanation:"No trigger journey proceeds without the base-rate query: of users who performed the trigger, what % reached the desired outcome in-window historically. It validates the trigger's predictive power and sizes the audience for power analysis. Copy before this is building on sand."},
+{id:45,section:"CRM",type:"mcq",prompt:"For a stable, high-volume production journey, a typical control holdout size is:",choices:["50%","10-20% — enough for statistical power while limiting the opportunity cost of withholding treatment","1%","0% — holdouts are optional"],correct:1,explanation:"10-20% is the usual range: large enough to detect the expected lift with power, small enough that foregone uplift (opportunity cost) stays bounded. Too small is underpowered; too large is expensive. The exact number comes from a power calc on the expected effect size."},
+{id:46,section:"CRM",type:"mcq",prompt:"For daily incremental-TV (iTV) windows on a CRM journey, the correct transaction date field is:",choices:["CTX_DATETIME_SG","TXN_DATE — CTX_DATETIME_SG lags TXN_DATE by about a day and shifts the daily windows","Either — they match","The signup date"],correct:1,explanation:"Use TXN_DATE for daily iTV windows. CTX_DATETIME_SG lags TXN_DATE by about a day, so using it silently shifts every daily cohort window and misaligns test vs control by date. Match the transaction's economic date (TXN_DATE)."},
+{id:47,section:"CRM",type:"short",prompt:"NUMERIC — type the number. A CRM test: 10,000 treated users and 10,000 control. 90-day TV/user is S$120 (treatment) vs S$108 (control), difference statistically significant. What is the TOTAL incremental TV delivered across the treated group, in SGD?",model:"Incremental TV/user = 120 - 108 = S$12. Across treated users = 10,000 x S$12 = S$120,000. Per-user lift times the treated population. You would still report the p-value/CI and net out the holdout's opportunity cost when deciding rollout."},
+{id:48,section:"CRM",type:"short",prompt:"SPOT THE ERROR. Read the analyst note below, say what is wrong, and give the fix.",data:["Analyst note: 'New onboarding push journey: treated users have 22% higher 30-day activation than the non-treated users who did not get it. Highly significant. Roll out to 100%.'"],model:"Error: 'non-treated users who did not get it' is almost certainly NOT a randomized control — it is a self-selected/eligibility group (e.g. users who could not be reached, or pre-KYC who cannot receive push). The 22% is confounded by WHO got the push, not the push's effect. Fix: compare against a RANDOMIZED holdout from the same eligible population; only then is 'significant' causal. Also confirm the cohort can receive push (pre-KYC cannot)."},
+{id:49,section:"CRM",type:"applied",prompt:"SCENARIO. Design a measurement to prove a new pre-trip reminder push raises card activation. Cover eligibility, randomization, metric + window, sample/power, and how you would report it.",applied_prompt:"Write 5-7 sentences as a mini test plan.",model:"Eligibility: KYC-approved users with a push subscription (pre-KYC excluded — they cannot receive push) who match the pre-trip trigger. Randomize that eligible pool into treatment vs a 10-20% control (same population, same period) to remove confounds. Metric: card activation (first 'Fin' txn) within a fixed window, e.g. 14 days post-trigger, using TXN_DATE. Sample/power: run a power calc on the expected lift to set duration and control size; do not peek before it is powered. Report: absolute + relative lift, p-value/CI, sample sizes, and the holdout's opportunity cost; recommend rollout only if significant and the marginal value beats the holdout cost. Validate the trigger first with a historical base-rate query."},
+{id:50,section:"CRM",type:"applied",prompt:"SCENARIO. A journey shows +S$15 incremental TV/user but the test had only 200 users. A stakeholder wants to roll out tomorrow. Walk through whether to roll out and exactly what you would check.",applied_prompt:"Write 5-7 sentences.",model:"Do not roll out on +S$15 from n=200 alone — small samples produce large, unstable point estimates. Check: statistical significance (p-value/CI; a wide CI crossing about 0 means it could be noise); sample size/power for the claimed effect; confounds (randomized holdout vs self-selected); novelty effect (short tests overstate lifts that decay); and segment leakage/outliers (a few whales can fake +S$15). Next step: extend the test to a powered sample and re-read rather than committing budget on an underpowered result. If it must ship, ship to a capped % with a holdout retained so measurement continues."},
+{id:51,section:"CRM",type:"mcq",prompt:"A CRM journey design is 'complete' only when it includes:",choices:["Approved copy","A validated audience-sizing query from BigQuery (not a rough estimate) — needed for power analysis and stakeholder credibility","A chosen channel","A send time"],correct:1,explanation:"Audience sizing is mandatory: a validated BQ sizing query, not a guess. Without it you cannot run a power analysis or defend the design to stakeholders. Rough estimates are insufficient — the number must come from a real query against the trigger population."}
+];
+
+const STORAGE_KEY = 'quiz-w1d4';
+const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+// === Telemetry (Day 2+) ===
+const TELEMETRY_URL = 'https://script.google.com/macros/s/AKfycbwRtkCdBQlLy4PTF0g2wNvIQJPmZVLOdO29hQGZ0qjyeaU9qrNL4VazwpKX32E7LAUN/exec';
+const INTERN_NAME = 'Petrina';
+const DAY = 'w1d4';
+const SESSION_ID = (() => {
+  let sid = localStorage.getItem('quiz-session-id-w1d4');
+  if (!sid) { sid = 'sess-' + Math.random().toString(36).substring(2, 10) + '-' + Date.now(); localStorage.setItem('quiz-session-id-w1d4', sid); }
+  return sid;
+})();
+function postTelemetry(payload) {
+  try {
+    const body = JSON.stringify({ intern_name: INTERN_NAME, day: DAY, session_id: SESSION_ID, ...payload });
+    fetch(TELEMETRY_URL, { method: 'POST', body, keepalive: true }).catch(() => {});
+  } catch (e) {}
+}
+const _commentTimers = {};
+function postCommentDebounced(id, comment, section) {
+  if (_commentTimers[id]) clearTimeout(_commentTimers[id]);
+  _commentTimers[id] = setTimeout(() => {
+    postTelemetry({ question_id: id, section: section, type: 'comment', answer: '', correct: null, difficulty_rating: '', comment: comment });
+  }, 1500);
+}
+
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+function letter(i) { return String.fromCharCode(65 + i); }
+
+function renderQuiz() {
+  const root = document.getElementById('quiz-root');
+  let html = '';
+  let currentSection = '';
+  const sectionMeta = {
+    "Performance Marketing": { count: 60, intro: "60 questions on metrics, diagnostics, channels, and applied scenarios. This is your focus area." },
+    "YouTrip + Fintech": { count: 25, intro: "25 questions on how YouTrip earns money, interchange, FX margin, KYC, and the broader fintech model." },
+    "CRM Intro": { count: 15, intro: "15 questions on lifecycle marketing, control groups, iTV, and journey measurement." }
+  };
+  QUESTIONS.forEach((q, idx) => {
+    if (q.section !== currentSection) {
+      currentSection = q.section;
+      const meta = sectionMeta[currentSection] || { count: 0, intro: '' };
+      html += `<div class="section-header"><h2>${currentSection}</h2><span class="meta">${meta.count} questions</span></div>`;
+      html += `<p class="section-intro">${meta.intro}</p>`;
+    }
+    html += renderQuestion(q);
+  });
+  root.innerHTML = html;
+  attachHandlers();
+  updateScore();
+}
+
+function renderQuestion(q) {
+  const saved = state[q.id] || {};
+  const isAnswered = saved.answered;
+  const correctness = saved.correctness || '';
+  const typeLabel = q.type === 'mcq' ? 'MCQ' : (q.type === 'short' ? 'Short Answer' : 'Applied');
+  let body = '';
+  if (q.type === 'mcq') {
+    body = `<div class="choices">`;
+    q.choices.forEach((c, i) => {
+      let cls = 'choice';
+      if (isAnswered) {
+        cls += ' answered';
+        if (i === q.correct) cls += ' correct-answer';
+        else if (saved.picked === i) cls += ' wrong-pick';
+      } else if (saved.picked === i) {
+        cls += ' selected';
+      }
+      body += `<button class="${cls}" data-q="${q.id}" data-choice="${i}" ${isAnswered?'disabled':''}><span class="letter">${letter(i)}.</span> ${c}</button>`;
+    });
+    body += `</div>`;
+    if (isAnswered) {
+      body += `<div class="explanation show"><strong>Explanation:</strong> ${q.explanation}</div>`;
+    }
+  } else {
+    const userText = saved.userText || '';
+    const inputCls = q.type === 'applied' ? 'open-input applied-input' : 'open-input';
+    const promptText = q.applied_prompt || (q.type === 'applied' ? 'Write your answer below.' : '');
+    body = `<textarea class="${inputCls}" data-q="${q.id}" placeholder="Type your answer here..." ${isAnswered?'disabled':''}>${userText}</textarea>`;
+    if (promptText && q.applied_prompt) {
+      body = `<p class="prompt" style="font-style:italic;color:var(--ink-2);margin-top:8px;">${q.applied_prompt}</p>` + body;
+    }
+    body += `<button class="reveal-btn" data-reveal="${q.id}" ${isAnswered?'disabled':''}>Reveal model answer</button>`;
+    body += `<div class="model${saved.revealed?' show':''}" id="model-${q.id}"><span class="label">Model Answer</span>${q.model}</div>`;
+    body += `<div class="self-rate${saved.revealed?' show':''}" id="rate-${q.id}">`;
+    body += `<button class="rate-btn got-it${correctness==='correct'?' active':''}" data-rate="${q.id}" data-r="correct">✓ Got it</button>`;
+    body += `<button class="rate-btn partial${correctness==='partial'?' active':''}" data-rate="${q.id}" data-r="partial">~ Partial</button>`;
+    body += `<button class="rate-btn missed${correctness==='incorrect'?' active':''}" data-rate="${q.id}" data-r="incorrect">✗ Missed it</button>`;
+    body += `</div>`;
+  }
+  const qClass = `q ${isAnswered ? 'answered '+correctness : ''}`;
+  const dataBlock = q.data ? `<div class="data"><ul>${q.data.map(d=>`<li>${d}</li>`).join('')}</ul></div>` : '';
+  const diff = saved.difficulty || '';
+  const why = saved.comment || '';
+  const fbBlock = `<div class="feedback${isAnswered?' show':''}" id="fb-${q.id}">
+    <span class="fb-label">How did this question feel?</span>
+    <div class="diff-row">
+      <button class="diff-btn${diff==='too-easy'?' active':''}" data-diff="${q.id}" data-d="too-easy">Too easy</button>
+      <button class="diff-btn${diff==='just-right'?' active':''}" data-diff="${q.id}" data-d="just-right">Just right</button>
+      <button class="diff-btn${diff==='hard'?' active':''}" data-diff="${q.id}" data-d="hard">Hard</button>
+      <button class="diff-btn${diff==='too-hard'?' active':''}" data-diff="${q.id}" data-d="too-hard">Too hard</button>
+    </div>
+    <label class="why-label">Why? (optional — what made it easy/hard, confusing wording, anything else)</label>
+    <textarea class="why-box" data-comment="${q.id}" placeholder="Optional feedback to help Sandra improve the quiz...">${why}</textarea>
+  </div>`;
+  return `<div class="${qClass}" id="q-${q.id}">
+    <div class="num">Q${q.id} <span class="type ${q.type}">${typeLabel}</span></div>
+    <p class="prompt">${q.prompt}</p>
+    ${dataBlock}
+    ${body}
+    ${fbBlock}
+  </div>`;
+}
+
+// Event delegation: bind ONCE to #quiz-root. Prevents listener stacking on re-render.
+let handlersBound = false;
+function attachHandlers() {
+  const root = document.getElementById('quiz-root');
+  if (!root || handlersBound) return;
+  handlersBound = true;
+
+  root.addEventListener('click', e => {
+    const choice = e.target.closest('.choice');
+    if (choice && !choice.disabled) {
+      const id = parseInt(choice.dataset.q);
+      const pick = parseInt(choice.dataset.choice);
+      const q = QUESTIONS.find(x => x.id === id);
+      const isCorrect = pick === q.correct;
+      const prior = state[id] || {};
+      state[id] = { ...prior, answered: true, picked: pick, correctness: isCorrect ? 'correct' : 'incorrect' };
+      save();
+      postTelemetry({ question_id: id, section: q.section, type: q.type, answer: q.choices[pick], correct: isCorrect, difficulty_rating: state[id].difficulty || '', comment: state[id].comment || '' });
+      const wrap = document.getElementById('q-'+id);
+      if (wrap) wrap.outerHTML = renderQuestion(q);
+      updateScore();
+      return;
+    }
+    const reveal = e.target.closest('.reveal-btn');
+    if (reveal && !reveal.disabled) {
+      const id = parseInt(reveal.dataset.reveal);
+      const ta = document.querySelector(`textarea[data-q="${id}"]`);
+      const userText = ta ? ta.value : '';
+      if (!state[id]) state[id] = {};
+      state[id].revealed = true;
+      state[id].userText = userText;
+      save();
+      document.getElementById('model-'+id).classList.add('show');
+      document.getElementById('rate-'+id).classList.add('show');
+      if (ta) ta.disabled = true;
+      reveal.disabled = true;
+      return;
+    }
+    const rate = e.target.closest('.rate-btn');
+    if (rate) {
+      const id = parseInt(rate.dataset.rate);
+      const r = rate.dataset.r;
+      const q = QUESTIONS.find(x => x.id === id);
+      const prior = state[id] || {};
+      state[id] = { ...prior, answered: true, correctness: r };
+      save();
+      const wrap = document.getElementById('q-'+id);
+      if (wrap) wrap.outerHTML = renderQuestion(q);
+      updateScore();
+      return;
+    }
+    const diff = e.target.closest('.diff-btn[data-diff]');
+    if (diff) {
+      const id = parseInt(diff.dataset.diff);
+      const d = diff.dataset.d;
+      if (!state[id]) state[id] = {};
+      state[id].difficulty = d;
+      save();
+      const _q = QUESTIONS.find(x => x.id === id);
+      postTelemetry({ question_id: id, section: _q ? _q.section : '', type: 'difficulty', answer: '', correct: null, difficulty_rating: d, comment: state[id].comment || '' });
+      document.querySelectorAll(`.diff-btn[data-diff="${id}"]`).forEach(b => b.classList.remove('active'));
+      diff.classList.add('active');
+      return;
+    }
+  });
+
+  root.addEventListener('input', e => {
+    const t = e.target;
+    if (t.matches && t.matches('textarea[data-q]')) {
+      const id = parseInt(t.dataset.q);
+      if (!state[id]) state[id] = {};
+      state[id].userText = t.value;
+      save();
+    } else if (t.matches && t.matches('textarea[data-comment]')) {
+      const id = parseInt(t.dataset.comment);
+      if (!state[id]) state[id] = {};
+      state[id].comment = t.value;
+      save();
+      const _q = QUESTIONS.find(x => x.id === id);
+      postCommentDebounced(id, t.value, _q ? _q.section : '');
+    }
+  });
+}
+
+function buildFeedbackSummary() {
+  const total = QUESTIONS.length;
+  let correct = 0, partial = 0, missed = 0, answered = 0;
+  const diffCount = { 'too-easy': 0, 'just-right': 0, 'hard': 0, 'too-hard': 0, 'unrated': 0 };
+  const byDifficulty = { 'too-easy': [], 'just-right': [], 'hard': [], 'too-hard': [] };
+  const withComments = [];
+  QUESTIONS.forEach(q => {
+    const s = state[q.id] || {};
+    if (s.answered) {
+      answered++;
+      if (s.correctness === 'correct') correct++;
+      else if (s.correctness === 'partial') partial++;
+      else if (s.correctness === 'incorrect') missed++;
+    }
+    if (s.difficulty) {
+      diffCount[s.difficulty]++;
+      byDifficulty[s.difficulty].push({ id: q.id, section: q.section, prompt: q.prompt.replace(/<[^>]+>/g,'').substring(0,140), comment: (s.comment||'').trim() });
+    } else {
+      diffCount.unrated++;
+    }
+    if (s.comment && s.comment.trim()) withComments.push({ id: q.id, section: q.section, difficulty: s.difficulty || 'unrated', comment: s.comment.trim(), prompt: q.prompt.replace(/<[^>]+>/g,'').substring(0,100) });
+  });
+  const pct = answered > 0 ? Math.round((correct + 0.5*partial) / answered * 100) : 0;
+  let md = `# Day 1 Quiz Feedback\n\n`;
+  md += `**Score:** ${correct + 0.5*partial} / ${answered} (${pct}%) — ${correct} correct, ${partial} partial, ${missed} missed, ${total-answered} unanswered\n\n`;
+  md += `## Difficulty distribution\n`;
+  md += `- Too easy: ${diffCount['too-easy']}\n`;
+  md += `- Just right: ${diffCount['just-right']}\n`;
+  md += `- Hard: ${diffCount['hard']}\n`;
+  md += `- Too hard: ${diffCount['too-hard']}\n`;
+  md += `- Unrated: ${diffCount.unrated}\n\n`;
+  ['too-hard','too-easy','hard'].forEach(d => {
+    if (byDifficulty[d].length > 0) {
+      md += `## Flagged as "${d.replace('-',' ')}" (${byDifficulty[d].length})\n`;
+      byDifficulty[d].forEach(q => {
+        md += `- **Q${q.id}** (${q.section}): ${q.prompt}${q.prompt.length>=140?'…':''}`;
+        if (q.comment) md += `\n  - 💬 ${q.comment}`;
+        md += `\n`;
+      });
+      md += `\n`;
+    }
+  });
+  if (withComments.length > 0) {
+    md += `## All comments\n`;
+    withComments.forEach(c => {
+      md += `- **Q${c.id}** (${c.section}, rated: ${c.difficulty}): ${c.comment}\n`;
+    });
+  }
+  return md;
+}
+
+function attachExportHandlers() {
+  const copyBtn = document.getElementById('copy-feedback-btn');
+  const dlBtn = document.getElementById('download-feedback-btn');
+  const emailBtn = document.getElementById('email-feedback-btn');
+  const status = document.getElementById('export-status');
+  if (emailBtn) emailBtn.addEventListener('click', () => {
+    const md = buildFeedbackSummary();
+    const subject = encodeURIComponent('Quiz Day 4 feedback — Petrina');
+    const body = encodeURIComponent(md);
+    // mailto: has length limits; truncate if needed to avoid silent failure
+    let url = `mailto:sandratangxq@gmail.com?subject=${subject}&body=${body}`;
+    if (url.length > 2000) {
+      const safeMd = md.substring(0, 1600) + '\n\n[truncated — full summary in Download JSON]';
+      url = `mailto:sandratangxq@gmail.com?subject=${subject}&body=${encodeURIComponent(safeMd)}`;
+    }
+    window.location.href = url;
+    status.textContent = '✓ Email draft opened — just hit Send.';
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 4000);
+  });
+  if (copyBtn) copyBtn.addEventListener('click', async () => {
+    const md = buildFeedbackSummary();
+    try {
+      await navigator.clipboard.writeText(md);
+      status.textContent = '✓ Copied to clipboard. Paste in Slack/email to Sandra.';
+      status.classList.add('show');
+      setTimeout(() => status.classList.remove('show'), 4000);
+    } catch (e) {
+      status.textContent = 'Could not copy automatically. Use Download JSON instead.';
+      status.classList.add('show');
+    }
+  });
+  if (dlBtn) dlBtn.addEventListener('click', () => {
+    const payload = { generated: new Date().toISOString(), state: state, summary: buildFeedbackSummary() };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `quiz-w1d4-feedback-${new Date().toISOString().substring(0,10)}.json`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    status.textContent = '✓ Downloaded. Send the JSON file to Sandra.';
+    status.classList.add('show');
+    setTimeout(() => status.classList.remove('show'), 4000);
+  });
+}
+
+function updateScore() {
+  let answered = 0, correct = 0, partial = 0;
+  QUESTIONS.forEach(q => {
+    const s = state[q.id] || {};
+    if (s.answered) {
+      answered++;
+      if (s.correctness === 'correct') correct++;
+      else if (s.correctness === 'partial') partial++;
+    }
+  });
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('answered-count').textContent = answered;
+  const totalPossible = answered;
+  const score = correct + 0.5 * partial;
+  const pct = totalPossible > 0 ? Math.round((score / totalPossible) * 100) : 0;
+  document.getElementById('score-pct').textContent = answered > 0 ? pct + '%' : '—';
+  document.getElementById('progress-bar').style.width = (answered / QUESTIONS.length * 100) + '%';
+  renderFinal(correct, partial, answered);
+}
+
+function renderFinal(correct, partial, answered) {
+  const total = QUESTIONS.length;
+  const isDone = answered === total;
+  const score = correct + 0.5 * partial;
+  const pct = answered > 0 ? Math.round((score / answered) * 100) : 0;
+  document.getElementById('final-heading').textContent = isDone ? 'You finished Day 1.' : 'Your progress so far';
+  document.getElementById('final-tagline').textContent = isDone
+    ? 'Here\'s how you did. The "topics to revisit" list is what to read before Day 4.'
+    : `${answered} / ${total} answered. Keep going — your score and section breakdown update live. Hit "Copy feedback" anytime to send Sandra your ratings + comments so far.`;
+  document.getElementById('final-pct').textContent = answered > 0 ? pct + '%' : '—';
+  document.getElementById('final-detail').textContent = `${correct} fully correct · ${partial} partial · ${answered - correct - partial} missed · ${total - answered} unanswered`;
+  const breakdown = {};
+  QUESTIONS.forEach(q => {
+    if (!breakdown[q.section]) breakdown[q.section] = { total: 0, correct: 0, partial: 0 };
+    breakdown[q.section].total++;
+    const s = state[q.id] || {};
+    if (s.correctness === 'correct') breakdown[q.section].correct++;
+    else if (s.correctness === 'partial') breakdown[q.section].partial++;
+  });
+  let bHtml = '';
+  Object.keys(breakdown).forEach(sec => {
+    const b = breakdown[sec];
+    const sPct = Math.round(((b.correct + 0.5*b.partial)/b.total) * 100);
+    bHtml += `<div class="breakdown-row"><span>${sec}</span><span>${b.correct + 0.5*b.partial} / ${b.total} (${sPct}%)</span></div>`;
+  });
+  document.getElementById('final-breakdown').innerHTML = bHtml;
+  const missed = QUESTIONS.filter(q => (state[q.id] || {}).correctness === 'incorrect');
+  if (missed.length > 0) {
+    document.getElementById('revisit-block').style.display = 'block';
+    document.getElementById('revisit-list').innerHTML = missed.slice(0, 12).map(q =>
+      `<li><strong>Q${q.id}</strong> (${q.section}): ${q.prompt.replace(/<[^>]+>/g,'').substring(0,100)}${q.prompt.length>100?'…':''}</li>`
+    ).join('');
+  } else {
+    document.getElementById('revisit-block').style.display = 'none';
+  }
+}
+
+renderQuiz();
+attachExportHandlers();
+</script>
+</body>
+</html>
